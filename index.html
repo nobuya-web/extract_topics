@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>政策レポート 一覧</title>
+  <style>
+    :root {
+      --blue:    #1a4f7a;
+      --blue-lt: #2d7ab5;
+      --accent:  #e8811a;
+      --bg:      #f5f7fa;
+      --white:   #ffffff;
+      --text:    #1e2832;
+      --muted:   #5a6472;
+      --border:  #dde3ea;
+      --tag-bg:  #e8f0f9;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Noto Sans JP","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+      color: #fff;
+      padding: 48px 40px 40px;
+      text-align: center;
+    }
+    header .label {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 4px;
+      font-size: 11px;
+      letter-spacing: .1em;
+      padding: 4px 12px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    header h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+    header p  { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+    /* Main */
+    main { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    /* Section group */
+    .group { margin-bottom: 48px; }
+    .group-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--blue);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+
+    /* Card grid */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+
+    /* Card */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px 22px 18px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: box-shadow .2s, border-color .2s, transform .15s;
+    }
+    .card:hover {
+      box-shadow: 0 4px 16px rgba(26,79,122,.12);
+      border-color: var(--blue-lt);
+      transform: translateY(-2px);
+    }
+    .card-icon {
+      width: 36px; height: 36px;
+      background: var(--blue);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .card-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--blue);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid #c5d9ee;
+      width: fit-content;
+    }
+    .card h2 {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--text);
+    }
+    .card p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .card .arrow {
+      font-size: 12px;
+      color: var(--blue-lt);
+      font-weight: 600;
+      align-self: flex-end;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 36px 20px 32px; }
+      header h1 { font-size: 20px; }
+      main { padding: 32px 16px 60px; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="label">Policy Reports</div>
+  <h1>政策レポート 一覧</h1>
+  <p>大型報告書・法令から特定テーマを横断抽出した調査レポート集</p>
+</header>
+
+<main>
+
+  <!-- 沖縄 -->
+  <div class="group">
+    <div class="group-title">沖縄21世紀ビジョン実施計画</div>
+    <div class="cards">
+      <a class="card" href="260521_01/digital.html">
+        <div class="card-icon">🌐</div>
+        <span class="card-tag">デジタル施策</span>
+        <h2>沖縄21世紀ビジョン実施計画<br>デジタル施策まとめ</h2>
+        <p>新・沖縄21世紀ビジョン実施計画（中期）全7編を横断し、デジタル関連施策を抽出・整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 地方創生 -->
+  <div class="group">
+    <div class="group-title">地方創生に関する総合戦略</div>
+    <div class="cards">
+      <a class="card" href="260521_02/digital.html">
+        <div class="card-icon">💻</div>
+        <span class="card-tag">デジタル施策</span>
+        <h2>地方創生総合戦略<br>デジタル施策レポート</h2>
+        <p>令和7年12月閣議決定の地方創生総合戦略から、デジタル関連施策を体系的に抽出。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260521_02/jinzai.html">
+        <div class="card-icon">👥</div>
+        <span class="card-tag">人材施策</span>
+        <h2>地方創生総合戦略<br>人材施策レポート</h2>
+        <p>地方創生総合戦略から、人材育成・確保・還流に関する施策を横断的に整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 職業能力開発 -->
+  <div class="group">
+    <div class="group-title">第12次職業能力開発基本計画</div>
+    <div class="cards">
+      <a class="card" href="260522_01/kigyo.html">
+        <div class="card-icon">🏢</div>
+        <span class="card-tag">企業支援（需要側）</span>
+        <h2>企業支援の属性別まとめ</h2>
+        <p>第12次職業能力開発基本計画における企業・需要側への支援施策を属性別に整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260522_01/shugyo.html">
+        <div class="card-icon">👩‍💼</div>
+        <span class="card-tag">就業者支援（供給側）</span>
+        <h2>就業者支援の属性別まとめ</h2>
+        <p>第12次職業能力開発基本計画における就業者・供給側への支援施策を属性別に整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260522_0A/cross-kigyo.html">
+        <div class="card-icon">🔀</div>
+        <span class="card-tag">横断：企業支援×地方創生</span>
+        <h2>企業支援 × 地方創生視点まとめ</h2>
+        <p>職業能力開発と地方創生を横断し、企業支援施策の地域文脈での意義を整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260522_0A/cross-shugyo.html">
+        <div class="card-icon">🔀</div>
+        <span class="card-tag">横断：就業者支援×地方創生</span>
+        <h2>就業者支援 × 地方創生視点まとめ</h2>
+        <p>職業能力開発と地方創生を横断し、就業者支援施策の地域文脈での意義を整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 女性活躍 -->
+  <div class="group">
+    <div class="group-title">女性活躍推進法</div>
+    <div class="cards">
+      <a class="card" href="260522_02/points.html">
+        <div class="card-icon">🌸</div>
+        <span class="card-tag">改正ポイント整理</span>
+        <h2>女性活躍推進法<br>改正ポイント整理</h2>
+        <p>令和7年改正法（令和8年4月1日施行）の主要ポイントを情報公表・管理職比率・認定制度等に整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 高年齢者雇用安定法 -->
+  <div class="group">
+    <div class="group-title">高年齢者雇用安定法</div>
+    <div class="cards">
+      <a class="card" href="260523_01/points.html">
+        <div class="card-icon">👴</div>
+        <span class="card-tag">改正ポイント整理</span>
+        <h2>高年齢者雇用安定法<br>改正ポイント整理</h2>
+        <p>令和3年4月施行の改正内容（70歳まで就業確保措置）と令和8年4月適用の新基本方針を、Q&amp;A・指針を含めて実務向けに整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>政策レポート集 — 大型報告書から特定テーマを横断抽出</p>
+</footer>
+
+</body>
+</html>

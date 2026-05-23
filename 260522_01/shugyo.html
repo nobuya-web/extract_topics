@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>就業者支援（供給側）属性別まとめ v2 ─ 第12次職業能力開発基本計画</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg); color: var(--text);
+  font-size: 15px; line-height: 1.85; padding-top: 56px;
+}
+header {
+  position: fixed; top: 0; left: 0; right: 0; height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff; display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem; z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 14px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; }
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 112px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; }
+section p:last-child { margin-bottom: 0; }
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 150px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 26px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 14px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 8px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 130px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">第12次職業能力開発基本計画</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">テーマ別抽出レポート</div>
+  <h1>就業者支援（供給側）<br>属性別まとめ</h1>
+  <p class="sub">第12次職業能力開発基本計画（本体・概要）／厚生労働省 ｜ 令和8〜12年度 ｜ v2：求職者・非就業者セクション追加</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#nonregular">非正規雇用</a></li>
+    <li><a href="#midage">中高年</a></li>
+    <li><a href="#youth">若者</a></li>
+    <li><a href="#women">女性</a></li>
+    <li><a href="#disability">障害者</a></li>
+    <li><a href="#foreign">外国人</a></li>
+    <li><a href="#iceage">就職氷河期世代</a></li>
+    <li><a href="#jobseeker">求職者・離職者訓練</a></li>
+    <li><a href="#nonworker">就業意欲の非就業者</a></li>
+    <li><a href="#cross">横断施策</a></li>
+    <li><a href="#conclusion">総括</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- ── 全体像 ── -->
+  <div class="overview" id="overview">
+    <h2>全体像：労働供給制約と多様な人材の活躍</h2>
+    <p>第12次職業能力開発基本計画（令和8〜12年度）は、日本の労働市場が直面する「労働供給制約」という構造的課題を正面から受け止めた計画だ。少子化による人口減少が進むなかで、就業者数は2030年まで横ばいで推移した後に減少へ転じ、就業者に占める60歳以上の割合が増加し続けることが見込まれている。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">1.25<span>倍</span></div>
+        <div class="lbl">有効求人倍率（令和6年平均）</div>
+      </div>
+      <div class="stat">
+        <div class="val">225<span>万人</span></div>
+        <div class="lbl">非労働力人口のうち<br>就業希望者</div>
+      </div>
+      <div class="stat">
+        <div class="val">432<span>万人</span></div>
+        <div class="lbl">就業者のうち<br>「もっと働きたい」者</div>
+      </div>
+      <div class="stat">
+        <div class="val">約8<span>割</span></div>
+        <div class="lbl">「人材育成に問題あり」<br>とする事業所割合</div>
+      </div>
+    </div>
+
+    <p>計画が対象として明示する属性は、非正規雇用労働者・中高年労働者・若者・女性・障害者・就職やキャリアアップに特別な支援を要する者・外国人・現場人材の8区分だ。潜在的な労働力は存在しながらも、それが就業・能力発揮に結びついていない現実が数字に表れており、各属性の実態に即した「個別化」した支援策が求められている。</p>
+    <p>企業の人材育成における主な障壁は「指導する人材が不足している」（59.5%）、「人材育成しても辞めてしまう」（54.7%）、「人材育成を行う時間がない」（47.4%）であり（p.28）、属性別の支援策はこうした企業側の制約を乗り越える仕組みとの組み合わせで実施される。</p>
+  </div>
+
+  <!-- ── 非正規雇用 ── -->
+  <section id="nonregular">
+    <h2><span class="icon">📋</span>非正規雇用労働者</h2>
+    <div class="policy-tag">本体 p.5, 11, 13, 27, 34-35, 41 ／ 概要</div>
+
+    <p>非正規雇用労働者への支援は、第12次計画の供給側施策において最も緊急度の高い課題として位置づけられている。計画的OJT・OFFJTの実施率を正規と非正規で比較すると「大きな開き」があり（p.11）、感染症拡大後に正規雇用労働者の訓練実施率は回復傾向を示す一方で、非正規については格差が残存している。</p>
+
+    <div class="highlight">
+      <strong>自己啓発の阻害要因（p.27）：</strong>「仕事が忙しくて自己啓発の余裕がない」「家事・育児が忙しくて余裕がない」という時間的制約、「自分の目指すべきキャリアがわからない」というキャリア形成上の課題が上位を占める。
+    </div>
+
+    <p>施策の中心は「オンラインを活用した職業訓練の全国展開」だ。家事・育児・介護との両立を理由に非正規雇用を選択している労働者が一定数存在することを踏まえ、場所・時間の制約を取り除く形での訓練機会の整備が進められる（p.35）。教育訓練給付金による個人への直接支援、人材開発支援助成金を活用した正規雇用への転換支援、ハローワークでのキャリアコンサルティングから職業紹介までの「切れ目ない支援サービス」が一体的に提供される。</p>
+    <p>特に30代以降で女性の非正規雇用労働者の割合が増加する傾向があり（p.13）、育児・出産等を機に離職・非正規化した女性が継続的な能力開発機会を持てない構造が課題として浮かび上がっている。</p>
+  </section>
+
+  <!-- ── 中高年 ── -->
+  <section id="midage">
+    <h2><span class="icon">💼</span>中高年労働者（概ね40〜59歳）</h2>
+    <div class="policy-tag">本体 p.35-37 ／ 概要</div>
+
+    <p>中高年労働者への支援は、就業者の年齢構成の変化という現実に即した対応だ。65歳以上の就業率が上昇する中、就業者に占める60歳以上の割合は今後さらに増加が見込まれており、「高齢期も視野に入れたキャリア形成を考えて労働者を支援していく必要性が高まっている」と計画は指摘する（p.35）。</p>
+
+    <div class="highlight">
+      <strong>中高年固有の三つの課題（p.36）：</strong>①組織内での役割変化への対応、②若年層と比べてOJT・OFFJTの機会が乏しいこと、③デジタル化など時代変化への対応。加えて、リスキリングで新職務に挑戦しても「習得したスキルを実践する機会が乏しい」という壁も。
+    </div>
+
+    <p>対応策の柱は「実践機会の確保」だ。JEED（高齢・障害・求職者雇用支援機構）の生産性向上支援訓練に、ミドルシニア向けとして「役割の変化への対応コース」「技能・ノウハウ継承コース」が設けられ、OJTとOFFJTを組み合わせた訓練に対して人材開発支援助成金が活用できるよう制度の見直しが行われる（p.36-37）。</p>
+    <p>「企業を超えた同世代との横のつながりを持つこと」という視点が施策に盛り込まれているのも注目点だ（p.37）。単一企業内では対応しきれない中高年のキャリア課題に対し、産業・地域を横断したネットワーク形成を通じた支援が図られる。キャリア形成・リスキリング支援センターにおける中高年齢層への支援も推進される。</p>
+  </section>
+
+  <!-- ── 若者 ── -->
+  <section id="youth">
+    <h2><span class="icon">🎓</span>若者（概ね34歳以下）</h2>
+    <div class="policy-tag">本体 p.13, 32, 37-39, 45-46 ／ 概要</div>
+
+    <p>若者支援の背景には、量と質の二つの変化がある。若者人口が減少する中で大学卒業者は増加傾向、高校卒業者は減少傾向にあり、新規高卒の求人倍率は上昇している（p.37）。一方、高校・大学卒業後3年以内の離職率は近年微増傾向にあり（p.37）、フリーター数は令和6年で136万人と130万人台での推移が続く（p.13）。「キャリアプランを持たない若者もおり、労働移動が必ずしも職業能力の開発・向上につながらない」（p.38）という実態がある。</p>
+
+    <div class="highlight">
+      <strong>新たな課題（p.38）：</strong>近年の不登校児童生徒数の大幅増加を受け、就労に困難を抱える若者の層が「今後増えていくことが懸念される」として、専門家（キャリアコンサルタント・臨床心理士等）によるアウトリーチを含む個別支援の充実が明記。
+    </div>
+
+    <p>施策の起点は「学生等の時期」から始まる。在学段階からキャリアについて相談する機会を増やす取組が国と学校の連携によって推進され、キャリア教育を実施できるキャリアコンサルタントの養成が進められる（p.38-39）。ユースエール認定制度（若者の採用・育成に優れた企業の認定）の活用促進、ハローワーク・キャリア形成・リスキリング支援センターでのキャリアコンサルティング、セルフ・キャリアドックの導入促進も図られる（p.39）。</p>
+    <p>技能を志す若者への育成も重点課題だ。2028年技能五輪国際大会（愛知県）を契機として、中学・高校生の段階から技能を尊重する機運を醸成するため、「ものづくりマイスター」を工業高校や中小企業等に派遣する事業が実施される（p.46）。</p>
+  </section>
+
+  <!-- ── 女性 ── -->
+  <section id="women">
+    <h2><span class="icon">👩</span>女性</h2>
+    <div class="policy-tag">本体 p.12-13, 18, 27, 34, 40-41 ／ 概要</div>
+
+    <p>女性への支援は、「就業率」という量的指標を超えて、「雇用の質」と「キャリア形成」という質的側面に重点をシフトしている。計画は明確に述べる。「就業率という量的な面だけではなく、育児、出産等により一旦離職した後に非正規雇用労働者となる場合や、継続就業をした場合であってもキャリアアップの機会が制約される傾向もあることから、雇用の質や能力発揮のためのキャリア形成の面にも焦点を当てていくべきである」（p.40）。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">+6.0<span>pt</span></div>
+        <div class="lbl">女性の労働力率<br>過去10年間の上昇幅（p.12）</div>
+      </div>
+      <div class="stat">
+        <div class="val">30代<span>以降</span></div>
+        <div class="lbl">女性の非正規雇用<br>割合が増加する傾向（p.13）</div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>施策の二本柱（p.40）：</strong>①子育て中の女性・母子家庭の母等への「個別化したキャリアコンサルティング」。②育児・出産等により離職した方向けに、公的職業訓練での「育児等の時間に配慮した訓練コース」「託児サービス付きの訓練コース」の設定。
+    </div>
+
+    <p>在職中の女性が自己啓発に取り組めない阻害要因として「家事・育児が忙しくて自己啓発の余裕がない」という声が多いことを踏まえ（p.27）、子育て・介護中の方が訓練を受講しやすくなるよう環境整備が進められる。教育訓練休暇制度の普及・活用促進は、こうした層が「離職せずに生活費等への不安なく教育訓練に専念できるよう」設計されている（p.27）。</p>
+  </section>
+
+  <!-- ── 障害者 ── -->
+  <section id="disability">
+    <h2><span class="icon">♿</span>障害者</h2>
+    <div class="policy-tag">本体 p.41-42 ／ 概要</div>
+
+    <p>障害者の職業能力開発は、対象者の構造的変化という現実への対応が急務となっている。民間企業の雇用障害者数が伸びる一方、障害者職業訓練の受講者数は2010年度をピークに減少している。主な対象の変化が顕著で、かつての主対象であった身体障害者に比べ、近年は「精神障害者や発達障害者が増加している状況」にある（p.41）。</p>
+
+    <div class="highlight">
+      <strong>施策の両輪：</strong>①受入れ拡充：障害者校での重度・精神・発達障害者の積極受入れ体制整備。一般校での精神保健福祉士配置・バリアフリー化推進。②就職・定着支援の強化：ハローワーク・障害福祉サービスとの連携強化。全国障害者技能競技大会（アビリンピック）の継続実施（p.41-42）。
+    </div>
+
+    <p>オンラインによる職業訓練の普及も、障害者に対して有効に機能するとして推進される。障害の特性や個別ニーズに応じた柔軟な訓練環境を整えることで、より多くの障害者が能力開発の機会を持てるよう設計されている。また、障害者委託訓練の質の向上を目的とした環境整備と在職者訓練の普及・活性化も進められる（p.42）。</p>
+  </section>
+
+  <!-- ── 外国人 ── -->
+  <section id="foreign">
+    <h2><span class="icon">🌏</span>外国人労働者</h2>
+    <div class="policy-tag">本体 p.43-44, 48 ／ 概要</div>
+
+    <p>外国人労働者に関する施策は、制度の大きな転換を軸に再構築が進んでいる。「制度目的と実態がかい離している」との指摘を受けて技能実習制度が発展的に解消され、「人材育成と人材確保」を目的とする育成就労制度が新たに創設された。令和9年（2027年）4月の施行に向けた体制整備が進められており（p.43）、外国人に対する職業能力開発支援はこの新制度を中心に組み直される。</p>
+
+    <div class="highlight">
+      <strong>制度転換の概要（p.43）：</strong>技能実習制度 → 育成就労制度（令和9年4月施行）。「外国人育成就労機構」の体制整備を実施。施行後も技能実習の経過措置として実習を継続する技能実習生の保護は引き続き図られる（p.48）。
+    </div>
+
+    <p>施策の実務面では、日本語でのコミュニケーションに課題を抱える外国人が職業訓練を受ける際に「訓練内容を理解する上で必要な支援等」が実施される（p.44）。語学的な障壁を取り除くことで、訓練そのものへのアクセスを確保する発想だ。日系人等の定住外国人については、「その日本語能力等に配慮した職業訓練」が継続実施される（p.43）。</p>
+  </section>
+
+  <!-- ── 就職氷河期世代 ── -->
+  <section id="iceage">
+    <h2><span class="icon">🌊</span>就職氷河期世代・特別な支援を要する方</h2>
+    <div class="policy-tag">本体 p.42-43 ／ 概要</div>
+
+    <p>就職氷河期世代は、新卒時の就職機会の喪失が長期にわたってキャリアを規定し続けている世代だ。不本意ながら不安定な仕事に就いていたり、無業状態にあったりするなど「経済社会の影響により様々な課題に直面する者」として、第12次計画は専用の支援区分を設けている（p.42）。</p>
+
+    <div class="highlight">
+      <strong>二層の支援構造（p.43）：</strong>第一層「就労・処遇改善に向けた支援」＝リスキリング支援等による就労機会の拡大と処遇向上。第二層「社会参加に向けた段階的支援」＝就労そのものに困難を抱える者の職業的自立を段階的に促す支援。
+    </div>
+
+    <p>「就職氷河期世代等」とされており、「周辺の世代と合わせ」という表現が明示されている（p.43）。氷河期世代に限定せず、類似した課題を抱える世代を広くカバーする設計だ。「就職氷河期世代等支援に関する関係閣僚会議の決定」を踏まえた取組となっている。</p>
+  </section>
+
+
+  <!-- ── 補足：求職者・離職者向け公的職業訓練 ── -->
+  <section id="jobseeker">
+    <h2><span class="icon">🏛</span>［補足］求職者・離職者向け公的職業訓練</h2>
+    <div class="policy-tag">本体 p.4, 14-15, 17, 19, 40 ／ 概要</div>
+
+    <div class="highlight">
+      <strong>本計画の主軸は「就業者」だが、</strong>「雇用のセーフティネットとしての公的職業訓練」は第11次計画から引き継がれた柱として第12次計画にも継承されており（p.4）、離職・求職中の人への支援も計画に組み込まれている。
+    </div>
+
+    <p>公的職業訓練の実施体制として、国・都道府県レベルで「訓練の実施に関する計画を的確に策定するとともに、データに基づくPDCAサイクルにより訓練の効果検証や、必要に応じて訓練プログラムの開発等を行いながら、関係省庁や関係機関と連携して効果的な職業訓練を推進していく」体制が明記されている（p.14）。また、公的職業訓練の<strong>7〜8割は民間教育訓練機関が実施</strong>を担っており（p.19）、民間機関の訓練の質向上と適正な評価が効果的な訓練推進の前提となっている。</p>
+
+    <p>求職者への支援の中核を担うのがハローワークだ。「ハローワークにおいてキャリアコンサルティング、能力向上、職業紹介までの切れ目ない支援サービスを実施するとともに、都道府県やJEEDとの連携強化や職員の育成等を含む体制整備を図る」（p.17）とされており、求職者が相談→訓練→就職という流れをワンストップで受けられる体制が整備される。</p>
+
+    <div class="highlight">
+      <strong>実習と就労を組み込んだ訓練の拡充（p.15）：</strong>「実習併用職業訓練」や「日本版デュアルシステム」など、職場内での実務経験を組み合わせた訓練は「積極的労働市場政策として効果が大きい」と評価されており普及拡大が検討される。訓練対象の本人だけでなく、企業内の他の労働者のスキル・モチベーション向上という波及効果も期待されている。
+    </div>
+
+    <p>離職者の再就職支援における公的職業訓練の活用が特に具体的に明記されているのが女性支援の文脈だ。「育児、出産等により離職した方が就業意欲に応じた再就職やキャリアアップができるよう、公的職業訓練において職業能力開発の機会を提供するほか、子育て中の女性が受講しやすくなるよう育児等の時間に配慮した訓練コースや託児サービス付きの訓練コースの設定等を実施する」（p.40）。育児・出産を機に離職した女性が労働市場に戻るための職業能力再取得の場として、公的職業訓練が中心的な役割を果たす設計になっている。</p>
+  </section>
+
+  <!-- ── 補足：就業意欲のある非就業者 ── -->
+  <section id="nonworker">
+    <h2><span class="icon">🌱</span>［補足］就業意欲のある非就業者</h2>
+    <div class="policy-tag">本体 p.12, 17, 28, 35, 38-40, 42-43 ／ 概要</div>
+
+    <div class="highlight">
+      <strong>本計画は「就業者（労働者）」の能力開発を主軸としており、「非就業者」を独立した章として設けていない。</strong>ただし、就業意欲を持ちながら現在は就業していない人々の規模は無視できず、計画各所にその対応が分散して組み込まれている。
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">225<span>万人</span></div>
+        <div class="lbl">非労働力人口のうち<br>就業を希望する者<br>（令和6年平均・p.12）</div>
+      </div>
+      <div class="stat">
+        <div class="val">432<span>万人</span></div>
+        <div class="lbl">就業者のうち<br>「もっと働きたい」者<br>（令和6年平均・p.12）</div>
+      </div>
+    </div>
+
+    <p>この225万人は、完全失業者（求職活動中）とも異なる「働きたい意欲はあるが、現時点では求職活動に至っていない」層だ。計画はこの層の存在を労働供給の潜在的な資源として認識しており、以下の各属性セクションに分散する形で支援が組み込まれている。</p>
+
+    <p><strong>育児・家事による非就業の女性</strong>は「育児、出産等により一旦離職した後」の再就職希望者として女性セクションで最も具体的に扱われる。「就業意欲に応じた再就職やキャリアアップができるよう」（p.40）という表現はまさにこの層への支援を指す。キャリアコンサルティングの提供と、子育てと両立できる訓練設計（時間配慮・託児付き）が組み合わさって支援が行われる。</p>
+
+    <p><strong>ニート・若年無業者</strong>は若者セクションで扱われ、就労困難を抱える若者への「専門家によるアウトリーチを含む個別支援の充実」（p.38-39）が明記されている。不登校を経験した若者が増加していることへの対応も含め、就業への接続を段階的に支援する仕組みが組み立てられている。</p>
+
+    <p><strong>無業状態の就職氷河期世代</strong>は専用セクションで取り上げられ、「無業の状態にある者」として明示的に対象化されている。「社会参加に向けた段階的支援」がまさにこの就業意欲はあっても就労に直接踏み出せない層への対応だ（p.43）。</p>
+
+    <p><strong>就業を希望する高齢者</strong>は、65歳以上の就業率上昇を踏まえ「高齢期も視野に入れたキャリア形成」として中高年支援の延長線上に位置づけられている（p.35）。</p>
+
+    <div class="highlight">
+      <strong>計画の限界：</strong>「就業意欲はあるが活動していない225万人」への直接的・体系的な働きかけは、第12次計画において明確な施策として打ち出されているとは言いがたい。女性・若者・氷河期世代それぞれへの支援策は存在するが、「非就業者全体」を横断的にカバーする独立した枠組みは計画上に見当たらない。潜在的就業希望者を積極的に掘り起こす能動的な仕組みは今後の課題として残されている。
+    </div>
+  </section>
+
+  <!-- ── 在職者横断施策 ── -->
+  <section id="cross">
+    <h2><span class="icon">🔗</span>在職者全体に共通する横断的施策</h2>
+    <div class="policy-tag">本体 p.17-18, 27-28 ／ 概要</div>
+
+    <p>以上の属性別支援を横断して、在職者全般に関わる施策として以下が計画されている。ハローワークにおける「キャリアコンサルティング、能力向上、職業紹介までの切れ目ない支援サービス」の実施（p.17）、キャリアコンサルタントが職務・スキル・処遇・職業能力開発機会等に係る情報を活用できる仕組みの構築（p.17）が基盤として整備される。</p>
+
+    <div class="highlight">
+      <strong>リスキリングを促進する国民運動（p.18）：</strong>シンポジウムの開催や様々なチャネルを活用した情報発信、労使が協働して事業内職業能力開発計画を作成する取組の促進。個人と企業が共同で能力開発に取り組む機運を社会全体で醸成する。
+    </div>
+
+    <p>教育訓練給付金については、夜間・休日に受講できる講座やオンラインで受講できる講座を中心に指定講座の拡大が図られ（p.27）、時間的制約のある在職者が学びやすい環境が整備される。教育訓練休暇制度の周知・活用促進と、雇用保険被保険者が教育訓練のための休暇を取得した場合に賃金の一定割合を支給する「教育訓練休暇給付金制度」の活用促進も進められる（p.27）。</p>
+    <p>さらに、在職中の方・子育て中の方・介護中の方などが訓練を受講しやすくなるよう「申請手続のオンライン化等の推進」と「環境整備」が実施される（p.18）。支援策の政策効果の検証とPDCAによる見直しも明記されており、施策の実効性を継続的に高める枠組みが設けられている。</p>
+  </section>
+
+  <!-- ── 総括 ── -->
+  <div class="conclusion" id="conclusion">
+    <h2>総括：計画が提示する三つの方向性と残された問い</h2>
+    <p>第12次職業能力開発基本計画が各属性への施策を通じて提示するメッセージは、三つの方向性に集約される。</p>
+
+    <div class="point">
+      <div class="pt-title">1. 個別化</div>
+      <p>属性ごとの画一的対応ではなく、一人ひとりの状況・希望・課題に応じた伴走型支援への転換。女性・若者・障害者・就職氷河期世代いずれの施策にも「個別の課題やニーズに応じた」「きめ細かい支援」という表現が繰り返されている。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">2. アクセス改善</div>
+      <p>訓練機会は存在しても受けられない構造的障壁の解消。育児中の女性・介護中の労働者・非正規雇用の労働者いずれも時間・場所・経済的な制約から訓練にアクセスしにくい。オンライン訓練の全国展開・育児配慮の訓練設計・教育訓練休暇制度の普及はいずれもこの障壁を取り除く施策だ。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">3. スキルの見える化</div>
+      <p>習得したスキルが適切に評価・処遇に結びつく仕組みの整備。中高年労働者がリスキリングしても実践の機会が得られないという課題や、現場人材のキャリアラダーが未整備という実態は、スキルの可視化なしには解消されない。</p>
+    </div>
+
+    <p>ただし、計画の実効性を左右する問いが残る。個別化支援は、それを担うキャリアコンサルタント等の専門人材の量と質に依存している。在職者向け訓練の拡充は、企業側に「訓練のための余暇」を生み出せるかどうかにかかっている。そして中小企業への支援は、「個別化した伴走支援」を実施できる体制の整備を前提としている。これらの基盤整備がどこまで進むかが、令和8〜12年度の計画目標実現を左右するだろう。</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>出典：第12次職業能力開発基本計画（本体・概要）厚生労働省 ｜ 抽出テーマ：就業者支援（供給側）属性別施策 ｜ 2026年5月</p>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+    }, 10000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>
