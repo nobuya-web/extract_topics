@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新・沖縄21世紀ビジョン実施計画 事業承継支援まとめ</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── KPI table ── */
+.kpi-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+.kpi-table th { background: var(--blue); color: #fff; padding: 10px 14px; text-align: left; font-weight: 700; }
+.kpi-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.kpi-table tr:last-child td { border-bottom: none; }
+.kpi-table tr:nth-child(even) td { background: var(--tag-bg); }
+.kpi-num { font-weight: 700; color: var(--blue); }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">新・沖縄21世紀ビジョン実施計画</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>事業承継支援まとめ</h1>
+  <p class="sub">新・沖縄21世紀ビジョン実施計画（全805ページ）｜基本施策３－（１）－ウ－④ 抽出<br>最新データ追記：帝国データバンク「九州・沖縄 後継者不在率動向調査（2025年）」</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#situation">現状と課題</a></li>
+    <li><a href="#direction">施策の方向</a></li>
+    <li><a href="#actions">主な取組</a></li>
+    <li><a href="#latest">最新調査（2025年）</a></li>
+    <li><a href="#conclusion">総括</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>新・沖縄21世紀ビジョン実施計画において、事業承継に関する施策は「政策目標Ⅲ 豊かさを実感できる経済の実現」の下に位置づけられた<strong>基本施策３－（１）「県民所得の着実な向上につながる企業の『稼ぐ力』の強化」</strong>の中に体系化されている。同基本施策のウ柱「中小企業等の経営力・競争力の向上」は、①支援機関による経営改善、②創業支援の充実、③資金調達・環境変化への適応、そして④<strong>事業承継・廃止に伴う経営資源の引き継ぎの円滑化</strong>の4施策で構成されており、事業承継はその最終段階として位置づけられている。</p>
+    <p>この構造は、事業承継を単なる個別企業の問題としてではなく、県内中小企業全体の稼ぐ力の持続性に直結する構造課題として捉えていることを示す。廃業率の抑制という視点から事業承継の推進が評価軸にも組み込まれており、創業から成長・承継までの企業ライフサイクル全体を通じた支援体制の構築が意図されている。</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="val">73.3<span>%</span></div>
+        <div class="lbl">沖縄県の後継者不在率<br>（R3年・基準値）</div>
+      </div>
+      <div class="stat">
+        <div class="val">53.9<span>%</span></div>
+        <div class="lbl">全国の後継者不在率<br>（R5年・参考値）</div>
+      </div>
+      <div class="stat">
+        <div class="val">50.4<span>%</span></div>
+        <div class="lbl">R13年度目標値<br>（全国水準以下へ）</div>
+      </div>
+    </div>
+  </div>
+
+  <section id="situation">
+    <h2><span class="icon">📊</span>現状と課題：後継者不在率73.3%という深刻な乖離</h2>
+    <div class="policy-tag">成果指標：後継者不在率｜出典：帝国データバンク（2023年）</div>
+    <p>施策の核心となる成果指標は「後継者不在率」である。R3年時点の沖縄県の後継者不在率は<strong>73.3%</strong>に達しており、同時期の全国値53.9%（R5年）を約20ポイント上回る深刻な水準にある。県内中小企業の約4分の3が後継者を確保できていないことを意味し、小規模・家族経営が多い沖縄の産業構造において、後継者不在は廃業リスクに直結し、地域雇用の喪失や地域産業基盤の空洞化を招く。</p>
+    <div class="highlight">
+      <strong>指標設定の考え方：</strong>支援機関による事業承継に係る各種支援により、後継者不在率の改善につながることから、この指標を選定する（計画書より）。
+    </div>
+
+    <table class="kpi-table">
+      <thead>
+        <tr>
+          <th>指標</th>
+          <th>沖縄基準値</th>
+          <th>全国値</th>
+          <th>R9目標</th>
+          <th>R13目標</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>後継者不在率</td>
+          <td class="kpi-num">73.3%（R3年）</td>
+          <td>53.9%（R5年）</td>
+          <td class="kpi-num">58.4%</td>
+          <td class="kpi-num">50.4%</td>
+        </tr>
+        <tr>
+          <td>廃業率（関連）</td>
+          <td class="kpi-num">3.5%（R3年度）</td>
+          <td>3.3%（R5年度）</td>
+          <td class="kpi-num">3.4%</td>
+          <td class="kpi-num">3.3%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>関連指標である廃業率については、沖縄県基準値が3.5%（R3年度）と全国（3.3%）をわずかに上回る水準にある。事業承継支援を通じて廃業率の低下につなげるという因果関係が計画上も明示されており、承継の促進が最終的には廃業件数の抑制に貢献することを前提とした設計となっている。</p>
+  </section>
+
+  <section id="direction">
+    <h2><span class="icon">🗺</span>施策の方向：相談から税制活用まで三層の支援体制</h2>
+    <div class="policy-tag">施策【３－（１）－ウ－④】事業承継・廃止に伴う経営資源の引き継ぎの円滑化</div>
+    <p>計画に示された施策の方向性は主に2軸で構成されている。第一に、<strong>相談体制の構築と多様な承継ニーズへの対応</strong>である。親族内承継・従業員への承継・第三者承継（M&A含む）など、事業者が置かれた状況に応じた様々な形態の承継に対応できるよう、専門家による相談体制を整備する。また事業の統合や廃止等の際に<strong>経営資源（設備・技術・取引先等）の集約化</strong>が図られる環境の構築にも取り組み、単純な廃業ではなく資源の有効活用を促す方針が明示されている。</p>
+    <p>第二に、<strong>費用面の支援と税制の活用促進</strong>である。承継に際して専門家（弁護士・税理士・中小企業診断士等）への報酬が発生するケースが多く、小規模事業者にとっては大きな負担となりうる。このため専門家費用等への補助を実施するとともに、事業承継税制（贈与税・相続税の特例措置）の周知活動を強化し、制度利用が実際に進むよう働きかける設計となっている。</p>
+    <div class="highlight">
+      <strong>対象となる承継の形態：</strong>親族内承継 / 従業員承継 / 第三者承継（M&A等）― 多様なニーズに対応する体制を構築する方針。
+    </div>
+  </section>
+
+  <section id="actions">
+    <h2><span class="icon">⚙</span>主な取組と数値目標：R7〜R9の三か年計画</h2>
+    <div class="policy-tag">商工労働部 中小企業支援課｜商工会・商工会議所・商工会連合会と連携</div>
+
+    <p>計画ではR7（2025年度）〜R9（2027年度）の年度別目標値が具体的に設定されており、三本柱の取組が示されている。</p>
+
+    <div class="highlight">
+      <strong>取組①：事業承継の初期対応支援（相談入口の整備）</strong><br>
+      小規模事業者等に対して事業承継計画（簡易版）の策定を支援。商工会・商工会議所などを通じた身近な相談入口を整備し、早期着手を促す。<br>
+      活動指標（累計）：R7 60件 → R8 120件 → R9 <strong>180件</strong>
+    </div>
+
+    <div class="highlight">
+      <strong>取組②：事業承継推進事業（補助金・ハンズオン支援）</strong><br>
+      県内中小企業者の承継の円滑化支援として補助金を提供し、専門家による伴走（ハンズオン）支援を実施。承継プロセスで生じる専門家費用・法的手続き費用等を補助する。<br>
+      活動指標（累計）：R7 12件 → R8 24件 → R9 <strong>36件</strong>
+    </div>
+
+    <div class="highlight">
+      <strong>取組③：事業承継税制の周知・知事認定（税制活用の底上げ）</strong><br>
+      贈与税・相続税に関する事業承継税制の周知を行い、「経営の承継の円滑化に関する法律」に基づく都道府県知事認定の取得を支援。後継者が事業用資産を引き継ぐ際の税負担を軽減する制度の活用を促進する。<br>
+      活動指標（累計）：R7 3件 → R8 6件 → R9 <strong>9件</strong>
+    </div>
+
+    <table class="kpi-table">
+      <thead>
+        <tr>
+          <th>取組</th>
+          <th>活動指標</th>
+          <th>R7（累計）</th>
+          <th>R8（累計）</th>
+          <th>R9（累計）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>初期対応支援</td>
+          <td>事業承継計画（簡易版）策定支援件数</td>
+          <td class="kpi-num">60件</td>
+          <td class="kpi-num">120件</td>
+          <td class="kpi-num">180件</td>
+        </tr>
+        <tr>
+          <td>承継推進事業</td>
+          <td>補助金活用件数</td>
+          <td class="kpi-num">12件</td>
+          <td class="kpi-num">24件</td>
+          <td class="kpi-num">36件</td>
+        </tr>
+        <tr>
+          <td>承継税制周知</td>
+          <td>税制（贈与税・相続税）認定件数</td>
+          <td class="kpi-num">3件</td>
+          <td class="kpi-num">6件</td>
+          <td class="kpi-num">9件</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>事業承継税制は後継者が先代から自社株式・事業用資産を引き継ぐ際の贈与税・相続税を猶予・免除する制度であり、承継の財務的負担を大幅に軽減できる。ただし認定件数の目標値（年3件）が相対的に少ない点は、制度認知の不足や手続きの複雑さが課題として残ることを示唆している。</p>
+  </section>
+
+  <!-- ─── 最新調査追記セクション ─── -->
+  <section id="latest">
+    <h2><span class="icon">📊</span>最新調査データ（2025年12月）</h2>
+    <div class="policy-tag">出典：帝国データバンク「九州・沖縄 後継者不在率動向調査（2025年）」2025年12月3日発表｜27,946社対象</div>
+
+    <p>実施計画の基準値である後継者不在率73.3%（R3年）に対し、帝国データバンクの最新調査（2025年12月）によると、沖縄県の後継者不在率は<strong>61.0%</strong>（前年65.3%から△4.3pt）まで低下した。実施計画のR9年度目標（58.4%）まで残り<strong>2.6pt</strong>と、射程内に入ってきた状況だ。ただし九州8県の中では依然として唯一の60%台でトップを維持しており（九州全体：50.6%、全国：50.1%）、構造的な課題は残存している。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">61.0<span>%</span></div>
+        <div class="lbl">沖縄の後継者不在率<br>（2025年最新・前年比△4.3pt）</div>
+      </div>
+      <div class="stat">
+        <div class="val">50.6<span>%</span></div>
+        <div class="lbl">九州全体（2025年）<br>5年連続改善・過去最低</div>
+      </div>
+      <div class="stat">
+        <div class="val">50.1<span>%</span></div>
+        <div class="lbl">全国平均（2025年）<br>前年52.1%から△2.0pt</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:16px;font-weight:700;color:var(--blue);margin:24px 0 12px">九州県別ランキング（2025年）</h3>
+
+    <table class="kpi-table">
+      <thead>
+        <tr><th>順位</th><th>県</th><th>2023年</th><th>2024年</th><th>2025年</th><th>前年比</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><strong>沖縄県</strong></td><td>66.4%</td><td>65.3%</td><td class="kpi-num">61.0%</td><td>△4.3pt</td></tr>
+        <tr><td>2</td><td>長崎県</td><td>59.6%</td><td>59.0%</td><td>59.2%</td><td>+0.2pt</td></tr>
+        <tr><td>3</td><td>大分県</td><td>62.9%</td><td>61.3%</td><td>55.8%</td><td>△5.5pt</td></tr>
+        <tr><td>4</td><td>福岡県</td><td>57.9%</td><td>54.1%</td><td>50.8%</td><td>△3.3pt</td></tr>
+        <tr><td>8</td><td>鹿児島県</td><td>43.8%</td><td>41.3%</td><td class="kpi-num">37.6%</td><td>△3.7pt</td></tr>
+        <tr><td>―</td><td>全国</td><td>53.9%</td><td>52.1%</td><td>50.1%</td><td>△2.0pt</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:16px;font-weight:700;color:var(--blue);margin:24px 0 12px">「脱ファミリー」加速：同族承継が初めて40%を下回る</h3>
+
+    <p>2025年の代表者交代企業（九州・速報値）の承継形態では、これまで最多だった<strong>同族承継が初めて40%を下回り38.6%</strong>となり、内部昇格（31.5%）との差は7.1ptまで縮小した。後継者候補の属性でも<strong>「非同族」が34.9%と初めてトップ</strong>に立ち、「子ども」（32.1%）を超えた。外部招聘で就任した現代表の企業では後継者候補を非同族とする割合が9割に迫る。実施計画が掲げる「第三者承継への対応」が現場でも着実に進んでいることを裏付けている。</p>
+
+    <table class="kpi-table">
+      <thead>
+        <tr><th>承継形態</th><th>2023年</th><th>2024年</th><th>2025年（速報）</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>同族承継</td><td>40.1%</td><td>40.0%</td><td class="kpi-num">38.6%（初の40%割れ）</td></tr>
+        <tr><td>内部昇格</td><td>31.7%</td><td>31.7%</td><td>31.5%</td></tr>
+        <tr><td>M&Aほか</td><td>15.8%</td><td>16.7%</td><td>16.7%</td></tr>
+        <tr><td>外部招聘</td><td>8.2%</td><td>8.2%</td><td>8.6%</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:16px;font-weight:700;color:var(--blue);margin:24px 0 12px">後継者難倒産：依然として高水準</h3>
+
+    <p>2025年1〜10月の九州・沖縄地区の後継者難倒産（負債1,000万円以上、法的整理）は<strong>36件</strong>。1〜10月ベースとして過去最多だった2024年（37件）に次ぐ水準で推移しており、通年では過去最多更新の可能性がある。倒産36件のうち<strong>代表者の病気・死亡を原因とするものが14件（全体の約4割）</strong>で、70代以上の高齢経営者が後継者を決めないまま不測の事態を迎えるリスクが顕在化している。</p>
+
+    <div class="highlight">
+      <strong>実施計画指標の進捗：</strong>沖縄の後継者不在率は計画基準値73.3%（R3年）→最新実績61.0%（2025年）と12.3pt改善。R9年度目標58.4%まであと2.6pt。ただしR13年度目標50.4%（全国水準以下）には、現ペースでは更なる加速が必要。小規模企業・高齢経営者・第三者承継層への「質的深化」が今後の焦点。
+    </div>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>新・沖縄21世紀ビジョン実施計画における事業承継支援は、相談→計画策定→補助金活用→税制適用という段階的な支援フローを整備するものであり、体系としては整合的な設計といえる。全国比約20ポイント高い後継者不在率という現実に対し、2031年度（R13年度）に50.4%という全国水準以下を目指す野心的な目標を掲げている。</p>
+    <div class="point">
+      <div class="pt-title">論点①：取組の絶対量と課題の規模感</div>
+      <p>3年間の累計で事業承継計画の策定支援180件・補助金活用36件・税制認定9件という数値は、後継者不在率73.3%という問題の規模感と比較すると、未到達企業が相当数生じる可能性がある。認知度向上と相談窓口アクセスの拡大が実効性の鍵を握る。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">論点②：第三者承継（M&A）の具体化</div>
+      <p>施策の方向には第三者承継への言及があるものの、具体的な取組・指標はM&A仲介や事業引継ぎ支援センターとの連携として別途拡充される余地がある。親族承継が困難な事業者への出口として、第三者承継の活用促進が今後の課題となる。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">評価：政策の可視化と体制整備</div>
+      <p>事業承継問題を「後継者不在率」と「廃業率」という2指標で明確に可視化し、商工会・商工会議所・県が連携して支援する体制を明示した点は県の政策方向として評価できる。計画の実効性は、制度の周知度と相談窓口へのアクセスしやすさをどこまで高められるかにかかっている。</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>出典：新・沖縄21世紀ビジョン実施計画（全805ページ）｜基本施策３－（１）－ウ－④ 事業承継・廃止に伴う経営資源の引き継ぎの円滑化｜生成日：2026-05-25</p>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.leng
