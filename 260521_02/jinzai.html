@@ -1,0 +1,303 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>地方創生総合戦略 人材施策レポート</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Noto Sans JP","Hiragino Kaku Gothic ProN","Meiryo",sans-serif; background:var(--bg); color:var(--text); font-size:15px; line-height:1.85; padding-top:56px; }
+header { position:fixed; top:0; left:0; right:0; height:56px; background:linear-gradient(135deg,var(--blue) 0%,#0f3356 100%); color:#fff; display:flex; align-items:center; padding:0 24px; gap:1rem; z-index:200; box-shadow:0 2px 8px rgba(0,0,0,0.25); }
+.site-title { font-size:13px; font-weight:700; color:rgba(255,255,255,0.9); white-space:nowrap; flex-shrink:0; }
+.tts-bar { display:flex; align-items:center; gap:0.5rem; margin-left:auto; }
+.tts-btn { display:inline-flex; align-items:center; gap:0.4rem; padding:0.3rem 0.9rem; border-radius:99px; border:1.5px solid rgba(200,214,232,0.5); background:transparent; color:#c8d6e8; font-size:0.82rem; font-weight:600; cursor:pointer; transition:background .2s,color .2s,border-color .2s; white-space:nowrap; }
+.tts-btn:hover { background:rgba(255,255,255,0.15); color:#fff; border-color:rgba(255,255,255,0.6); }
+.tts-btn.playing { background:rgba(255,255,255,0.18); color:#fff; border-color:rgba(255,255,255,0.7); }
+.tts-stop { display:none; align-items:center; padding:0.3rem 0.75rem; border-radius:99px; border:1.5px solid rgba(200,214,232,0.3); background:transparent; color:#c8d6e8; font-size:0.82rem; cursor:pointer; white-space:nowrap; }
+.tts-select { padding:0.28rem 0.6rem; border-radius:99px; border:1.5px solid rgba(200,214,232,0.3); background:rgba(255,255,255,0.08); color:#c8d6e8; font-size:0.8rem; cursor:pointer; max-width:200px; }
+.tts-label { font-size:0.75rem; color:rgba(200,214,232,0.7); white-space:nowrap; }
+.hero { background:linear-gradient(135deg,var(--blue) 0%,#0f3356 100%); color:#fff; padding:56px 40px 48px; text-align:center; }
+.hero .label { display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:4px; font-size:11px; letter-spacing:.1em; padding:4px 12px; margin-bottom:20px; text-transform:uppercase; }
+.hero h1 { font-size:26px; font-weight:700; line-height:1.4; margin-bottom:12px; }
+.hero p.sub { font-size:13px; color:rgba(255,255,255,0.7); }
+nav { background:var(--white); border-bottom:1px solid var(--border); padding:0 40px; position:sticky; top:56px; z-index:100; }
+nav ul { display:flex; flex-wrap:wrap; gap:0; list-style:none; max-width:1000px; margin:0 auto; }
+nav ul li a { display:block; padding:14px 16px; font-size:12px; color:var(--muted); text-decoration:none; border-bottom:2px solid transparent; transition:color .2s,border-color .2s; white-space:nowrap; }
+nav ul li a:hover { color:var(--blue-lt); border-bottom-color:var(--blue-lt); }
+.container { max-width:860px; margin:0 auto; padding:48px 24px 80px; }
+.overview { background:var(--white); border-radius:10px; border:1px solid var(--border); padding:36px 40px; margin-bottom:48px; }
+.overview h2 { font-size:20px; font-weight:700; color:var(--blue); margin-bottom:16px; }
+.overview p { margin-bottom:14px; color:var(--text); }
+section { background:var(--white); border-radius:10px; border:1px solid var(--border); padding:36px 40px; margin-bottom:28px; scroll-margin-top:56px; }
+section h2 { font-size:19px; font-weight:700; color:var(--blue); padding-bottom:12px; border-bottom:2px solid var(--blue); margin-bottom:24px; display:flex; align-items:center; gap:12px; }
+section h2 .icon { width:32px; height:32px; background:var(--blue); color:#fff; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+section p { margin-bottom:16px; color:var(--text); }
+section p:last-child { margin-bottom:0; }
+.policy-tag { display:inline-block; background:var(--tag-bg); color:var(--blue); font-size:11px; font-weight:700; padding:3px 10px; border-radius:4px; margin-bottom:18px; border:1px solid #c5d9ee; }
+.highlight { background:#fff8ee; border-left:4px solid var(--accent); border-radius:0 6px 6px 0; padding:16px 20px; margin:20px 0; font-size:14px; color:#5a3a00; }
+.highlight strong { color:var(--accent); }
+.stats { display:flex; gap:16px; margin:24px 0; flex-wrap:wrap; }
+.stat { flex:1; min-width:160px; background:var(--tag-bg); border-radius:8px; padding:18px 20px; text-align:center; }
+.stat .val { font-size:28px; font-weight:700; color:var(--blue); line-height:1; margin-bottom:4px; }
+.stat .val span { font-size:16px; }
+.stat .lbl { font-size:11px; color:var(--muted); line-height:1.4; }
+.conclusion { background:linear-gradient(135deg,var(--blue) 0%,#0f3356 100%); color:#fff; border-radius:10px; padding:40px 44px; margin-bottom:28px; }
+.conclusion h2 { font-size:20px; font-weight:700; margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom:16px; color:rgba(255,255,255,0.9); line-height:1.9; }
+.conclusion p:last-child { margin-bottom:0; }
+.conclusion .point { background:rgba(255,255,255,0.1); border-radius:8px; padding:18px 22px; margin-bottom:14px; border-left:3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight:700; font-size:14px; margin-bottom:6px; color:#fff; }
+.conclusion .point p { font-size:13px; margin-bottom:0; color:rgba(255,255,255,0.85); }
+footer { text-align:center; font-size:12px; color:var(--muted); padding:24px; }
+@media (max-width:640px) {
+  body { padding-top:48px; }
+  header { padding:0 0.75rem; height:auto; min-height:48px; gap:0.4rem; flex-wrap:nowrap; }
+  .site-title { font-size:11px; max-width:90px; overflow:hidden; text-overflow:ellipsis; }
+  .tts-bar { gap:0.25rem; }
+  .tts-btn { font-size:0.73rem; padding:0.2rem 0.6rem; }
+  .tts-stop { font-size:0.73rem; padding:0.2rem 0.5rem; }
+  .tts-select { font-size:0.7rem; max-width:95px; padding:0.18rem 0.35rem; }
+  .tts-label { display:none; }
+  nav { top:48px; padding:0 12px; }
+  nav ul li a { padding:12px 10px; font-size:11px; }
+  .hero { padding:40px 20px 36px; }
+  .hero h1 { font-size:20px; }
+  .container { padding:32px 16px 60px; }
+  section,.overview { padding:28px 20px; }
+  section p,.overview p,.conclusion p { font-size:14px; }
+  .conclusion { padding:28px 24px; }
+  .stats { gap:10px; }
+  .stat { min-width:140px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">地方創生 人材施策</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">調査レポート</div>
+  <h1>地方創生総合戦略<br>人材施策レポート</h1>
+  <p class="sub">地方創生に関する総合戦略（令和7年12月23日閣議決定）｜全141ページ中111ページの人材関連施策を横断抽出</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#reskilling">育成・リスキリング</a></li>
+    <li><a href="#university">大学・高専</a></li>
+    <li><a href="#migration">移住・定住</a></li>
+    <li><a href="#coordinator">協力隊・副業</a></li>
+    <li><a href="#women-youth">女性・若者</a></li>
+    <li><a href="#national">国の人的支援</a></li>
+    <li><a href="#foreign">外国人材</a></li>
+    <li><a href="#conclusion">総括</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像——「人材循環」を軸に据えた地方創生2.0</h2>
+    <p>令和7年12月に閣議決定された「地方創生に関する総合戦略」において、<strong>「都市・地方の共生関係の強化と人材循環の促進」が政策の5本柱のひとつ</strong>として明記されている（p.6）。人口減少と人手不足が深刻化する中、本文書は「人材」を地方創生の最大の課題であり、同時に最大の資源として捉えている。</p>
+    <p>141ページ中111ページが人材関連のキーワードを含む。単に都市から地方への「供給」を増やすのではなく、地域内での人材育成・関係人口の深化・多様な働き方の促進・外国人材の共生まで、人材をめぐる施策が全章で重層的に展開される。</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="val">111<span>/141</span></div>
+        <div class="lbl">人材関連<br>ページ数</div>
+      </div>
+      <div class="stat">
+        <div class="val">10,000<span>人</span></div>
+        <div class="lbl">地域おこし協力隊<br>隊員数目標（2029年度）</div>
+      </div>
+      <div class="stat">
+        <div class="val">10,000<span>人</span></div>
+        <div class="lbl">東京圏→地方<br>移住者数目標（2027年度）</div>
+      </div>
+      <div class="stat">
+        <div class="val">1,200<span>団体</span></div>
+        <div class="lbl">関係人口拡大に<br>取り組む地方公共団体（2027年度）</div>
+      </div>
+    </div>
+  </div>
+
+  <section id="reskilling">
+    <h2><span class="icon">📚</span>地域人材の育成・リスキリング——多層的な学び直し体制</h2>
+    <div class="policy-tag">第3章 強い経済｜地域の人材力強化｜p.41-42, 113</div>
+    <p>地方が自律的に人材を育成する体制づくりが戦略の根幹に据えられている。「地方における人材支援策として、都市部から地方への人材供給だけでなく、地域における自律的な人材育成を行うことが重要」（p.113）という認識のもと、学校教育から社会人まで切れ目ない育成体制が設計されている。</p>
+    <p>地方創生に関係するステークホルダー同士のつながりを構築しながら地域課題の解決を目指す<strong>「地創塾」</strong>の開催、eラーニングで実践的知識を提供する<strong>「地方創生カレッジ事業」</strong>が人材育成の入口として機能する（p.41）。社会人の学び直しについては、「中小企業の経営者を含め、多くの社会人が地方の大学で学び直しを行うことが当たり前の社会の実現」を目指し、産学官金連携の「リスキリング・エコシステム構築事業」が展開される（p.42）。</p>
+    <div class="highlight">
+      <strong>「地域の人事部」モデル：</strong>地域一体での人材確保・育成・定着を行う「地域の人事部」モデルが地域に生まれており、このモデルを全国に普及・定着させることを目指す（p.141）。特定の企業や機関に委ねるのではなく、地域全体でのエコシステム形成が志向されている。
+    </div>
+    <p>専門職人材の確保という観点では、法曹人材の地方偏在解消（p.41）、大学・短大・高専・専門学校を活用したエッセンシャルワーカーの養成（p.41）が明示されている。専修学校においても、デジタル技術等の先端技術を活用したリスキリングを中心とした教育コンテンツ・カリキュラムの開発と情報提供体制モデルの構築が推進される（p.114）。</p>
+  </section>
+
+  <section id="university">
+    <h2><span class="icon">🎓</span>大学・高専を核とした地域人材育成——教育機関の地域貢献を再設計</h2>
+    <div class="policy-tag">第3章 選ばれる地方｜教育環境整備の推進｜p.70-73, 135-136</div>
+    <p>大学・高等専門学校（高専）は本戦略において<strong>「地域の人材育成ハブ」</strong>として明確に位置づけられた。地方大学・産業創生法に基づき、若者の地方定着促進の観点から「地方大学・地域産業創生交付金」が継続的に支援を行い、支援地域数の累計25地域（2026年度）を目指す（p.73）。</p>
+    <p>大学を核とした地域の産学官金等の有機的・実質的な連携基盤（プラットフォーム）の整備促進、推進役となるコーディネーターの活用等を通じた産学官連携の強化が図られる（p.71）。都市部と地方の大学が連携した「国内留学」の促進によって、学生が地方の文化・産業に触れる機会を広げる取組も推進される。</p>
+    <div class="highlight">
+      <strong>半導体人材育成拠点形成事業：</strong>各大学の特色・地域性を踏まえたネットワーク型の実践的産学協働教育体制を構築し、高度専門人材の持続的育成を目指す（p.71）。世界的に需要が拡大する半導体分野で地域が強みを持つための戦略的布石。
+    </div>
+    <p>高校段階では<strong>「高校生の地域留学」</strong>（p.135）と<strong>「専門高校を拠点とした地域人材育成」</strong>（p.136）が連携し、若い世代から地域との結びつきを育てる仕組みが整備される。高校3年間のうちの1年間を地方で過ごす「地域留学」は、若者の地方志向を醸成する萌芽的な取組として注目される。産業界等からの人材派遣（教師人材バンクの構築支援）による実践的な専門高校運営モデルの構築も進められる。</p>
+  </section>
+
+  <section id="migration">
+    <h2><span class="icon">🏡</span>移住・定住・関係人口——「来てもらう」から「根づいてもらう」へ</h2>
+    <div class="policy-tag">第3章 選ばれる地方｜都市と地方の共生・移住推進｜p.74-79</div>
+    <p>東京一極集中の是正に向け、移住支援は量と質の両面で強化される。「地方創生移住支援事業」では、現行の中小企業等への就職支援に加え、農林水産業・自営業・医療福祉等のエッセンシャルワーカーを支援対象に加えるとともに、大学生等の地方就職支援に取り組む（p.79）。</p>
+    <div class="highlight">
+      <strong>ふるさと住民登録制度の創設（2026年度リリース予定）：</strong>住所地以外の地域に継続的に関わる者をアプリで簡単に登録する仕組みを創設。関係人口を「見える化」することで担い手確保や地域経済活性化につなげる（p.74）。誰もがアプリで登録でき、既存の自治体取組を包含できる柔軟な設計。
+    </div>
+    <p>二地域居住の推進も重要な柱である。主な生活拠点とは別の地域に生活拠点を設ける者を「特に地域への関与が強い関係人口の類型」として積極的に促進し、スモールコンセッション等の空き家を活用した住居の提供や、二地域居住者と地域をつなぐ<strong>コーディネーターの育成・確保</strong>が図られる（p.75）。テレワーク・副業の浸透と組み合わせることで、地方移住のハードルを物理的にも心理的にも下げる設計になっている。</p>
+    <p>「ふるさとワーキングホリデー」では、地域で働きながら地域の暮らしを体験することで若者・女性の移住や関係人口としての関わりを創出・拡大する（p.76）。農山漁村の活性化に向けては、企業のCSV活動による持続的な社員派遣、副業促進、受入拠点整備やマッチング促進アプリの普及なども組み合わせられる（p.138）。</p>
+  </section>
+
+  <section id="coordinator">
+    <h2><span class="icon">🤝</span>地域おこし協力隊と都市部人材の活躍——「外の力」の地域化</h2>
+    <div class="policy-tag">第3章 選ばれる地方｜関係人口・人材マッチング｜p.76-78, 134</div>
+    <p>都市から地方への人材流動を促す機能として、地域おこし協力隊は引き続き戦略の中核を担う。「女性、若者、シニア、外国人、副業人材」へのアプローチを強化し、関係府省庁・民間企業と連携しながら地域づくりを進める（p.76）。<strong>隊員数10,000人（2029年度）</strong>という目標が掲げられており、任期終了後の定着・定住支援の充実がとりわけ重視されている。</p>
+    <p>都市部の大企業人材が転籍・副業・兼業・出向により地域の中堅・中小企業の経営人材として活躍するための<strong>「地域企業経営人材マッチング促進事業」</strong>（p.76）、各地域で都市部等の専門人材と地域企業とのマッチングを強力にサポートする<strong>「プロフェッショナル人材事業」</strong>（p.77）が重点施策として位置づけられる。副業・兼業成約件数<strong>4,600件（2029年度）</strong>を目標に、マッチングプラットフォームが強化される。</p>
+    <div class="highlight">
+      <strong>地方公務員の兼業・副業の弾力化：</strong>許可制を維持しつつも、営利企業との兼業や自営兼業等の弾力化に向けた環境整備を進め、地方公務員が公務以外でも地域の担い手として活躍できるようにする（p.134）。地域の人材の「シェア」を官の側からも推進する意欲的な施策。
+    </div>
+    <p>地域金融機関による人材マッチングの促進（p.140）も注目される。日常的に地域企業と関わる地域金融機関等が地域企業の人材ニーズを調査・分析し、職業紹介事業者等と連携してハイレベルな経営人材のマッチングを行う取組が推進される。「地域に根づいた中間支援機能」の強化として、人材確保の担い手を多様化する方向性が見えてくる。</p>
+  </section>
+
+  <section id="women-youth">
+    <h2><span class="icon">🌱</span>女性・若者の活躍推進——構造的な「転出超過」への対応</h2>
+    <div class="policy-tag">第3章 選ばれる地方｜多様性に富んだ地方の実現｜p.65-66, 134, 138</div>
+    <p>本戦略が正面から向き合う課題の一つが、若者・女性の地方から都市圏への転出超過である。「若者や女性にも選ばれる地域づくり」が5本柱の一つに掲げられ（p.6）、職場・社会の構造的変革まで踏み込んだ施策が展開される。</p>
+    <p><strong>「地域働き方・職場改革ネットワーク」</strong>として、68の地方公共団体（24県・44市町村）と各府省庁横断のサポートメンバーが連携し、今後3〜5年で全国的な波及を目指す（p.65）。政府が「職場が若者・女性の転出の鍵」と明示した点で、この施策は踏み込んだ構造変革への意思表明といえる。</p>
+    <div class="highlight">
+      <strong>独立行政法人「男女共同参画機構」の新設：</strong>女性の起業支援、意識改革等に係る専門人材を全国の男女共同参画センターへマッチングする「センターオブセンターズ」機能を持つ機構を新設。女性にも選ばれる地方づくりを後押しするナショナルセンターとして機能する（p.66）。
+    </div>
+    <p>アンコンシャス・バイアスへの気づきを促す教員研修、女子中高生の理系進路選択支援（p.65）等、意識改革・教育からの変革も重視されている。若者については、「ふるさとミライカレッジ」「ふるさとワーキングホリデー」（p.76）、小中高生の地域留学や農山漁村交流プロジェクト（p.76）を通じ、年代の切れ目なく地方への人の流れを加速させる戦略が描かれている。こども・若者が審議会等へ参画し、意見が地域のまちづくりに反映されるよう好事例の横展開も進められる（p.138）。</p>
+  </section>
+
+  <section id="national">
+    <h2><span class="icon">🏛️</span>国の人的支援——「専門家派遣」から「伴走」へ</h2>
+    <div class="policy-tag">第3章 国の役割｜人材支援・人材育成｜p.80-81</div>
+    <p>地方公共団体の人材・ノウハウ不足に対応するため、国が直接「人を送る」支援が強化・拡充される。「地方創生人材支援制度」による官民の専門人材派遣に加え、国の職員が定期的なオンライン会議・現地訪問を通じた助言等を実施する<strong>「地方創生伴走支援制度」</strong>が拡充される（p.80）。</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="val">230<span>団体</span></div>
+        <div class="lbl">地方創生人材支援制度<br>支援団体数（2029年度）</div>
+      </div>
+      <div class="stat">
+        <div class="val">300<span>団体</span></div>
+        <div class="lbl">地方創生伴走支援制度<br>支援団体数（2029年度）</div>
+      </div>
+      <div class="stat">
+        <div class="val">6,000<span>人</span></div>
+        <div class="lbl">情報システム統一<br>研修修了者数（各年度）</div>
+      </div>
+    </div>
+    <p>「派遣」から「伴走」へのシフトは重要な転換点である。地域課題の解決には特定のタイミングでの専門家投入だけでなく、継続的な関係性と知見の蓄積が必要とされる認識が反映されている。支援のKPIとして延べ団体数が設定されていることから、幅広い地方公共団体がアクセスできる制度設計が意図されている。</p>
+  </section>
+
+  <section id="foreign">
+    <h2><span class="icon">🌏</span>外国人材——「活用」から「共生」へ</h2>
+    <div class="policy-tag">第6節 その他施策｜p.114, 137</div>
+    <p>少子化による労働力不足の深刻化を背景に、外国人材の受け入れと共生が重要施策として明確に位置づけられた。<strong>2027年に運用開始予定の「育成就労制度」</strong>については、育成就労外国人が大都市圏等特定地域に過度に集中しないよう措置を講じ、人材不足の地域において必要とされる人材が確保されるよう適正・円滑な運用を行う（p.114）。</p>
+    <div class="highlight">
+      <strong>外国人支援コーディネーターの養成・配置：</strong>生活上の困りごとを抱える外国人を適切な支援につなぐ専門人材を養成し地方へ配置することで、外国人が安心して地域に溶け込み、能力を十分に発揮できる環境をつくる（p.137）。単なる労働力ではなく「地域社会の構成員」として捉える姿勢が明確。
+    </div>
+    <p>行政窓口等に対する通訳支援事業の実施（p.137）、JET青年等の地域協力活動への参画促進や地域おこし協力隊員としての活用（p.137）も含め、多様な参画ルートが整備されている。「外国人が安心して地域に溶け込み、能力を十分に発揮できる環境をつくり、地域経済・地域社会の活性化を目指す」という姿勢は、外国人材政策の大きな方向転換を示すものである。</p>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括——人材戦略の「内なる緊張」と突破口</h2>
+    <p>本戦略の人材施策を横断すると、三つの緊張関係が見えてくる。それぞれが戦略の実効性を問う試金石となる。</p>
+
+    <div class="point">
+      <div class="pt-title">「育成」と「即戦力確保」のジレンマ</div>
+      <p>人材を育てるには時間がかかるが、人手不足は今ここにある。これに対して戦略は、外部人材（地域おこし協力隊・プロフェッショナル人材・外国人材）の活用で即応しながら、大学・高専・リスキリングで中長期的な育成を並行させる「二段構え」で対応している。この並走がうまく機能するかが鍵となる。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">「移住推進」と「関係人口」のバランス</div>
+      <p>完全な移住だけを目指すのではなく、二地域居住・副業・ふるさと住民登録というグラデーションを設けることで、関与の入口を広くしつつ段階的に深化させる設計は戦略的に妥当である。「ふるさと住民登録制度」が関係人口を可視化・定量化する基盤となれば、施策の実効性評価にも貢献しうる。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">「女性・若者の転出超過」という根本問題</div>
+      <p>職場改革ネットワーク・アンコンシャス・バイアス教育・女性起業支援等は重要な取組だが、その効果が出るまでには数年単位の時間を要する。短期的なKPI（移住者数・協力隊員数）と中長期的な構造変革（職場文化・ジェンダー格差）の成果をどう評価し続けるかが、戦略の実効性を左右する。</p>
+    </div>
+
+    <p>「人材循環の促進」という言葉が示す通り、本戦略は人材を一方向に「呼び込む」のではなく、都市と地方の間を行き来しながら双方が豊かになる「循環」を目指している。その実現のためには、地域で活躍することの「物語」——成長・やりがい・生活の充実——が若者・女性にリアリティをもって伝わることが最大の鍵となるだろう。</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>素材：地方創生に関する総合戦略_20251223_honbun.pdf（令和7年12月23日閣議決定）｜生成日：2026年5月22日</p>
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid #dde3ea;font-size:11px;color:#8a939e;line-height:1.8;text-align:left;max-width:760px;margin-left:auto;margin-right:auto;">【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。</div></footer>
+
+<script>
+(function() {
+  const btn=document.getElementById('tts-btn'),stopBtn=document.getElementById('tts-stop'),select=document.getElementById('tts-voice'),label=document.getElementById('tts-label'),article=document.querySelector('.container');
+  if(!btn||!article||!window.speechSynthesis)return;
+  const overview=article.querySelector('.overview'),sections=article.querySelectorAll('section'),conclusion=article.querySelector('.conclusion'),parts=[];
+  if(overview)parts.push(overview.innerText);
+  sections.forEach(s=>parts.push(s.innerText));
+  if(conclusion)parts.push(conclusion.innerText);
+  const rawText=parts.length?parts.join('\n\n'):(article.innerText||article.textContent||'');
+  let allVoices=[],chunks=[],resumeIdx=0,currentIdx=0,intentionalStop=false,keepAliveTimer=null,watchdogTimer=null;
+  const PREFER_VOICES=['七海','圭太','Nanami','Keita'];
+  function populateSelect(voices){const preferred=voices.filter(v=>v.lang.startsWith('ja')&&PREFER_VOICES.some(n=>v.name.includes(n)));const allJa=voices.filter(v=>v.lang.startsWith('ja'));const list=preferred.length?preferred:allJa.length?allJa:voices;if(!list.length){select.style.display='none';return;}select.innerHTML='';const sorted=[...list.filter(v=>v.localService),...list.filter(v=>!v.localService)];sorted.forEach((v,i)=>{const opt=document.createElement('option');opt.value=i;opt.textContent=(v.localService?'🔒 ':'☁ ')+v.name.replace('Microsoft ','').replace(' - Japanese (Japan)','');select.appendChild(opt);});allVoices=sorted;}
+  function loadVoices(){const v=speechSynthesis.getVoices();if(v.length){populateSelect(v);return;}speechSynthesis.addEventListener('voiceschanged',()=>populateSelect(speechSynthesis.getVoices()),{once:true});}
+  loadVoices();
+  function getSelectedVoice(){return allVoices[parseInt(select.value)]||null;}
+  function cleanText(t){return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu,'').replace(/\s+/g,' ').trim();}
+  function splitChunks(text){return text.split(/\n+/).map(s=>s.trim()).filter(s=>s.length>0);}
+  function startKeepAlive(){stopKeepAlive();keepAliveTimer=setInterval(()=>{if(window.speechSynthesis.paused){window.speechSynthesis.resume();}},10000);}
+  function stopKeepAlive(){if(keepAliveTimer){clearInterval(keepAliveTimer);keepAliveTimer=null;}}
+  function armWatchdog(index){clearWatchdog();watchdogTimer=setTimeout(()=>{if(btn.dataset.state==='playing'&&currentIdx===index){resumeIdx=index+1;speakFrom(index+1);}},25000);}
+  function clearWatchdog(){if(watchdogTimer){clearTimeout(watchdogTimer);watchdogTimer=null;}}
+  function setIdle(){stopKeepAlive();clearWatchdog();if(resumeIdx>0&&resumeIdx<chunks.length){btn.textContent='▶ 途中から再開';label.textContent=Math.round(resumeIdx/chunks.length*100)+'% 地点〜';}else{btn.textContent='▶ 読み上げ';label.textContent='';}btn.classList.remove('playing');btn.dataset.state='idle';stopBtn.style.display='none';}
+  function speakFrom(index){clearWatchdog();if(intentionalStop||index>=chunks.length){if(!intentionalStop)resumeIdx=0;setIdle();return;}currentIdx=index;const voice=getSelectedVoice();const rateVal=parseFloat((document.getElementById('tts-rate')||{}).value||'1.0');const text=cleanText(chunks[index]);if(!text){resumeIdx=index+1;speakFrom(index+1);return;}const utt=new SpeechSynthesisUtterance(text);utt.lang='ja-JP';utt.rate=rateVal;if(voice)utt.voice=voice;let done=false;utt.addEventListener('end',()=>{if(done||intentionalStop)return;done=true;clearWatchdog();resumeIdx=index+1;speakFrom(index+1);});utt.addEventListener('error',(e)=>{if(done)return;if(intentionalStop){done=true;return;}done=true;clearWatchdog();resumeIdx=index+1;speakFrom(index+1);});window.speechSynthesis.speak(utt);armWatchdog(index);}
+  function startSpeech(fromIndex){intentionalStop=false;chunks=splitChunks(rawText);window.speechSynthesis.cancel();setTimeout(()=>{if(intentionalStop)return;const voice=getSelectedVoice();btn.textContent='⏸ 一時停止';btn.classList.add('playing');btn.dataset.state='playing';stopBtn.style.display='inline-flex';label.textContent=voice&&voice.localService?'ローカル':voice?'クラウド':'';startKeepAlive();speakFrom(fromIndex);},300);}
+  btn.addEventListener('click',()=>{const state=btn.dataset.state||'idle';if(state==='idle'){startSpeech(resumeIdx);}else if(state==='playing'){window.speechSynthesis.pause();btn.textContent='▶ 再開';btn.classList.remove('playing');btn.dataset.state='paused';}else{window.speechSynthesis.resume();btn.textContent='⏸ 一時停止';btn.classList.add('playing');btn.dataset.state='playing';}});
+  stopBtn.addEventListener('click',()=>{intentionalStop=true;resumeIdx=0;stopKeepAlive();clearWatchdog();window.speechSynthesis.cancel();setIdle();});
+  let selTip=null;
+  function getOrCreateTip(){if(selTip)return selTip;selTip=document.createElement('button');selTip.textContent='▶ ここから読み上げ';Object.assign(selTip.style,{position:'fixed',zIndex:'9999',background:'#1a56a0',color:'#fff',border:'none',borderRadius:'6px',padding:'6px 14px',fontSize:'13px',cursor:'pointer',display:'none',boxShadow:'0 2px 10px rgba(0,0,0,0.35)',whiteSpace:'nowrap'});document.body.appendChild(selTip);return selTip;}
+  function hideTip(){if(selTip)selTip.style.display='none';}
+  function chunkIndexFromSelection(sel){if(!chunks.length)chunks=splitChunks(rawText);const range=sel.getRangeAt(0);let node=range.startContainer;if(node.nodeType===Node.TEXT_NODE)node=node.parentNode;const BLOCK=new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);while(node&&node!==article){if(node.nodeType===1&&BLOCK.has(node.tagName))break;node=node.parentNode;}const blockText=(node&&node!==article?(node.innerText||node.textContent||''):sel.toString()).trim();const key=blockText.substring(0,40).replace(/\s+/g,' ');for(let i=0;i<chunks.length;i++){if(chunks[i].substring(0,40).replace(/\s+/g,' ')===key||chunks[i].includes(key.substring(0,20)))return i;}return 0;}
+  document.addEventListener('mouseup',(e)=>{if(e.target===selTip)return;const sel=window.getSelection();if(!sel||sel.isCollapsed||!sel.toString().trim()){hideTip();return;}try{if(!article.contains(sel.getRangeAt(0).commonAncestorContainer)){hideTip();return;}}catch{hideTip();return;}chunks=splitChunks(rawText);const idx=chunkIndexFromSelection(sel);const tip=getOrCreateTip();const rect=sel.getRangeAt(0).getBoundingClientRect();tip.style.left=Math.max(4,Math.min(rect.left,window.innerWidth-220))+'px';tip.style.top=(rect.top-44)+'px';tip.style.display='block';tip.onclick=()=>{hideTip();window.getSelection().removeAllRanges();resumeIdx=idx;startSpeech(idx);};});
+  document.addEventListener('mousedown',(e)=>{if(selTip&&e.target!==selTip)hideTip();});
+  document.addEventListener('scroll',hideTip,{passive:true});
+  window.addEventListener('beforeunload',()=>window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>

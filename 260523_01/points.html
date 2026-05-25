@@ -1,0 +1,616 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高年齢者雇用安定法 改正ポイント整理</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Measure list ── */
+.measure-list { list-style: none; padding: 0; margin: 20px 0; }
+.measure-list li { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; border-radius: 8px; margin-bottom: 10px; background: var(--bg); border: 1px solid var(--border); }
+.measure-list li .num { flex-shrink: 0; width: 28px; height: 28px; background: var(--blue); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-top: 2px; }
+.measure-list li .num.accent { background: var(--accent); }
+.measure-list li .body { flex: 1; font-size: 14px; line-height: 1.7; }
+.measure-list li .body strong { display: block; font-weight: 700; margin-bottom: 2px; color: var(--blue); }
+
+/* ── Step list ── */
+.step-list { list-style: none; padding: 0; margin: 20px 0; counter-reset: step; }
+.step-list li { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+.step-list li:last-child { border-bottom: none; }
+.step-list li .step-num { flex-shrink: 0; width: 36px; height: 36px; background: var(--blue-lt); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; margin-top: 2px; }
+.step-list li .step-body { flex: 1; }
+.step-list li .step-body strong { font-size: 15px; color: var(--blue); display: block; margin-bottom: 6px; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+  .measure-list li { flex-direction: column; gap: 8px; }
+  .step-list li { gap: 10px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">高年齢者雇用安定法</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>高年齢者雇用安定法<br>改正ポイント整理</h1>
+  <p class="sub">令和3年4月施行の改正内容 ／ 令和8年4月適用の新基本方針 ／ Q&amp;A・指針を含む実務対応まとめ</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#sec-65">65歳まで（義務）</a></li>
+    <li><a href="#sec-70">70歳まで（努力義務）</a></li>
+    <li><a href="#sec-target">対象者基準</a></li>
+    <li><a href="#sec-startup">創業支援等措置</a></li>
+    <li><a href="#sec-other-company">他社継続雇用</a></li>
+    <li><a href="#sec-離職">離職時の対応</a></li>
+    <li><a href="#sec-report">報告・指導</a></li>
+    <li><a href="#sec-safety">安全衛生</a></li>
+    <li><a href="#conclusion">総括</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>少子高齢化と人口減少を背景に、経済社会の活力を維持するため、働く意欲がある高年齢者が年齢にかかわりなく能力を発揮できるよう、高年齢者雇用安定法の整備が進んでいる。2021年（令和3年）4月1日施行の改正により、従来から義務付けられていた「65歳までの雇用確保措置」に加え、「65〜70歳の就業機会確保措置（努力義務）」が新設された。雇用形態にとどまらず、業務委託・社会貢献事業への従事という「創業支援等措置」も選択肢に加わり、多様な就業形態のもとで高年齢者の活躍を後押しする仕組みが整えられた。</p>
+    <p>最新動向として、2026年（令和8年）4月1日より適用の新「高年齢者等職業安定対策基本方針」（令和8〜11年度）では、数値目標が明確に定められている。企業への一層の働きかけが強化される方向だ。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">74.3<span>%</span></div>
+        <div class="lbl">60〜64歳 就業率<br>（2024年・+13.6pt）</div>
+      </div>
+      <div class="stat">
+        <div class="val">53.6<span>%</span></div>
+        <div class="lbl">65〜69歳 就業率<br>（2024年・+13.5pt）</div>
+      </div>
+      <div class="stat">
+        <div class="val">34.8<span>%</span></div>
+        <div class="lbl">70歳まで就業確保措置<br>実施率（2025年）</div>
+      </div>
+      <div class="stat">
+        <div class="val">40<span>%+</span></div>
+        <div class="lbl">実施率の政策目標<br>（2029年まで）</div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>法の二層構造：</strong>「65歳まで雇用確保＝義務」＋「70歳まで就業確保＝努力義務」。努力義務とはいえ措置を講じなければ努力義務を満たしたことにならず（Q&amp;A③より）、行政指導・勧告の対象となりうる。
+    </div>
+  </div>
+
+  <!-- ① 65歳まで -->
+  <section id="sec-65">
+    <h2><span class="icon">①</span>65歳までの雇用確保措置（義務）</h2>
+    <div class="policy-tag">高年齢者雇用安定法 第8条・第9条</div>
+    <p>60歳未満の定年設定は法律で禁止されており、定年を定める場合は60歳以上でなければならない（法第8条）。さらに定年を65歳未満に設定している事業主は、以下の3つのうちいずれかの「高年齢者雇用確保措置」を実施する義務がある（法第9条）。</p>
+    <ul class="measure-list">
+      <li>
+        <div class="num">1</div>
+        <div class="body"><strong>65歳までの定年引き上げ</strong>定年年齢そのものを65歳まで引き上げる。</div>
+      </li>
+      <li>
+        <div class="num">2</div>
+        <div class="body"><strong>定年制の廃止</strong>定年の定めを撤廃し、年齢を問わず雇用継続できる体制を整える。</div>
+      </li>
+      <li>
+        <div class="num">3</div>
+        <div class="body"><strong>65歳までの継続雇用制度の導入</strong>再雇用制度・勤務延長制度を設け、希望者全員が65歳まで働き続けられるようにする。特殊関係事業主（子会社・関連会社等）での継続雇用も可。令和7年4月に経過措置が終了し、すべての企業で「希望者全員」が適用対象。</div>
+      </li>
+    </ul>
+    <div class="highlight">
+      <strong>企業名公表リスク：</strong>ハローワークからの指導を繰り返し受けたにもかかわらず具体的な取り組みを行わない場合、勧告書の発出後、勧告に従わないときは企業名が公表される。
+    </div>
+  </section>
+
+  <!-- ② 70歳まで -->
+  <section id="sec-70">
+    <h2><span class="icon">②</span>70歳までの就業確保措置（努力義務）</h2>
+    <div class="policy-tag">高年齢者雇用安定法 第10条の2 ／ 令和3年4月施行</div>
+    <p>改正の中核。65歳から70歳までの就業機会を確保するため、以下の5つのうちいずれかを講ずるよう努める義務が事業主に課される。①〜③は雇用による措置、④⑤は「創業支援等措置」（雇用によらない措置）であり、④⑤のみを導入する場合は過半数労働組合等の同意が必要。</p>
+    <ul class="measure-list">
+      <li>
+        <div class="num">1</div>
+        <div class="body"><strong>70歳までの定年引き上げ</strong>定年年齢を70歳まで引き上げる。</div>
+      </li>
+      <li>
+        <div class="num">2</div>
+        <div class="body"><strong>定年制の廃止</strong>定年の定めを廃止する。</div>
+      </li>
+      <li>
+        <div class="num">3</div>
+        <div class="body"><strong>70歳までの継続雇用制度の導入</strong>特殊関係事業主に加え、グループ外の「他の事業主」での継続雇用も対象範囲に拡大（65歳以降のみ）。</div>
+      </li>
+      <li>
+        <div class="num accent">4</div>
+        <div class="body"><strong>70歳まで継続的に業務委託契約を締結する制度の導入</strong>【創業支援等措置】過半数労働組合等の同意が必要。雇用関係なし・労働法令の適用外。</div>
+      </li>
+      <li>
+        <div class="num accent">5</div>
+        <div class="body"><strong>70歳まで継続的に社会貢献事業に従事できる制度の導入</strong>【創業支援等措置】(a) 事業主が自ら実施する社会貢献事業、または (b) 事業主が委託・出資等する団体の社会貢献事業。過半数労働組合等の同意が必要。</div>
+      </li>
+    </ul>
+    <p>対象となる事業主は、(i)65歳以上70歳未満に定年を設定している事業主、または(ii)70歳以上までの継続雇用制度がない事業主。現時点で65歳以上の労働者がいない企業も含む全事業主に適用される（Q&amp;A⑧）。複数の措置を組み合わせることも可能。</p>
+  </section>
+
+  <!-- ③ 対象者基準 -->
+  <section id="sec-target">
+    <h2><span class="icon">③</span>対象者基準の設定と労使協議</h2>
+    <div class="policy-tag">高年齢者雇用安定法 指針 第2・1(3) ／ Q&A①⑤</div>
+    <p>70歳就業確保は努力義務のため、定年引き上げ・廃止を除く措置については、制度の対象者を限定する「対象者基準」を設けることが可能だ。ただし、設定には労使間の十分な協議と過半数労働組合等の同意を得ることが「望ましい」とされる。</p>
+    <p>基準の内容は原則として労使に委ねられるが、恣意的な排除や他の労働関係法令に反するものは認められない。</p>
+    <div class="highlight">
+      <strong>不適切な基準の例：</strong>「会社が必要と認めた者に限る」（恣意的排除）／「男性（女性）のみ」（男女差別）／「組合活動に従事していない者」（不当労働行為）
+    </div>
+    <p>適切な基準の例としては、「過去○年間の人事考課が○以上の者」「出勤率が○%以上の者」「産業医が業務上支障なしと判断した者」などが示されている。複数の措置を組み合わせる場合は、個々の高年齢者の希望を十分に聴取・尊重した上で適用措置を決定することが求められる（Q&amp;A⑤）。</p>
+    <p>職種・雇用形態によって就業確保措置の内容を区別することも可能だが、個人の希望への配慮を忘れないことが重要だ（Q&amp;A⑤）。</p>
+  </section>
+
+  <!-- ④ 創業支援等措置 -->
+  <section id="sec-startup">
+    <h2><span class="icon">④</span>創業支援等措置の実務手続き</h2>
+    <div class="policy-tag">高年齢者雇用安定法 第10条の2第1項 ／ 指針 第2・3</div>
+    <p>業務委託契約や社会貢献事業への従事という「雇用によらない形態」で70歳までの就業機会を確保する仕組みが「創業支援等措置」だ。労働基準法等の労働関係法令が適用されない働き方になるため、以下の3ステップの手続きが法定されている。</p>
+    <ol class="step-list">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>計画の作成</strong>
+          実施に関する計画を書面で作成。業務の内容、支払う金銭、契約の頻度・変更・終了事由、安全衛生、社会貢献事業を実施する団体に関する事項など計12項目の記載が必要。業務内容は一方的な決定・不当な条件の押し付けにならないよう、高年齢者のニーズや知識・経験・能力を十分に考慮すること。
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>過半数労働組合等の同意取得</strong>
+          計画について、過半数労働組合等の同意が必要。同意を求める際は「労働法令が適用されない働き方であること」「計画を定める理由」「創業支援等措置を選択する理由」を十分に説明する。なお、雇用による措置（①〜③）と併用する場合は、雇用による措置で努力義務を達成しているため同意は必須でないが、法の趣旨から見て同意を得ることが望ましい。
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>計画の周知</strong>
+          事業所内への掲示・書面交付・社内ネットワーク常時閲覧のいずれかの方法で全労働者に周知する。個々の高年齢者と契約を締結する際は必ず書面で行い、計画を記載した書面を交付した上で労働法令の適用外であることを説明する。
+        </div>
+      </li>
+    </ol>
+    <div class="highlight">
+      <strong>社会貢献事業の範囲：</strong>「不特定かつ多数の者の利益に資することを目的とした事業」が対象。特定宗教・特定政党支持を目的とする事業は対象外。NPO法人等の外部団体の事業に従事させる場合は、事業主から当該団体への出資・委託等の援助実態が必要。
+    </div>
+    <div class="highlight">
+      <strong>労働者性に注意：</strong>指揮命令・時間的拘束・専属性が顕著な場合は「労働者性あり」と判断され、雇用による措置として扱う必要がある。フリーランス新法（令和6年施行）の遵守も求められており、不当な条件の押し付けや受領拒否は禁止される。
+    </div>
+    <p>創業支援等措置で就業する高年齢者は「労災保険の特別加入」が可能。企業としての周知が望ましい（Ⅳ 創業支援等措置について）。</p>
+  </section>
+
+  <!-- ⑤ 他社継続雇用 -->
+  <section id="sec-other-company">
+    <h2><span class="icon">⑤</span>他社・グループ外での継続雇用</h2>
+    <div class="policy-tag">高年齢者雇用安定法 第10条の2第3項 ／ 指針 第2・2</div>
+    <p>65歳以降の継続雇用では、自社・グループ会社（特殊関係事業主）だけでなく、グループ外の「他の事業主」での継続雇用制度も選択肢として認められる。60〜64歳の継続雇用が「自社・特殊関係事業主に限定」されるのに対し、65歳以上では範囲が広がっている。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val" style="font-size:18px">60〜64歳</div>
+        <div class="lbl">自社・特殊関係事業主のみ</div>
+      </div>
+      <div class="stat">
+        <div class="val" style="font-size:18px">65〜70歳</div>
+        <div class="lbl">自社・特殊関係事業主<br>＋他の事業主（他社）</div>
+      </div>
+    </div>
+
+    <p>他社で継続雇用する場合は、自社と他社の間で「当該他社が高年齢者を継続雇用することを約する契約」を書面で締結することが望ましい。個々の高年齢者のニーズ・知識・経験・能力に応じた業務内容・労働条件とすることも重要だ。</p>
+    <div class="highlight">
+      <strong>無期転換権への注意：</strong>特殊関係事業主以外の他社で継続雇用される場合は特例（都道府県労働局長の認定が必要）の対象外となり、有期雇用の通算5年ルールによる無期転換申込権が発生する。事前に対応を検討しておくこと。
+    </div>
+  </section>
+
+  <!-- ⑥ 離職時の対応 -->
+  <section id="sec-離職">
+    <h2><span class="icon">⑥</span>離職する高年齢者への対応義務</h2>
+    <div class="policy-tag">高年齢者雇用安定法 第17条・第18条 ／ 令和3年改正で対象拡大</div>
+    <p>令和3年改正により、70歳未満で離職する高年齢者が新たに対象に加わった。解雇等（事業主都合）・対象者基準非該当・制度上限年齢到達などさまざまな離職理由に応じて、事業主には以下の義務・努力義務が課される。</p>
+    <ul class="measure-list">
+      <li>
+        <div class="num">A</div>
+        <div class="body"><strong>再就職援助措置（努力義務）</strong>解雇等で離職する高年齢者が再就職を希望するときは、求職活動への経済的支援・求人開拓・教育訓練のあっせんなどを講ずるよう努めること（45歳以上が対象、65〜70歳未満も令和3年より追加）。</div>
+      </li>
+      <li>
+        <div class="num">B</div>
+        <div class="body"><strong>多数離職届（義務）</strong>同一事業所で1か月以内に5人以上の高年齢者等が解雇等で離職する場合、離職予定日の1か月前までにハローワークへ届け出る。未届出には過料の可能性あり。</div>
+      </li>
+      <li>
+        <div class="num">C</div>
+        <div class="body"><strong>求職活動支援書の交付（義務）</strong>解雇等（事業主都合）により離職する高年齢者が希望するとき、離職決定後すみやかに職務経歴・資格・技能等を記載した「求職活動支援書」を作成・交付する。ジョブ・カードの活用も可。</div>
+      </li>
+    </ul>
+    <p>他社継続雇用の場合の義務の帰属については、解雇等による離職はその時の雇用主（他社）に、制度上限年齢到達による離職は定年まで雇用していた事業主（元の会社）に義務がかかる点に注意が必要だ。</p>
+  </section>
+
+  <!-- ⑦ 報告・指導 -->
+  <section id="sec-report">
+    <h2><span class="icon">⑦</span>行政への報告・指導・勧告</h2>
+    <div class="policy-tag">高年齢者雇用安定法 第52条・第10条の3</div>
+    <p>事業主は毎年6月1日時点の高年齢者雇用状況等を、<strong>毎年7月15日</strong>までに厚生労働大臣あてに報告しなければならない（法第52条第1項）。事業所規模を問わず全事業主が対象。電子申請も可能。改正後は就業確保措置の実施状況も報告内容に追加されている。</p>
+    <div class="highlight">
+      <strong>指導・勧告のフロー：</strong>必要があると認められる場合、ハローワーク等による指導・助言 → 状況改善なしと認められる場合、雇用確保措置の実施勧告または就業確保措置の実施計画の作成勧告。
+    </div>
+    <p>厚生労働大臣は、高年齢者就業確保措置の実施及び運用に関する指針を定めており、その内容に沿った適切な実施が求められる。基本方針（令和8年改訂）でも、70歳就業確保措置の更なる拡大に向け企業への助成措置強化と指導徹底が盛り込まれている。</p>
+  </section>
+
+  <!-- ⑧ 安全衛生 -->
+  <section id="sec-safety">
+    <h2><span class="icon">⑧</span>安全衛生・高年齢労働者への配慮</h2>
+    <div class="policy-tag">改正労働安全衛生法（令和7年法律第33号）／ 高年齢者雇用安定法 指針</div>
+    <p>改正安全衛生法により、高年齢労働者の特性に配慮した作業環境の改善・作業管理その他の必要な措置を講ずることが事業者の努力義務となった。労働災害（休業4日以上）に占める60歳以上の労働者の割合が増加傾向にあることが背景にある。</p>
+    <p>継続雇用制度・創業支援等措置を通じて就業する高年齢者についても、「高年齢者の労働災害防止のための指針」を参考に積極的な災害防止対策を講じることが望ましい。特に業務委託の場合は、機械器具や原材料を提供する際の危害防止措置や、作業時間が過大にならないよう配慮することも求められる。</p>
+    <div class="highlight">
+      <strong>高年齢者雇用等推進者の選任：</strong>高年齢者雇用安定法第11条に基づく「高年齢者雇用等推進者」の業務に、就業確保措置の推進が追加（努力義務）。選任した場合のハローワーク等への届出は不要。
+    </div>
+    <p>高年齢雇用継続給付は令和7年度から縮小されている一方、就業確保措置の導入に取り組む企業向けに65歳超雇用推進助成金（高年齢者無期雇用転換コース等）が活用できる。</p>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>改正高年齢者雇用安定法の核心は「65歳まで義務・70歳まで努力義務」という二層構造で高年齢者の就業機会を後押しする点にある。2026年4月適用の新基本方針は「2029年までに70歳就業確保措置の実施率40%以上」を政策目標に掲げており、行政の指導・支援が一層強化される方向だ。</p>
+
+    <div class="point">
+      <div class="pt-title">実務上の最重要ポイント① ― 創業支援等措置の手続き厳守</div>
+      <p>業務委託・社会貢献事業への従事という創業支援等措置を選ぶ場合、「計画作成 → 過半数労働組合等の同意 → 周知」という法定手続きをすべて履行しなければならない。実態が労働者性を帯びた働き方にならないよう、業務内容・指揮命令・時間拘束の設計に注意が必要だ。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">実務上の最重要ポイント② ― 対象者基準の客観性確保</div>
+      <p>対象者を限定する場合は、恣意的な排除が疑われない具体的・客観的な基準を設け、労使間で十分に協議すること。過半数労働組合等の同意を得ることが「望ましい」とされており、基準の透明性が企業の信頼性にも直結する。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">実務上の最重要ポイント③ ― 他社継続雇用と無期転換権</div>
+      <p>グループ外の他社を継続雇用先とする場合、特例（都道府県労働局長の認定）の対象外となり有期雇用の5年ルールによる無期転換申込権が発生する。事前の制度設計と対応が不可欠だ。</p>
+    </div>
+
+    <p>70歳就業の実現には、賃金・人事処遇制度の見直しや職場の安全衛生対策を含む中長期的な雇用管理の再設計が求められる。厚生労働省の「70歳雇用推進マニュアル」や高齢・障害・求職者雇用支援機構（JEED）の事例集を積極的に活用しながら、自社の実情に合った制度設計を進めることが今後の企業課題となる。</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>参考資料：改正高年齢者雇用安定法概要（厚生労働省）／ 高年齢者雇用安定法の改正の概要（ハローワーク）／ 高年齢者雇用安定法Q&amp;A（令和7年3月31日改訂）／ 高年齢者等職業安定対策基本方針（令和8年3月告示）／ 創業支援等措置の実施に関する計画の記載方法について ／ 改正雇用保険法概要</p>
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid #dde3ea;font-size:11px;color:#8a939e;line-height:1.8;text-align:left;max-width:760px;margin-left:auto;margin-right:auto;">【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。</div></footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  /* ── テキスト選択 → ここから読み上げ ── */
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>

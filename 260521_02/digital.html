@@ -1,0 +1,493 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>地方創生総合戦略 デジタル施策レポート</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; white-space: nowrap; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">地方創生デジタル施策</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">調査レポート</div>
+  <h1>地方創生総合戦略<br>デジタル施策レポート</h1>
+  <p class="sub">地方創生に関する総合戦略（令和7年12月23日閣議決定）｜全141ページ中67ページのデジタル関連施策を横断抽出</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#infra">デジタルインフラ</a></li>
+    <li><a href="#talent">人材育成</a></li>
+    <li><a href="#primary">スマート農林水産</a></li>
+    <li><a href="#gov-dx">行政DX</a></li>
+    <li><a href="#mynumber">マイナンバー</a></li>
+    <li><a href="#smart-city">スマートシティ</a></li>
+    <li><a href="#security">セキュリティ</a></li>
+    <li><a href="#conclusion">総括</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像——デジタルは「地方創生2.0」の中核戦略</h2>
+    <p>令和7年12月に閣議決定された「地方創生に関する総合戦略」は、「デジタル田園都市国家構想総合戦略（2023改訂版）」を継承・発展させたものである。その基本姿勢において、<strong>「AI・デジタルなどの新技術の徹底活用と社会実装」が政策の5本柱のひとつ</strong>として明記されており、デジタルはもはや手段の一つではなく、地方創生の根幹をなす要素として位置づけられている（p.3）。</p>
+    <p>本文書のほぼ全章にわたってデジタル関連施策が登場しており、141ページ中67ページにデジタル・DX・AI・データ等のキーワードが含まれる。「強い経済」「豊かな生活環境」「選ばれる地方」という3つのアウトカムすべてにデジタルが深く組み込まれていることが本戦略の特徴である。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">67<span>/141</span></div>
+        <div class="lbl">デジタル関連<br>ページ数</div>
+      </div>
+      <div class="stat">
+        <div class="val">230<span>万人</span></div>
+        <div class="lbl">デジタル人材<br>育成目標（2026年度末）</div>
+      </div>
+      <div class="stat">
+        <div class="val">15<span>兆円超</span></div>
+        <div class="lbl">半導体生産企業<br>合計売上高目標（2030年）</div>
+      </div>
+      <div class="stat">
+        <div class="val">5<span>本柱</span></div>
+        <div class="lbl">政策の基本姿勢<br>うち1柱がAI・デジタル</div>
+      </div>
+    </div>
+  </div>
+
+  <section id="infra">
+    <h2><span class="icon">📡</span>デジタルインフラの地方分散——「ワット・ビット連携」という新概念</h2>
+    <div class="policy-tag">第3章 強い経済｜GX・DX推進｜p.29-30</div>
+    <p>国家としての競争力基盤として、データセンター・海底ケーブルなどのデジタルインフラを地方に分散させる「ワット・ビット連携」が重点施策に据えられた。電力（ワット）と通信（ビット）を効果的に連携させることで、大都市一極集中からの脱却を図るという構想である。</p>
+    <div class="highlight">
+      <strong>ワット・ビット連携の核心：</strong>効率的な電力・通信インフラの整備を通じ、データセンターや海底ケーブル等の地方分散等を図る。あわせて、オール光ネットワーク・非地上系ネットワーク（NTN）・無線アクセスネットワーク・光ファイバの技術開発・環境整備を推進。
+    </div>
+    <p>海底ケーブルの建設は2026年度から2029年度にかけて段階的に進められ、2030年度には地方分散された国際海底ケーブルの運用開始が見込まれている。Beyond 5G（6G）基金事業による革新的情報通信技術の開発も並行して推進される。</p>
+    <p>半導体・蓄電池等のGX・DX分野の大規模投資誘致も同軸で進められ、国内半導体生産企業の合計売上高を<strong>2030年に15兆円超</strong>とする目標が掲げられた。地方への新産業集積を形成することで、地域経済に大きな波及効果をもたらすことが期待されている（p.30）。
+    </p>
+  </section>
+
+  <section id="talent">
+    <h2><span class="icon">🎓</span>デジタル人材育成——230万人目標が示す規模感</h2>
+    <div class="policy-tag">第3章 強い経済｜地域の人材力強化｜p.9, 41-42, 71</div>
+    <p>地方経済のデジタル化が遅れる最大の要因として、「デジタル化を支援するプレーヤーの不足」が明示されている。都市圏と比較して地方は労働集約型サービス業の比率が高く、DX導入に遅れが見られる。この課題に対応するため、政府は<strong>デジタル人材育成数を2026年度末までに230万人</strong>とするKPIを設定した（p.9）。</p>
+    <p>育成の柱は多層的に構成されている。大学・高等専門学校（高専）の成長分野への学部転換を支援する「大学・高専機能強化支援事業」が安定的かつ継続的な財政支援のもとで展開される。これにより、地域の地方公共団体や産業界と連携しながら、デジタル・グリーン等の高度専門人材を輩出する体制が整備される。</p>
+    <div class="highlight">
+      <strong>地域金融機関の新たな役割：</strong>地域企業との強固な関係性を持つ地域金融機関等を、デジタル化支援を行う「伴走者」として育成・強化する。中小企業がデジタル活用の相談先に困る状況を打開するために、既存の地域ネットワークを活かして支援の裾野を広げる実践的アプローチ（p.42）。
+    </div>
+    <p>数理・データサイエンス・AI教育を認定制度を通じて促進する取組もあわせて推進され、地域企業・地方公共団体との連携強化を図る（p.71）。高校段階においても、専門高校を拠点とした取組の中に「デジタル人材育成の強化」が明記されており（p.136）、初等・中等・高等・社会人という全段階での育成体制が意図されている。</p>
+  </section>
+
+  <section id="primary">
+    <h2><span class="icon">🌾</span>スマート農林水産業——産業ごとの実装戦略</h2>
+    <div class="policy-tag">第3章 強い経済｜地域資源の活用促進｜p.19-20</div>
+    <p>一次産業のデジタル転換は、個別産業ごとに具体的な実装戦略が示されている点が本戦略の特徴である。農業では「スマート農業技術活用促進集中支援プログラム」が展開されており、スマート農業技術の活用促進に関する法律に基づく法的整備とともに推進される。農業構造転換の集中対策期間（2025年度〜）として、2030年度のKPI達成に向けた長期的な工程が設けられている。</p>
+    <p>林業ではさらに踏み込んだ構想が示されている。産官学金等の異なる事業者が連携して地域一体で林業活動にデジタル技術を活用する<strong>「デジタル林業戦略拠点」</strong>の構築が目玉施策として設定され、2025年度のモデル地域実証から2026年度以降の全国展開へとフェーズが進む。最先端のスマート林業機械を活用した新たな作業システムの構築により、林業を「若者や女性にも選ばれる魅力的な産業」へと転換することが狙いである。</p>
+    <div class="highlight">
+      <strong>デジタル水産業戦略拠点：</strong>生産・加工・流通・消費等の各段階のデジタル化を「地域一体となって面的に推進する拠点」を創出。スマート水産業普及推進事業として、機械の導入効果を順次評価しながら効果的な普及を促進する仕組みが整備されている（p.19-20）。
+    </div>
+    <p>また、準天頂衛星システム「みちびき」の7機体制確立および11機体制に向けた開発（p.108）は、測位精度の向上を通じてスマート農業の精度を高めるインフラ基盤として位置づけられる。高精度測位サービスの社会実装がスマート農業・スマートシティの両者を底支えする構造である。</p>
+  </section>
+
+  <section id="gov-dx">
+    <h2><span class="icon">🏛️</span>地方公共団体のDX——行政サービスの全面デジタル化</h2>
+    <div class="policy-tag">第3章 国の役割｜情報支援・デジタルツール整備｜p.82-85, 130-133</div>
+    <p>行政サービスのデジタル化は、本戦略の最も広範な分野として展開されている。教育・子育て・モビリティ・インフラ・医療・介護等の地域を支える基盤的分野について、データ利活用とAIの社会実装を含むDXを推進し、成功事例の横展開を進めていく方針が示された。</p>
+    <p>情報支援の面では、地域経済分析システム（RESAS）と地方創生データ分析評価プラットフォーム（RAIDA）が中核ツールとして強化される（p.82）。RAIDAはエビデンスに基づく政策立案（EBPM）を推進するため、データ分析・政策企画・効果検証を支援する機能が充実され、ダッシュボードによる可視化が進められる。<strong>RESAS研修等の受講者数を2030年に10,000人</strong>とするKPIが設定されている。</p>
+    <div class="highlight">
+      <strong>国・地方デジタル共通基盤の整備：</strong>給付支援サービスや窓口DX SaaS等の積極的な普及が推進される。デジタルマーケットプレイス等で事業者が提供する多様なSaaSを活用し、地方公共団体業務の効率化を後押し。「デジタル活用推進事業債」という財政措置も設けられている（p.83, 133）。
+    </div>
+    <p>地域社会DXの推進として、AI・ローカル5G等を活用した地域課題解決のための「デジタル人材・体制の確保支援」「先進的なソリューションの実証」「地域の通信インフラ整備支援」を総合的に展開する方針が示されている。また、国・地方共通相談チャットボット（ガボット）について、生成AI活用の実証を踏まえた取組等の利用者目線での改善が進められる（p.133）。</p>
+    <p>Well-being向上に向けたデータ利活用による地域課題解決（p.130）、気象データのビジネス活用、教育データの利活用（p.141）等、あらゆる行政領域でデータ駆動の政策立案が目指されている点も特徴的である。</p>
+  </section>
+
+  <section id="mynumber">
+    <h2><span class="icon">💳</span>マイナンバーカードの全面展開——行政デジタル化の共通基盤</h2>
+    <div class="policy-tag">第3章・第6節｜暮らしの満足感向上｜p.112, 121, 128, 132</div>
+    <p>マイナンバーカードは、単なる本人確認ツールを超えて、地方行政サービスのデジタル化における「共通基盤」として明確に位置づけられた。民間電子商取引での本人確認活用（p.112）、コンビニ交付サービスの証明書類拡大、引越し手続のオンライン化、子育て・介護等の行政手続のデジタル化（p.132）が推進される。</p>
+    <div class="highlight">
+      <strong>マイナ救急の推進：</strong>救急隊員が傷病者のマイナ保険証を活用して医療情報を把握する取組を強力に推進し、救急業務の円滑化を図る（p.128）。デジタルが「命を守るインフラ」として機能する具体的事例である。
+    </div>
+    <p>災害時における避難所受付へのマイナンバーカード活用、避難所運営システムの地方公共団体への普及、広域被災者データベースの活用等、防災支援業務のデジタル化が徹底的に推進される（p.121）。書かない窓口・図書館・健康・子育て等の地方公共団体における市民サービスカードとして活用を強力に推進していく方針も示されている（p.132）。</p>
+    <p>マイナポータルを通じた行政機関からの多様なお知らせの受取機能の強化も予定されており、行政と住民との双方向デジタル接点の拡充が図られる。スマートフォン搭載の推進も掲げられており、カードという物理的媒体を超えたデジタル化が進む。</p>
+  </section>
+
+  <section id="smart-city">
+    <h2><span class="icon">🏙️</span>スマートシティと未来技術の社会実装</h2>
+    <div class="policy-tag">第3章 豊かな生活環境｜p.63-64, 99, 121, 130-131</div>
+    <p>スマートシティは、都市・地域課題の解決と新たな価値創出の両立を目指すプラットフォームとして推進される。スマートシティリファレンスアーキテクチャ（設計思想の標準化）とスマートシティガイドブックの充実、スマートシティ官民連携プラットフォームを活用した先行事例の情報共有が進められる（p.63）。</p>
+    <p>地域課題解決における未来技術の活用は多岐にわたる。AI・IoT・自動運転・ドローン等の技術を活用した「未来技術の社会実装により地域課題の解決を目指す伴走支援事業」では、先導性と横展開の可能性に優れた地方公共団体の取組を関係府省庁が伴走支援する（p.131）。</p>
+    <div class="highlight">
+      <strong>建築・都市のDX：</strong>建築BIM（Building Information Modeling）、PLATEAU（3D都市モデル）、不動産IDの取組を一体的に推進し、建物レベルから都市レベルまでの三次元データ基盤の整備を促進。「i-都市再生」の地域への実装によるDXの促進（p.130-131）も含め、デジタルツイン的な発想で都市空間をデジタル化していく姿勢が鮮明。
+    </div>
+    <p>NFT等のweb3技術の活用により、地方に眠る価値をグローバル価格へ引き直す取組も注目される（p.99）。トークンを活用して地理的制約を越えた人と人のつながりを形成し、地方固有の文化・産品の国際的な価値を高めることが目指されている。ロボット配送の社会実装（p.121）、道路情報の電子化による特殊車両通行手続の利便性向上、次世代ITSの実現も進められる。</p>
+  </section>
+
+  <section id="security">
+    <h2><span class="icon">🔒</span>サイバーセキュリティと情報リテラシー</h2>
+    <div class="policy-tag">第6節 その他施策｜p.114, 131</div>
+    <p>デジタル技術の地方への普及が進む一方で、サイバー攻撃の増加・巧妙化により、これまで対象とならなかった地方の地方公共団体や中小企業もリスクにさらされている。これに対応するため、<strong>「地域SECUNITY」</strong>という共助的な活動体を全国各地で立ち上げ・活動促進する「地域における共助的なアプローチ」が採用された（p.114）。単独では対策が難しい地方の関係者を面的に支援する実践的な枠組みである。</p>
+    <p>ICTリテラシーの向上については、情報流通の健全性確保の観点から全国的な取組が必要とされ、デジタル活用推進のための普及啓発が進められる（p.131）。デジタル化が急速に進む地方において、利用者側の受容力と安全意識の向上は不可欠な条件である。</p>
+    <div class="highlight">
+      <strong>サイバーセキュリティ人材の育成：</strong>高い専門能力を持つサイバーセキュリティ人材を育成し（p.114）、地域のデジタル化を守る体制を構築する。技術の普及とセキュリティ対策を同時並行で進める「両輪戦略」が意識されている。
+    </div>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括——「地方DXの実現」に向けた統合的アプローチと残された課題</h2>
+    <p>本戦略のデジタル施策を俯瞰すると、三つの層に構造化されていることが見えてくる。第一層はインフラ（デジタルインフラの地方分散・通信基盤整備）、第二層は産業・行政の実装（スマート農林水産業、地方公共団体DX、スマートシティ）、第三層は人材・リテラシー（デジタル人材育成、ICTリテラシー、サイバーセキュリティ）である。これらが相互に関連しながら、地方創生の各アウトカムに貢献する設計となっている。</p>
+
+    <div class="point">
+      <div class="pt-title">データを「生産要素」として位置づけた政策転換</div>
+      <p>RESAS・RAIDA・EBPM推進、Well-being指標の活用、気象データのビジネス活用、教育データの利活用など、あらゆる行政領域でデータ駆動の政策立案が目指されている。「デジタル田園都市国家構想」からの継承として、デジタルを「都市と地方の格差是正ツール」ではなく「地方の強みを引き出すレバレッジ」として捉えている点は注目に値する。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">230万人育成の実効性——伴走支援体制の継続が鍵</div>
+      <p>デジタル人材育成目標は意欲的だが、地方の中小企業・小規模事業者がこの人材を実際に活用できる環境整備の実効性については、地域金融機関等による伴走支援体制の継続的な拡充が鍵を握る。育成と活用の両輪が回って初めて効果が生まれる。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">横展開メカニズムの機能が自治体間格差を左右する</div>
+      <p>スマートシティやweb3等の先端的取組については、モデル地域での実証から全国展開への「橋渡し」における自治体間格差の拡大を防ぐ横展開メカニズムの機能が今後の評価ポイントとなる。デジタルを「すべての地域が使いこなせるもの」にするための「実装力の地域格差解消」こそが、本戦略の実現可能性を左右する根本課題である。</p>
+    </div>
+
+    <p>マイナンバーカードを軸とした行政デジタル化は利便性向上の期待が大きい一方、デジタルアクセスに困難を抱える高齢者・障がい者等への配慮が持続的に求められる。デジタルが誰一人取り残さない地方創生の手段として機能するかどうかが、この戦略の真の成果を問う尺度となるだろう。</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>素材：地方創生に関する総合戦略_20251223_honbun.pdf（令和7年12月23日閣議決定）｜生成日：2026年5月22日</p>
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid #dde3ea;font-size:11px;color:#8a939e;line-height:1.8;text-align:left;max-width:760px;margin-left:auto;margin-right:auto;">【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。</div></footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+    }, 10000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>

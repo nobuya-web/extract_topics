@@ -1,0 +1,737 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>沖縄の離島 包括リサーチレポート</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section h3 { font-size: 16px; font-weight: 700; color: var(--blue-lt); margin: 24px 0 12px; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+section ul, section ol { margin: 0 0 16px 20px; }
+section ul li, section ol li { margin-bottom: 6px; line-height: 1.8; }
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+/* 島プロフィール表 */
+.island-table-wrap { overflow-x: auto; margin: 24px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: var(--blue); color: #fff; padding: 10px 12px; text-align: left; font-weight: 700; white-space: nowrap; }
+td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+tr:nth-child(even) td { background: #f8fafc; }
+/* 参考資料 */
+.ref-section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; }
+.ref-section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-section h3 { font-size: 14px; font-weight: 700; color: var(--muted); margin: 24px 0 12px; letter-spacing: .05em; text-transform: uppercase; }
+.ref-list { list-style: none; margin: 0; padding: 0; }
+.ref-list li { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--border); font-size: 13px; line-height: 1.6; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { min-width: 28px; color: var(--muted); font-weight: 700; font-size: 12px; padding-top: 1px; }
+.ref-body { flex: 1; }
+.ref-body a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-body a:hover { text-decoration: underline; }
+.ref-body .ref-src { font-size: 11px; color: var(--muted); margin-top: 2px; }
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview, .ref-section { padding: 28px 20px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">沖縄の離島</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>沖縄の離島 包括リサーチレポート</h1>
+  <p class="sub">概要編・暮らしとビジネス機会編・政策編 ／ 2025年5月作成</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#tldr">概要</a></li>
+    <li><a href="#geography">地理・地図</a></li>
+    <li><a href="#population">人口動態</a></li>
+    <li><a href="#industry">産業・経済</a></li>
+    <li><a href="#islands">島プロフィール</a></li>
+    <li><a href="#life">離島の暮らし</a></li>
+    <li><a href="#business">ビジネス機会</a></li>
+    <li><a href="#challenges">課題</a></li>
+    <li><a href="#policy">政策構造</a></li>
+    <li><a href="#dialogue">対話準備</a></li>
+    <li><a href="#conclusion">総括</a></li>
+    <li><a href="#references">参考資料</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+<!-- ── TL;DR ── -->
+<div class="overview" id="tldr">
+  <h2>レポートのポイント（TL;DR）</h2>
+  <div class="stats">
+    <div class="stat"><div class="val">54<span>島</span></div><div class="lbl">指定離島（うち有人38島）</div></div>
+    <div class="stat"><div class="val">13.2<span>万人</span></div><div class="lbl">離島人口（県全体の約8.9%）</div></div>
+    <div class="stat"><div class="val">45<span>%</span></div><div class="lbl">面積が県全土に占める割合</div></div>
+    <div class="stat"><div class="val">463<span>万円</span></div><div class="lbl">北大東村・1人当たり所得（県内1位）</div></div>
+  </div>
+  <p>沖縄の離島は「宮古・八重山の観光バブル」と「小規模離島の急速な人口減」という二極化が進む。ビジネス機会は観光×自然・一次産品の高付加価値化（ラム酒・海洋深層水・海ぶどう・伊江牛）・再エネ・マイクログリッド・ワーケーションに集中する。船賃最大7割低減・航空運賃4割低減、テレワーク施設整備補助（上限2,000万円・補助率8/10）、東京圏移住支援金（最大300万円超、18歳未満1人につき+100万円）など参入支援は厚い。</p>
+  <p>政策担当者との対話では、①離島振興法と沖縄振興特別措置法の二重構造、②2026年度末で期限を迎える有人国境離島法の後継議論、③オーバーツーリズム対策（竹富町訪問税・西表島入山人数制限）、④小規模離島の人口維持と医療・水・電力制約が重点論点となる。</p>
+</div>
+
+<!-- ── 第1編 ── -->
+<section id="geography">
+  <h2><span class="icon">🗺</span>地理的概要</h2>
+  <div class="policy-tag">第1編：概要編</div>
+  <p>沖縄県は東西約1,000km・南北約400kmに及ぶ海域に691島（国土地理院2023年確定値）が点在する日本唯一の島嶼県。沖縄振興特別措置法に基づく「指定離島」は54島、うち有人離島は38島。指定離島の人口は131,901人（令和4年1月1日住民基本台帳）で県人口の約8.9%、面積は1,024.66km²で県全体の約44.9%を占める。人口密度は本島の1,071人/km²に対し有人離島は129人/km²にとどまる。</p>
+  <h3>主要諸島の構成</h3>
+  <ul>
+    <li><strong>宮古諸島</strong>：宮古島本島（158.93km²）、伊良部島（29.08km²、2015年伊良部大橋で接続）、下地島、来間島、池間島、多良間島、水納島など</li>
+    <li><strong>八重山諸島</strong>：石垣島（222.24km²）、西表島（289.62km²・県内最大）、竹富島、小浜島、黒島、波照間島（日本最南端有人島・12.73km²）、与那国島（日本最西端・28.96km²）など</li>
+    <li><strong>慶良間諸島</strong>：渡嘉敷島、座間味島、阿嘉島、慶留間島（2014年慶良間諸島国立公園指定）</li>
+    <li><strong>大東諸島</strong>：南大東島（30.57km²）、北大東島（13.09km²）／本島から約360km東</li>
+    <li><strong>本島周辺離島</strong>：久米島（59.11km²）、伊江島（22.78km²）、伊平屋島（20.59km²）、伊是名島（14.17km²）、粟国島（7.64km²）、渡名喜島（3.87km²・県内最小村）など</li>
+  </ul>
+  <h3>アクセス概要</h3>
+  <p>那覇空港から宮古・石垣・久米島・南北大東・与那国・多良間に直行便（RAC/JTA/ANA）。本島周辺離島は各港からフェリー（伊江島30分、慶良間50〜70分、伊平屋80分、北大東・南大東は約15時間）。八重山諸島内は石垣港から高速船（竹富10分、西表40〜45分、波照間70分）。</p>
+  <div class="highlight"><strong>気候特性：</strong>亜熱帯海洋性・年平均気温約23〜24°C。台風シーズン（6〜10月）の欠航リスクが生活物資の安定供給に直結する。宮古・石垣・大東は地下水・天水依存で、2024年4月には沖縄県全体が渇水状態に。</div>
+</section>
+
+<section id="population">
+  <h2><span class="icon">👥</span>人口動態</h2>
+  <div class="policy-tag">第1編：概要編</div>
+  <p>沖縄県全体の推計人口は1,469,566人（2024年2月1日現在）。主要離島の人口は以下のとおり。</p>
+  <ul>
+    <li>宮古島市：55,656人（2025年1月1日住基、外国人含む）</li>
+    <li>石垣市：49,830人（2025年1月1日住基）</li>
+    <li>久米島町：約7,500人</li>
+    <li>伊江村：4,320人（2023年10月1日）</li>
+    <li>与那国町：約1,700人（うち約15%が陸上自衛隊隊員と家族）</li>
+    <li>伊是名村：1,282人、伊平屋村：1,188人、南大東村：1,197人</li>
+    <li>渡嘉敷村：677人、粟国村：646人、北大東村：約540人、渡名喜村：302人（県内最少）</li>
+  </ul>
+  <h3>高齢化率（65歳以上比率、2023年10月1日）</h3>
+  <p>渡名喜村43.4%（県内最高）・粟国村38.9%・伊江村37.2%・伊是名村34.2%・伊平屋村32.5%。離島13町村のうち7自治体で30%超。宮古島市28.3%・石垣市24.1%は相対的に低い。</p>
+  <div class="highlight"><strong>構造問題：</strong>高校がない小規模離島では中学卒業時点で島外進学が必要となり、若年層の流出が固定化されている。一方、宮古島市・石垣市は移住流入とリゾート開発により人口増の局面。</div>
+</section>
+
+<section id="industry">
+  <h2><span class="icon">💹</span>産業・経済の概況</h2>
+  <div class="policy-tag">第1編：概要編</div>
+  <p>沖縄県全体の県内総生産は名目4兆4,615億円（令和4年度）。1人当たり県民所得は224万9千円。離島の市町村民所得（2021年度）では<strong>北大東村463.5万円が11年連続県内1位</strong>（さとうきびモノカルチャー×少人口の構造的要因）。</p>
+  <h3>圏域別の産業特色</h3>
+  <ul>
+    <li><strong>宮古圏域</strong>：観光（2024年度入域119万人・観光収入886億円超）、さとうきび、マンゴー、製糖。下地島空港発の富裕層・インバウンド拡大。</li>
+    <li><strong>八重山圏域</strong>：観光（石垣市2024年入域141万人超・観光消費1,250億円）。西表島は世界自然遺産（2021年）登録後オーバーツーリズム顕在化。</li>
+    <li><strong>大東諸島</strong>：さとうきび製糖（大東糖業）、ラム酒（グレイスラム「COR COR」）、じゃがいも焼酎、漁業（マグロ・サワラ）。</li>
+    <li><strong>久米島</strong>：観光・車海老養殖（日本一）・海洋深層水複合利用（海ぶどう生産量日本一、球美の塩、化粧品）・OTEC実証。</li>
+    <li><strong>伊江島</strong>：葉たばこ・伊江牛・落花生・観光（民泊修学旅行受入の先進地）・イエラムサンタマリア。</li>
+    <li><strong>伊平屋・伊是名</strong>：稲作（沖縄県内有数）、モズク養殖、さとうきび。</li>
+    <li><strong>慶良間諸島</strong>：ダイビング・ホエールウォッチング。ケラマブルーで世界的ブランド化。</li>
+    <li><strong>多良間</strong>：第1次産業比率45.5%（県内最高水準）・多良間牛・さとうきび。</li>
+    <li><strong>与那国</strong>：カジキ漁・肉用牛・観光・陸上自衛隊駐屯地経済（住民税年4,000万円増）。</li>
+  </ul>
+</section>
+
+<section id="islands">
+  <h2><span class="icon">🏝</span>主要10島プロフィール</h2>
+  <div class="policy-tag">第1編：概要編</div>
+  <div class="island-table-wrap">
+    <table>
+      <thead>
+        <tr><th>島名</th><th>所属市町村</th><th>人口</th><th>面積</th><th>主要産業</th><th>特徴・有名なもの</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>宮古島</td><td>宮古島市</td><td>約47,000人</td><td>158.93km²</td><td>観光・農業（マンゴー・さとうきび）</td><td>与那覇前浜、伊良部大橋、エコアイランド宣言</td></tr>
+        <tr><td>石垣島</td><td>石垣市</td><td>49,830人</td><td>222.24km²</td><td>観光・農業・漁業</td><td>八重山経済の中心、川平湾、新石垣空港</td></tr>
+        <tr><td>西表島</td><td>竹富町</td><td>約2,400人</td><td>289.62km²<br>（県内最大）</td><td>観光・農業</td><td>世界自然遺産（2021年）、イリオモテヤマネコ</td></tr>
+        <tr><td>久米島</td><td>久米島町</td><td>約7,500人</td><td>59.11km²</td><td>観光・車海老養殖・海洋深層水</td><td>球美の島、ハテの浜、OTEC実証</td></tr>
+        <tr><td>与那国島</td><td>与那国町</td><td>約1,700人</td><td>28.96km²</td><td>漁業・肉用牛・観光・自衛隊</td><td>日本最西端、ドクターコト診療所ロケ地</td></tr>
+        <tr><td>竹富島</td><td>竹富町</td><td>約315人</td><td>5.43km²</td><td>観光</td><td>赤瓦集落、入島協力金300円、訪問税導入予定</td></tr>
+        <tr><td>伊江島</td><td>伊江村</td><td>4,320人</td><td>22.78km²</td><td>葉たばこ・伊江牛・観光（民泊）</td><td>城山（タッチュー）、修学旅行受入</td></tr>
+        <tr><td>南大東島</td><td>南大東村</td><td>1,197人</td><td>30.57km²</td><td>さとうきび・ラム酒・漁業</td><td>グレイスラムCOR COR、ダイトウオオコウモリ</td></tr>
+        <tr><td>北大東島</td><td>北大東村</td><td>約540人</td><td>13.09km²</td><td>さとうきび・じゃがいも焼酎・漁業</td><td>1人当たり所得県内1位（463.5万円）</td></tr>
+        <tr><td>渡嘉敷島</td><td>渡嘉敷村</td><td>677人</td><td>15.31km²</td><td>観光・ダイビング</td><td>慶良間諸島国立公園、那覇から35分</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── 第2編 ── -->
+<section id="life">
+  <h2><span class="icon">🏠</span>離島の現在の暮らし</h2>
+  <div class="policy-tag">第2編：詳細編</div>
+  <h3>食料品・物価</h3>
+  <p>本島から運ばれる生活物資は航送料が上乗せされ、おおむね本島より1〜3割高い。スーパー・購買所が島内で1〜数店舗のみで品揃えは限定的。県は離島活性化交付金で「戦略産品」の海上輸送費補助を行い、ガソリン流通コスト対策事業で本島並みの価格を維持。</p>
+  <h3>医療</h3>
+  <p>県立宮古病院・県立八重山病院・公立久米島病院が中核。離島診療所は医科24・歯科14（2017年時点）。県ドクターヘリ（浦添総合病院運営、2008年12月開始）が本島全域＋本島周辺離島を担当。宮古・八重山は陸上自衛隊第15旅団・第十一管区海上保安本部と添乗医師11病院体制で急患搬送。専門医（小児・産婦人科・眼科・耳鼻咽喉科）不在は継続課題。</p>
+  <h3>教育</h3>
+  <p>高校がない島（伊平屋・伊是名・粟国・渡名喜・北大東・南大東・多良間など）の中卒生は那覇・宮古・石垣の高校へ進学。県は「離島高校生修学支援事業」で交通費・寄宿費を間接補助。</p>
+  <h3>交通・通信</h3>
+  <p>航路は赤字補助で維持（2024年度計約5億8,039万円補助）。主要離島は光回線・4G/5Gが整備済みでテレワーク可能。<strong>沖縄離島住民等交通コスト負担軽減事業</strong>により船賃3〜7割低減、航空運賃4割低減を実現。</p>
+  <h3>コミュニティ・文化</h3>
+  <p>竹富島の種子取祭、与那国の祖納祭、伊江島のスポーツ大会、各島の旧盆エイサーなど独自文化が継承。伊江島の「新生活実践運動」は冠婚葬祭の費用を統一（結婚5千円・出産3千円・香典1千円）し移住者にも分かりやすいルール。</p>
+  <h3>移住・関係人口</h3>
+  <p>沖縄県の関係人口は1,140万人で47都道府県1位（ブランド総合研究所「関係人口の意識調査2022」）、移住意欲者は281万人で1位。公式移住応援サイト「おきなわ島ぐらし」（okinawa-iju.jp）が窓口。</p>
+</section>
+
+<section id="business">
+  <h2><span class="icon">💼</span>ビジネス・起業の機会</h2>
+  <div class="policy-tag">第2編：詳細編</div>
+  <div class="highlight"><strong>沖縄県の開業率7.1%は全国1位</strong>（中小企業庁「2023年版中小企業白書」）。島ならではのニッチ市場と補助制度の組み合わせが起業に有利。</div>
+
+  <h3>成功事業モデルの事例</h3>
+  <ul>
+    <li><strong>観光</strong>：石垣島・宮古島・慶良間諸島のダイビング／マリンアクティビティ。世界自然遺産・国立公園ブランドで年間141万人（石垣）・119万人（宮古）規模の市場が形成されている。</li>
+    <li><strong>農業・水産加工</strong>：久米島海洋深層水開発（株）の「球美の海ぶどう」は陸上養殖技術確立により通年生産可能で生産量日本一。豊洲市場・小売店へ出荷。</li>
+    <li><strong>ラム酒</strong>：南大東島のグレイスラム「COR COR」（金城祐子代表）は沖縄電力の社内ベンチャー制度を活用して2004年3月に独立法人化。原料100%南大東産・無添加のアグリコールラムは全国製菓メーカーの原料としても展開。伊江島「イエラムサンタマリア」（2011年）も成功例。</li>
+    <li><strong>テレワーク・IT</strong>：「沖縄テレワーク推進事業費補助金」活用でコワーキングスペース・サテライトオフィスが宮古島・石垣島を中心に増加。</li>
+    <li><strong>マイクログリッド</strong>：（株）ネクステムズが宮古島で展開する「比嘉システム」（オンサイトPPA＋マイクログリッド）。2022年来間島マイクログリッドが日本初の一般配電線を介したPV＋蓄電池100%電力供給を達成。2024年4月宮古島全域停電時に来間島100戸へ2時間自立給電。</li>
+    <li><strong>OTEC（海洋温度差発電）</strong>：久米島で商船三井・ゼネシス・佐賀大学が2022年度環境省事業に採択、2026年頃の商用化を目指す。</li>
+  </ul>
+
+  <h3>補助金・優遇税制</h3>
+  <ul>
+    <li><strong>沖縄テレワーク推進事業費補助金</strong>：テレワーク施設整備は上限2,000万円・補助率8/10、活用事業は上限600万円・補助率8/10</li>
+    <li><strong>東京圏移住支援金</strong>：単身100万円・世帯200万円・18歳未満帯同で1人につき+100万円（石垣市・国頭村・東村・本部町・伊江村が対象）</li>
+    <li><strong>離島活性化交付金</strong>：定住促進・戦略産品の海上輸送費支援・防災強化・離島留学等</li>
+    <li><strong>離島地域における税制制度</strong>：所得税・法人税の割増償却制度</li>
+    <li><strong>沖縄振興一括交付金</strong>：県・市町村の独自事業に活用可能</li>
+  </ul>
+
+  <h3>島別ビジネス機会マップ</h3>
+  <ul>
+    <li><strong>宮古島・石垣島</strong>：高級ホテル、富裕層向けサービス、リモートワーク拠点、デジタル人材育成</li>
+    <li><strong>西表島</strong>：エコツーリズム認定ガイド事業、自然学校</li>
+    <li><strong>久米島</strong>：海洋深層水関連製造業、車海老関連加工、OTEC関連</li>
+    <li><strong>伊江島・伊平屋・伊是名</strong>：農業6次産業化（伊江牛・米・モズク）、民泊</li>
+    <li><strong>与那国島</strong>：辺境観光・国境ブランド食品（カジキ加工等）、自衛隊向けサービス</li>
+    <li><strong>南北大東</strong>：ラム酒関連派生事業、極限環境ブランドの食品加工</li>
+    <li><strong>慶良間</strong>：ダイビング・ホエールウォッチング事業</li>
+    <li><strong>粟国・渡名喜</strong>：高付加価値特産品（粟國の塩、伝統景観活用宿泊）</li>
+    <li><strong>多良間</strong>：多良間牛のブランド販路、関係人口型観光</li>
+  </ul>
+</section>
+
+<section id="challenges">
+  <h2><span class="icon">⚠</span>離島の課題</h2>
+  <div class="policy-tag">第2編：詳細編</div>
+  <ul>
+    <li><strong>人手不足・後継者問題</strong>：1次産業の高齢化（さとうきび農家・漁業者）。観光業も人材不足で時給上昇。</li>
+    <li><strong>物流コスト</strong>：離島割増と台風による欠航リスク。戦略産品輸送費補助で一部克服。</li>
+    <li><strong>生活コスト高騰</strong>：物価1〜3割高に加え、宮古島市では観光バブルで家賃が那覇比1.5〜2倍に（ITmedia 2025年6月報道）。</li>
+    <li><strong>水・電力制約</strong>：宮古は地下水依存で観光増→水需給逼迫（琉球銀行調査、2024年4月）。電力コストは本島の約1.7倍。</li>
+    <li><strong>気候変動・災害</strong>：海面上昇・サンゴ白化・台風強大化・与那覇前浜等の砂浜侵食。</li>
+    <li><strong>オーバーツーリズム</strong>：竹富島は入島協力金徴収率が来島者の11%程度。西表島は2025年3月から5フィールドで利用人数制限制度を開始。</li>
+  </ul>
+</section>
+
+<!-- ── 第3編 ── -->
+<section id="policy">
+  <h2><span class="icon">📋</span>離島政策の構造</h2>
+  <div class="policy-tag">第3編：政策編</div>
+  <h3>主要法律5本</h3>
+  <ol>
+    <li><strong>離島振興法</strong>（1953年制定、10年時限で延長、現在258島が指定）：基幹法。所管は国土交通省国土政策局。<em>沖縄は対象外。</em></li>
+    <li><strong>奄美群島振興開発特別措置法</strong>（1954年制定、5年時限）</li>
+    <li><strong>小笠原諸島振興開発特別措置法</strong>（1969年制定、5年時限）</li>
+    <li><strong>沖縄振興特別措置法</strong>（現法は10年時限、令和4年改正）：沖縄離島に適用。一括交付金・特区制度・措置実施計画認定制度等。</li>
+    <li><strong>有人国境離島地域の保全及び特定有人国境離島地域に係る地域社会の維持に関する特別措置法</strong>（2017年4月施行、10年時限）：<em>2026年度末で期限到来。</em>71島に適用。航路・航空路運賃低廉化、雇用機会拡充、滞在型観光促進。</li>
+  </ol>
+  <h3>所管役割</h3>
+  <ul>
+    <li>内閣府沖縄担当部局：沖縄関連予算の一括計上、振興方針策定</li>
+    <li>国土交通省国土政策局：離島振興法施策、離島航路・航空路維持</li>
+    <li>農林水産省：水産・農業振興</li>
+    <li>沖縄県企画部地域・離島課：県の離島振興窓口（098-866-2370）</li>
+    <li>各市町村：地域振興計画策定、移住・空き家・産業支援</li>
+  </ul>
+  <h3>主要施策</h3>
+  <ul>
+    <li>航路維持補助（合計5億8千万円超／2024年度）</li>
+    <li>航空路維持（宮古-多良間・那覇-久米島・那覇-与那国の3路線を補助）</li>
+    <li>離島住民等交通コスト負担軽減事業（船賃3〜7割・航空運賃4割低減）</li>
+    <li>東京圏移住支援金・関係人口向け移住制度・空き家バンク</li>
+    <li>離島活性化交付金・沖縄振興一括交付金・沖縄テレワーク推進事業費補助金</li>
+    <li>宮古島市「エコアイランド宣言2.0」・来間島マイクログリッド・久米島OTEC実証</li>
+    <li>離島高校生修学支援事業・離島妊婦支援・給食無償化（与那国町等）</li>
+  </ul>
+  <h3>政策上の論点・課題</h3>
+  <ul>
+    <li>人口減少：有人国境離島地域の人口減少率は他離島より高く歯止めがかかっていない。</li>
+    <li>補助金依存：航路・航空路の構造的赤字、自治体財政の地方交付税依存度高。</li>
+    <li>離島間格差：大規模離島と小規模離島の二極化。</li>
+    <li>国境離島の安全保障：与那国（陸自2016年配備）・宮古・石垣（地対艦・地対空ミサイル配備）の住民合意形成。</li>
+    <li>沖縄県・国の調整：振興予算の安定確保と県主導性のせめぎ合い。</li>
+  </ul>
+</section>
+
+<section id="dialogue">
+  <h2><span class="icon">🗣</span>政策担当者との対話準備</h2>
+  <div class="policy-tag">第3編：政策編</div>
+  <h3>聞くべき質問10選</h3>
+  <ol>
+    <li>第6次沖縄振興計画の主要指標、2024年度の達成率49.0%だが、未達成項目で離島関係のものはどれか？</li>
+    <li>2026年度末で期限を迎える有人国境離島法の後継議論、沖縄県としてのスタンスは？</li>
+    <li>沖縄離島住民等交通コスト負担軽減事業の財源（沖縄一括交付金）の継続性は？</li>
+    <li>西表島のオーバーツーリズム対策（人数制限）の運用初年度の評価は？竹富町訪問税の制度設計の進捗は？</li>
+    <li>小規模離島（粟国・渡名喜等）の人口維持目標と具体的施策は？</li>
+    <li>宮古島・石垣島の観光バブル（家賃高騰・住民生活影響）に対し県はどう関与しているか？</li>
+    <li>久米島OTEC・宮古島マイクログリッド等の再エネ実証の県内他離島展開ロードマップは？</li>
+    <li>離島スタートアップ起業支援金の実績件数・代表事例は？</li>
+    <li>高校がない離島の若者島内回帰策（オンライン高校・サテライト校等）の検討状況は？</li>
+    <li>国境離島での自衛隊配備拡大に伴う地域振興予算（基地交付金等）の連動はあるか？</li>
+  </ol>
+  <h3>押さえるべきキーワード（20語）</h3>
+  <ul>
+    <li><strong>指定離島</strong>（沖縄振興特別措置法第3条第3号に基づく54島）</li>
+    <li><strong>有人国境離島</strong>（特定71島）</li>
+    <li><strong>離島活性化交付金</strong>（国交省・定住促進・戦略産品輸送費支援）</li>
+    <li><strong>沖縄振興一括交付金</strong>（ハード・ソフト、県と市町村が自主裁量）</li>
+    <li><strong>離島住民等交通コスト負担軽減事業</strong></li>
+    <li><strong>小規模離島生活基盤整備推進事業費補助金</strong>（内閣府）</li>
+    <li><strong>エコアイランド宣言2.0</strong>（宮古島市、2050年自給率48.9%）</li>
+    <li><strong>エコツーリズム推進法</strong>（西表島の特定自然観光資源指定の根拠）</li>
+    <li><strong>第6次沖縄振興計画</strong>（新・沖縄21世紀ビジョン基本計画、2022〜2031年度）</li>
+    <li><strong>沖縄21世紀ビジョン ゆがふしまづくり計画</strong></li>
+    <li><strong>滞在交流型観光</strong>（「島たび・島めぐり」）</li>
+    <li><strong>海業（うみぎょう）</strong>（漁業＋飲食・観光融合）</li>
+    <li><strong>マイクログリッド（MG）</strong>（来間島で日本初の実稼働）</li>
+    <li><strong>OTEC</strong>（Ocean Thermal Energy Conversion・海洋温度差発電）</li>
+    <li><strong>スマートアイランド</strong>（国交省実証）</li>
+    <li><strong>DMO</strong>（観光地域づくり法人）</li>
+    <li><strong>離島留学</strong>（活性化交付金で補助拡充）</li>
+    <li><strong>関係人口</strong>（移住・観光以外の地域関与人口）</li>
+    <li><strong>特定地域づくり事業協同組合</strong>（人口急減地域特定地域づくり推進法2019年）</li>
+    <li><strong>へき地保健医療計画</strong>（沖縄県は医療計画と一体的策定）</li>
+  </ul>
+  <h3>最近の重要トピック（2023〜2025年）</h3>
+  <ul>
+    <li>2023年4月：改正離島振興法施行（移動費用低廉化・妊婦通院支援・修学支援の明記）</li>
+    <li>2023年7月：第6次沖縄県観光振興基本計画策定</li>
+    <li>2024年4月25日：宮古島市全域大規模停電、来間島マイクログリッドが日本初の実稼働</li>
+    <li>2024年4月：沖縄県全体が渇水状態、節水呼びかけ</li>
+    <li>2024年：石垣市入域141万人超、宮古島市119万人（過去最高）</li>
+    <li>2025年3月1日：西表島5フィールドで利用人数制限制度開始</li>
+    <li>2025年9月：南大東島ラム酒を題材とする映画「風のマジム」全国公開</li>
+    <li>2025〜2026年：有人国境離島法の後継議論本格化（2026年度末で時限到来）</li>
+    <li>2026年（予定）：久米島OTEC商用化目標</li>
+  </ul>
+</section>
+
+<!-- ── 総括 ── -->
+<div class="conclusion" id="conclusion">
+  <h2>総括・推奨事項</h2>
+  <div class="point">
+    <div class="pt-title">ステージ1（〜3か月）：理解と島の選定</div>
+    <p>本レポートの島別マップから、観光・水産加工・再エネ・テレワーク等の自社強みと島条件をマッチング。沖縄県地域・離島課（098-866-2370）と「おきなわ島ぐらし」窓口へ事前ヒアリング。</p>
+  </div>
+  <div class="point">
+    <div class="pt-title">ステージ2（3〜6か月）：関係人口化</div>
+    <p>候補島で現地視察＋ワーケーション補助制度を活用して関係人口化。沖縄テレワーク補助金（上限2,000万円）の申請可能性を専門家と検討。竹富・西表など環境配慮島は協力金／訪問税スキームに整合した事業設計。</p>
+  </div>
+  <div class="point">
+    <div class="pt-title">ステージ3（6〜12か月）：小規模実装</div>
+    <p>一括交付金・離島活性化交付金・スタートアップ起業支援金の組み合わせで実証事業を実装。マイクログリッド・OTEC・海洋深層水等の県重点テーマと連携すれば沖縄電力／市町村との協業の道が開ける。</p>
+  </div>
+  <p>留意点：法律期限（有人国境離島法2026年度末、沖縄振興特別措置法の見直し規定5年以内）の動向によって2025〜2027年に制度激変の可能性がある。補助金制度・統計値は頻繁に改訂されるため、各公式サイトで最新情報を確認すること。</p>
+</div>
+
+<!-- ── 参考資料 ── -->
+<div class="ref-section" id="references">
+  <h2>巻末参考資料（全61件）</h2>
+
+  <h3>沖縄県・市町村の公式資料</h3>
+  <ul class="ref-list">
+    <li><span class="ref-num">1</span><div class="ref-body"><a href="https://www.pref.okinawa.jp/shigoto/kankotokusan/1011671/1011816/1011834/1011854.html" target="_blank">離島の概況</a><div class="ref-src">沖縄県公式ホームページ</div></div></li>
+    <li><span class="ref-num">2</span><div class="ref-body"><a href="https://www.pref.okinawa.lg.jp/_res/projects/default_project/_page_/001/017/169/06shiryou2.pdf" target="_blank">資料2 小規模離島について（PDF）</a><div class="ref-src">沖縄県</div></div></li>
+    <li><span class="ref-num">3</span><div class="ref-body"><a href="https://www.pref.okinawa.jp/toukeika/estimates/2024/pop202402.pdf" target="_blank">令和6年2月1日現在 推計人口結果の概要（PDF）</a><div class="ref-src">沖縄県統計課</div></div></li>
+    <li><span class="ref-num">4</span><div class="ref-body"><a href="https://www.pref.okinawa.jp/toukeika/estimates/2023/annual/00all(2023annual).pdf" target="_blank">令和5年人口移動報告年報（PDF）</a><div class="ref-src">沖縄県企画部</div></div></li>
+    <li><span class="ref-num">5</span><div class="ref-body"><a href="https://www.pref.okinawa.jp/toukeika/accounts/2022/acc4.pdf" target="_blank">令和4年度県民経済計算から見た県経済の動き（PDF）</a><div class="ref-src">沖縄県統計課</div></div></li>
+    <li><span class="ref-num">6</span><div class="ref-body"><a href="https://www.pref.okinawa.lg.jp/_res/projects/default_project/_page_/001/032/313/shiryou3.pdf" target="_blank">沖縄県の高齢化の現状（令和6年度 資料3-1）（PDF）</a><div class="ref-src">沖縄県</div></div></li>
+    <li><span class="ref-num">7</span><div class="ref-body"><a href="https://www.pref.okinawa.lg.jp/kensei/tokei/1016451/1016454.html" target="_blank">離島関係資料（令和3年3月）</a><div class="ref-src">沖縄県統計課</div></div></li>
+    <li><span class="ref-num">8</span><div class="ref-body"><a href="https://www.pref.okinawa.jp/machizukuri/dorokotsu/1012558/1012560/1012566.html" target="_blank">海上交通（離島航路の確保・維持）</a><div class="ref-src">沖縄県</div></div></li>
+    <li><span class="ref-num">9</span><div class="ref-body"><a href="https://www.pref.okinawa.jp/machizukuri/dorokotsu/1012558/1012560/1012565.html" target="_blank">沖縄離島住民等交通コスト負担軽減事業</a><div class="ref-src">沖縄県</div></div></li>
+    <li><span class="ref-num">10</span><div class="ref-body"><a href="https://www.pref.okinawa.jp/kurashikankyo/iju/1023708.html" target="_blank">東京圏からの移住を検討の皆様へ 移住支援金制度のご案内</a><div class="ref-src">沖縄県</div></div></li>
+    <li><span class="ref-num">11</span><div class="ref-body"><a href="https://www.pref.okinawa.jp/site/hoken/iryoseisaku/iryo/docheli.html" target="_blank">救急医療用ヘリコプター（ドクターヘリ）事業</a><div class="ref-src">沖縄県</div></div></li>
+    <li><span class="ref-num">12</span><div class="ref-body"><a href="https://www.pref.okinawa.lg.jp/iryokenko/iryo/1006082/1036127.html" target="_blank">令和7年度沖縄県「救急の日」及び「救急医療週間」</a><div class="ref-src">沖縄県</div></div></li>
+    <li><span class="ref-num">13</span><div class="ref-body"><a href="https://www.pref.okinawa.jp/shigoto/kankotokusan/1011671/1011816/1011834/1011854.html" target="_blank">第6次沖縄県観光振興基本計画</a><div class="ref-src">沖縄県</div></div></li>
+    <li><span class="ref-num">14</span><div class="ref-body"><a href="https://www.pref.okinawa.jp/shigoto/kankotokusan/1011671/1011741/1011810.html" target="_blank">沖縄観光推進ロードマップ（第6次観光振興基本計画に係る実施計画）</a><div class="ref-src">沖縄県</div></div></li>
+    <li><span class="ref-num">15</span><div class="ref-body"><a href="https://www8.cao.go.jp/okinawa/siryou/singikai/senmoniinkai/22/22-5.pdf" target="_blank">沖縄の振興について（令和7年1月10日 内閣府沖縄担当部局 資料5）（PDF）</a><div class="ref-src">内閣府</div></div></li>
+    <li><span class="ref-num">16</span><div class="ref-body"><a href="https://www8.cao.go.jp/okinawa/siryou/singikai/senmoniinkaigou/3/03-057.pdf" target="_blank">離島における医療機関数及び医師数（PDF）</a><div class="ref-src">内閣府</div></div></li>
+    <li><span class="ref-num">17</span><div class="ref-body"><a href="https://www.city.ishigaki.okinawa.jp/material/files/group/11/R6REPORT.pdf" target="_blank">2024年 石垣市観光レポート（PDF）</a><div class="ref-src">石垣市</div></div></li>
+    <li><span class="ref-num">18</span><div class="ref-body"><a href="https://vill.kitadaito.okinawa.jp/kitadaitou/jinkou_setai.html" target="_blank">人口・世帯数の推移</a><div class="ref-src">北大東村</div></div></li>
+    <li><span class="ref-num">19</span><div class="ref-body"><a href="https://www.town.taketomi.lg.jp/soshiki/shizenkanko/tokuteichirashi/" target="_blank">西表島の一部フィールドにおける利用人数制限の開始について</a><div class="ref-src">竹富町</div></div></li>
+    <li><span class="ref-num">20</span><div class="ref-body"><a href="https://painusima.com/visitor-guidelines/" target="_blank">竹富島地域自然資産財団 西表島利用者ガイドライン</a><div class="ref-src">竹富町観光協会</div></div></li>
+  </ul>
+
+  <h3>政策・法制度</h3>
+  <ul class="ref-list">
+    <li><span class="ref-num">21</span><div class="ref-body"><a href="https://www.spf.org/opri/newsletter/564_1.html" target="_blank">離島の振興に関する法律と施策の現在</a><div class="ref-src">笹川平和財団 海洋政策研究所 Ocean Newsletter</div></div></li>
+    <li><span class="ref-num">22</span><div class="ref-body"><a href="https://ritokei.com/system/18498" target="_blank">離島振興の礎となる5つの法律（歴史的背景や役割）</a><div class="ref-src">離島経済新聞 ritokei.com</div></div></li>
+    <li><span class="ref-num">23</span><div class="ref-body"><a href="https://ja.wikipedia.org/wiki/%E9%9B%A2%E5%B3%B6%E6%8C%AF%E8%88%88%E6%B3%95" target="_blank">離島振興法</a><div class="ref-src">Wikipedia（日本語）</div></div></li>
+    <li><span class="ref-num">24</span><div class="ref-body"><a href="https://ja.wikipedia.org/wiki/%E4%B8%8E%E9%82%A3%E5%9B%BD%E5%B3%B6%E3%81%AE%E9%98%B2%E8%A1%9B%E5%95%8F%E9%A1%8C" target="_blank">与那国島の防衛問題</a><div class="ref-src">Wikipedia（日本語）</div></div></li>
+    <li><span class="ref-num">25</span><div class="ref-body"><a href="https://www.mlit.go.jp/common/001229487.pdf" target="_blank">離島地域における振興施策 政策レビュー結果（評価書）（平成30年3月）（PDF）</a><div class="ref-src">国土交通省</div></div></li>
+    <li><span class="ref-num">26</span><div class="ref-body"><a href="https://medysis.jp/documents/healthplanning/7th/7th-47-j3.pdf" target="_blank">沖縄県の保健医療対策の現状と課題（PDF）</a><div class="ref-src">medysis.jp（国の医療計画資料）</div></div></li>
+    <li><span class="ref-num">27</span><div class="ref-body"><a href="https://www.sangiin.go.jp/japanese/annai/chousa/rippou_chousa/backnumber/2008pdf/20080514051.pdf" target="_blank">沖縄県の保健医療対策の現状と課題（参議院 立法と調査 2008年5月）（PDF）</a><div class="ref-src">参議院</div></div></li>
+  </ul>
+
+  <h3>経済・産業・ビジネス</h3>
+  <ul class="ref-list">
+    <li><span class="ref-num">28</span><div class="ref-body"><a href="http://www.ryugin-ri.co.jp/wp-content/uploads/2024/04/2404miyakomizumondai.pdf" target="_blank">宮古島市の観光と水問題について（2024年4月）（PDF）</a><div class="ref-src">琉球銀行 調査レポート</div></div></li>
+    <li><span class="ref-num">29</span><div class="ref-body"><a href="https://www.miyakomainichi.com/news/news-185972/" target="_blank">観光客 過去最高119万人／前年度比25万人増</a><div class="ref-src">宮古毎日新聞</div></div></li>
+    <li><span class="ref-num">30</span><div class="ref-body"><a href="https://www.miyakomainichi.com/news/news-184038/" target="_blank">観光収入額886億円／平成23年度</a><div class="ref-src">宮古毎日新聞</div></div></li>
+    <li><span class="ref-num">31</span><div class="ref-body"><a href="https://www.itmedia.co.jp/business/articles/2506/09/news008.html" target="_blank">宮古島"観光バブル"の代償――倍増した家賃、住めなくなる地元民（2025年6月9日）</a><div class="ref-src">ITmedia ビジネスオンライン</div></div></li>
+    <li><span class="ref-num">32</span><div class="ref-body"><a href="https://www.okinawatimes.co.jp/articles/-/404845" target="_blank">宮古島で賃貸"バブル"の異常事態 家賃高騰でワンルーム10万円も（2019年4月）</a><div class="ref-src">沖縄タイムス</div></div></li>
+    <li><span class="ref-num">33</span><div class="ref-body"><a href="https://www.okinawatimes.co.jp/articles/-/1348710" target="_blank">沖縄2021年度の「市町村民所得」最も高いのは？ 1人当たり463万5千円、11年連続でトップ</a><div class="ref-src">沖縄タイムス</div></div></li>
+    <li><span class="ref-num">34</span><div class="ref-body"><a href="https://www.okinawatimes.co.jp/articles/-/1650131" target="_blank">新・沖縄21世紀ビジョン基本計画の主要指標 2024年度目標値の達成は49.0%</a><div class="ref-src">沖縄タイムス</div></div></li>
+    <li><span class="ref-num">35</span><div class="ref-body"><a href="https://news.tiiki.jp/articles/4726" target="_blank">関係人口は沖縄県が1位。移住意欲は2割強に上昇「関係人口の意識調査2022」</a><div class="ref-src">地域ブランドNEWS（tiiki.jp）</div></div></li>
+    <li><span class="ref-num">36</span><div class="ref-body"><a href="https://ceo-partner.co.jp/start-up/start-a-business-okinawa-emigration/" target="_blank">沖縄に移住して起業する方増加中！6つの成功例とみんなが頼る支援事業</a><div class="ref-src">起業コンパス</div></div></li>
+    <li><span class="ref-num">37</span><div class="ref-body"><a href="https://sogyotecho.jp/funding/20200608okinawa-telework/" target="_blank">「沖縄テレワーク推進事業費補助金」</a><div class="ref-src">創業手帳</div></div></li>
+    <li><span class="ref-num">38</span><div class="ref-body"><a href="https://hojyokin-portal.jp/columns/ijyu_okinawa" target="_blank">沖縄移住で最大300万円！支援制度を徹底解説【2026年最新】</a><div class="ref-src">補助金ポータル</div></div></li>
+  </ul>
+
+  <h3>再エネ・マイクログリッド・OTEC</h3>
+  <ul class="ref-list">
+    <li><span class="ref-num">39</span><div class="ref-body"><a href="https://ryukyushimpo.jp/news/economics/entry-3068879.html" target="_blank">4月の宮古島市の大規模停電時、来間島の全100戸に電力供給 マイクログリッド初の実稼働（2024年）</a><div class="ref-src">琉球新報デジタル</div></div></li>
+    <li><span class="ref-num">40</span><div class="ref-body"><a href="https://project.nikkeibp.co.jp/energy/atcl/19/feature/00001/00024/" target="_blank">宮古島のマイクログリッドを育てた2人の苦難の10年</a><div class="ref-src">日経エネルギーNext</div></div></li>
+    <li><span class="ref-num">41</span><div class="ref-body"><a href="https://www.power-academy.jp/electronics/report/rep03300.html" target="_blank">vol.31「来間島マイクログリッド実証設備」を訪問しました</a><div class="ref-src">パワーアカデミー</div></div></li>
+    <li><span class="ref-num">42</span><div class="ref-body"><a href="https://seikatsuclub.coop/news/detail.html?NTC=1000004920" target="_blank">エネルギー周辺革命 沖縄の離島が生んだ「比嘉システム」前編</a><div class="ref-src">生活クラブ生活協同組合連合会</div></div></li>
+    <li><span class="ref-num">43</span><div class="ref-body"><a href="https://www.mol.co.jp/pr/2023/23038.html" target="_blank">沖縄県久米島における海洋温度差発電の実証事業が環境省事業に採択（2023年）</a><div class="ref-src">商船三井 プレスリリース</div></div></li>
+    <li><span class="ref-num">44</span><div class="ref-body"><a href="https://www.okinawa41.go.jp/reports/18633/" target="_blank">久米島の海洋深層水で豊かな未来を創造</a><div class="ref-src">OKINAWA41（沖縄総合事務局）</div></div></li>
+    <li><span class="ref-num">45</span><div class="ref-body"><a href="https://www.nikkei.com/article/DGXNASFK2701U_X20C12A4000000/" target="_blank">宮古島の離島マイクログリッド、世界初の成果が続々（2012年）</a><div class="ref-src">日本経済新聞</div></div></li>
+  </ul>
+
+  <h3>ラム酒・特産品・文化</h3>
+  <ul class="ref-list">
+    <li><span class="ref-num">46</span><div class="ref-body"><a href="https://www.orionbeer.co.jp/story/okinawan-rum/" target="_blank">沖縄の「ラム酒」サトウキビと島人の情熱が生み出した新しい島の酒</a><div class="ref-src">オリオンビール公式ストーリー</div></div></li>
+    <li><span class="ref-num">47</span><div class="ref-body"><a href="https://rum.co.jp/company.php" target="_blank">グレイスラム（会社概要）</a><div class="ref-src">グレイスラム株式会社</div></div></li>
+    <li><span class="ref-num">48</span><div class="ref-body"><a href="https://allabout.co.jp/gm/gc/76504/" target="_blank">女性社長の夢が実った！ 沖縄県産ラム誕生 南大東島で生まれたラム酒</a><div class="ref-src">All About</div></div></li>
+    <li><span class="ref-num">49</span><div class="ref-body"><a href="https://note.com/xborder/n/na3fee39e984b" target="_blank">「理想の酒」「理想の蒸留器」とは？南大東島生まれのラムを巡る技術者同士のディープな対話</a><div class="ref-src">note × X-BORDER</div></div></li>
+    <li><span class="ref-num">50</span><div class="ref-body"><a href="https://www.alic.go.jp/joho-s/joho07_003288.html" target="_blank">さとうきびを原料としたラム酒の製造〜サトウキビを通じた地域おこし〜</a><div class="ref-src">農畜産業振興機構（ALIC）</div></div></li>
+    <li><span class="ref-num">51</span><div class="ref-body"><a href="https://beokinawa.jp/jp/brutus/8/" target="_blank">さとうきびで作る沖縄のもう一つの島酒・ラム。その草分けたちのロマンを綴る「沖縄ラム物語」</a><div class="ref-src">Be.Okinawa（BRUTUS meets Be.Okinawa）</div></div></li>
+    <li><span class="ref-num">52</span><div class="ref-body"><a href="https://www.tabechoku.com/producers/23116" target="_blank">久米島海洋深層水開発へのレビュー・商品</a><div class="ref-src">食べチョク</div></div></li>
+    <li><span class="ref-num">53</span><div class="ref-body"><a href="https://ja.wikipedia.org/wiki/%E6%B8%A1%E5%90%8D%E5%96%9C%E6%9D%91" target="_blank">渡名喜村</a><div class="ref-src">Wikipedia（日本語）</div></div></li>
+  </ul>
+
+  <h3>オーバーツーリズム</h3>
+  <ul class="ref-list">
+    <li><span class="ref-num">54</span><div class="ref-body"><a href="https://www.nikkei.com/article/DGXMZO49044470X20C19A8LX0000/" target="_blank">竹富島が入島料300円、9月からの環境保全に（2019年8月）</a><div class="ref-src">日本経済新聞</div></div></li>
+    <li><span class="ref-num">55</span><div class="ref-body"><a href="https://www.okinawatimes.co.jp/articles/-/644431" target="_blank">竹富島への入島料300円、観光客の1割しか払わない理由（2020年9月）</a><div class="ref-src">沖縄タイムス</div></div></li>
+    <li><span class="ref-num">56</span><div class="ref-body"><a href="https://www.ryoko-net.co.jp/?p=86193" target="_blank">竹富島の「入島料」周知と協力を 竹富島地域自然資産財団がTEJ沖縄で</a><div class="ref-src">Ryoko-net</div></div></li>
+    <li><span class="ref-num">57</span><div class="ref-body"><a href="https://news.yahoo.co.jp/articles/d3d6e6316cd0aa1c0ce4335a825d6d800fcfdf01" target="_blank">観光客に訪問税 「オーバーツーリズム」対策で 沖縄・竹富町が導入へ</a><div class="ref-src">Yahoo!ニュース（沖縄タイムス）</div></div></li>
+    <li><span class="ref-num">58</span><div class="ref-body"><a href="https://www.travelvoice.jp/20230201-152810" target="_blank">沖縄の離島で旅行者の「人数制限」を始める背景と狙いとは？（2023年2月）</a><div class="ref-src">Travel Voice</div></div></li>
+  </ul>
+
+  <h3>国境離島・自衛隊</h3>
+  <ul class="ref-list">
+    <li><span class="ref-num">59</span><div class="ref-body"><a href="https://www.okinawatimes.co.jp/articles/-/1535801" target="_blank">「自衛隊への賛否を話すのはタブー」与那国島、住民投票から10年 隊員や家族、今や人口2割</a><div class="ref-src">沖縄タイムス</div></div></li>
+  </ul>
+
+  <h3>人口統計（外部データベース）</h3>
+  <ul class="ref-list">
+    <li><span class="ref-num">60</span><div class="ref-body"><a href="https://jp.gdfreak.com/public/detail/jp010050000001047214/16" target="_blank">グラフで見る！ 宮古島市の人口と世帯 2025年の人口ピラミッド</a><div class="ref-src">GD Freak!</div></div></li>
+    <li><span class="ref-num">61</span><div class="ref-body"><a href="https://jp.gdfreak.com/public/detail/jp010050000001047207/16" target="_blank">グラフで見る！ 石垣市の人口と世帯 2025年の人口ピラミッド</a><div class="ref-src">GD Freak!</div></div></li>
+  </ul>
+</div>
+
+</div><!-- /.container -->
+
+<footer>
+  <p>沖縄の離島 包括リサーチレポート ／ 2025年5月作成 ／ 本資料は公開情報を基に作成。法律期限・統計値・補助金制度は頻繁に改訂されるため、最新情報は各公式サイトで確認のこと。</p>
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid #dde3ea;font-size:11px;color:#8a939e;line-height:1.8;text-align:left;max-width:760px;margin-left:auto;margin-right:auto;">【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。</div></footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>

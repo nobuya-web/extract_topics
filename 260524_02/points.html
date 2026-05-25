@@ -1,0 +1,499 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>有人国境離島法 基本方針のポイント整理と沖縄の論点</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">有人国境離島法</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">&#9654; 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">&#9632; 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>有人国境離島法 基本方針のポイント整理と沖縄の論点</h1>
+  <p class="sub">有人国境離島地域の保全及び特定有人国境離島地域に係る地域社会の維持に関する基本的な方針（H29.4.7 内閣総理大臣決定）</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#hozen">保全施策</a></li>
+    <li><a href="#koryu">交流・対流・循環</a></li>
+    <li><a href="#sangyo">産業振興</a></li>
+    <li><a href="#kpi">KPI・計画体制</a></li>
+    <li><a href="#okinawa">沖縄の論点</a></li>
+    <li><a href="#conclusion">総括</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>「有人国境離島地域の保全及び特定有人国境離島地域に係る地域社会の維持に関する特別措置法」（平成28年法律第33号）は、<strong>10年の時限立法</strong>として制定された。基本方針は平成29年4月7日に閣議決定され、全国29地域148島を対象に、国家安全保障と地域社会の持続の二軸から離島政策の方向を定めている。</p>
+    <p>この法律の根本的な意義は、日本の国土面積の12倍に及ぶ領海・排他的経済水域（EEZ）を「島がある限り守れる」という論理にある。領海基線を有する離島は約500島にのぼり、有人であることで漁業・海洋調査・領海警備・低潮線監視などの「活動拠点機能」を持つ。特に遠隔地で人口が著しく減少している<strong>特定有人国境離島地域（15地域71島）</strong>は、一度無人化すると活動拠点機能の回復が極めて困難なため重点支援の対象となっている。</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="val">29<span>地域</span></div>
+        <div class="lbl">有人国境離島地域（全対象）</div>
+      </div>
+      <div class="stat">
+        <div class="val">148<span>島</span></div>
+        <div class="lbl">構成離島の総数</div>
+      </div>
+      <div class="stat">
+        <div class="val">15<span>地域</span></div>
+        <div class="lbl">特定有人国境離島地域（重点支援）</div>
+      </div>
+      <div class="stat">
+        <div class="val">71<span>島</span></div>
+        <div class="lbl">特定有人国境離島地域の構成島</div>
+      </div>
+    </div>
+    <p>法律の構造は「保全」（国家安全保障の観点から島を守る）と「地域社会の維持」（人口流出を食い止め、人が住み続けられる環境を整備する）の二本柱から成る。島に人が住まなければ安全保障上の活動拠点も維持できないという論理が一貫して貫かれている。2026年は制定10年を迎える節目であり、法律の更新・延長議論が本格化する年にあたる。</p>
+  </div>
+
+  <section id="hozen">
+    <h2><span class="icon">&#127978;</span>法律の骨格と「保全」施策のポイント</h2>
+    <div class="policy-tag">基本方針 Ⅱ章 P.2-4</div>
+    <p>有人国境離島法が定める保全施策は、国の直接介入を伴う安全保障色の強いものである。具体的には、<strong>国の行政機関（海上保安庁・自衛隊）の施設設置・強化</strong>、<strong>土地の買取り・借上げ</strong>、<strong>港湾・漁港・道路・空港の整備</strong>の三本柱で構成される。</p>
+    <p>平成28年度末時点で、海上保安庁の部署が配置されている有人国境離島地域は11地域、自衛隊部隊が配置されているのは13地域であり（基本方針P.3）、「海上保安体制強化に関する方針」や「防衛計画の大綱」に基づく増強が進められてきた。</p>
+    <div class="highlight">
+      <strong>注目点：土地管理の国家安全保障化</strong><br>
+      基本方針は「有人国境離島地域における土地の取引については、国家安全保障に関わる重要な問題」と明記しており（P.3）、外国資本による土地取得への懸念が制度設計の背景にある。国は土地所有状況の把握と土地利用の在り方について継続的に検討するとされている。
+    </div>
+    <p>保全施策の実施主体は国を主体としながら、港湾等の整備・不法入国防止・広域連携については地方公共団体も担い手とされており、国が財政的・人的支援を行いつつ都道県・市町村が実践する構造になっている。</p>
+  </section>
+
+  <section id="koryu">
+    <h2><span class="icon">&#127968;</span>「交流・対流・循環」——地域社会維持の戦略</h2>
+    <div class="policy-tag">基本方針 Ⅲ章 P.5-10</div>
+    <p>地域社会維持の理念として基本方針が掲げるのが「交流・対流・循環」という概念だ。ヒトの往来を増やして知恵・発想・意欲を生み出し、モノとカネの対流と島内経済の拡大をつなぐ好循環型の地域社会を構築するというビジョンである。この実現のための施策の方向は①人の往来・物の移動に係る条件不利性の緩和、②交流促進のためのきっかけづくり、③島の魅力の再発見と人づくりの推進、の三つとされる。</p>
+    <p>最も即効性が期待されているのが<strong>航路・航空路運賃の低廉化</strong>である。特定有人国境離島地域では島内だけで医療・教育・買い物が完結せず、本土との往来コストが高いことが人口流出の主因の一つとなっている。地域社会維持交付金（内閣府）を活用して、島民および準島民を対象に運賃低廉化を進めることが定められている（P.9-10）。</p>
+    <p><strong>生活・事業物資の費用負担軽減</strong>については、ガソリン流通コスト対策事業（資源エネルギー庁）による補助や、農水産品の輸送コスト低廉化支援が盛り込まれている。一方、近年のeコマース拡大により宅配料金格差が縮小しているなど、条件不利性が一部緩和されている実態も指摘されている（P.10）。</p>
+    <div class="highlight">
+      <strong>施策の役割分担</strong><br>
+      市町村は現場の事業者に寄り添い地域を巻き込む役割、都道県は市町村間連携と本土パートナーとのつなぎ役、国は財政支援・情報・ノウハウ補完とネットワーク提供を担うとされている（P.7）。
+    </div>
+  </section>
+
+  <section id="sangyo">
+    <h2><span class="icon">&#127758;</span>産業振興施策の具体的内容</h2>
+    <div class="policy-tag">基本方針 Ⅲ-2章 P.10-16</div>
+    <p>基本方針における産業振興の中心は<strong>農林水産業の再生・民間創業促進・滞在型観光</strong>の三分野である。農林水産業については、若年層流出・後継者不足・割高な輸送コストという三重苦が指摘されており、輸送コスト低廉化・地域商社機能構築・担い手確保が具体策として挙げられている。KPIとして「2027年に農林水産物の生産額（2013年 約9,725億円）を現状維持する」という目標が設定された（P.11）。</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="val">4.5<span>%</span></div>
+        <div class="lbl">特定有人国境離島地域の開業率（2014年）※全国平均6.4%</div>
+      </div>
+      <div class="stat">
+        <div class="val">270<span>万人泊</span></div>
+        <div class="lbl">年間延宿泊者数（2013-14年ベース）</div>
+      </div>
+      <div class="stat">
+        <div class="val">+90<span>万人泊</span></div>
+        <div class="lbl">10年間の延宿泊者増加目標</div>
+      </div>
+    </div>
+    <p><strong>創業・事業拡大</strong>については、開業率の低さを問題とし「2027年に全国並みへ引き上げる」というKPIを設定。地域社会維持交付金による設備・運転資金支援と、特定有人国境離島地域事業活動支援利子補給金による融資促進が柱となる。支援対象は「事業所が島内・島外にかかわらず雇用増につながるもの」であり、本土側からの参入も促す設計だ（P.13）。</p>
+    <p><strong>滞在型観光</strong>は独特な自然・歴史・文化・国際性を資源として「もう一泊」させる着地型観光の充実を目指す。DMO設立・シェアリングエコノミー活用・訪日外国人誘客が手段として挙げられ、「ボーダーアイランドツーリズム（国境離島観光）」という独自ブランドの確立が謳われている（P.14-16）。</p>
+    <p>漁業については、外国漁船による違法操業監視への支援（水産庁の用船料・燃油代支援）や、漁業集落が行う海業への支援として特定有人国境離島漁村支援交付金が創設されている（P.16）。</p>
+  </section>
+
+  <section id="kpi">
+    <h2><span class="icon">&#128202;</span>交付金制度・計画体制・KPI</h2>
+    <div class="policy-tag">基本方針 Ⅲ-2/3章 P.8-17</div>
+    <p>地域社会維持のための財政措置は四つの交付金で構成される。<strong>特定有人国境離島地域社会維持推進交付金</strong>（内閣府）は本制度の根幹で都道県計画の推進を担う包括的支援。<strong>離島活性化交付金</strong>（国土交通省）は定住・交流・安全安心向上事業向けで特定有人国境離島地域への要件緩和がある。<strong>特定有人国境離島漁村支援交付金</strong>（水産庁）は漁業集落の新規取組支援。<strong>地方創生推進交付金</strong>（内閣府）は申請事業数・ハード事業割合の要件緩和により活用を促進している（P.8-9）。</p>
+    <div class="highlight">
+      <strong>都道県計画の体制</strong><br>
+      平成29年度を初年度として10年を前期・後期（各5年）に区分し、PDCA管理のもとで定期的に検証・改訂する体制が求められている。国の基本目標は「特定有人国境離島地域の人口が定常的に社会増となる状態を実現する」こと（P.17）。
+    </div>
+    <p>都道県が設定すべき重要業績評価指標（KPI）は六分野で、①人口流出抑制・流入施策（転入・転出数等）、②農林水産品の生産・販路拡大（出荷量・販売額等）、③農林水産業の担い手確保（新規就業者数等）、④創業・事業拡大（開業率・新規雇用数等）、⑤滞在型観光（宿泊者数・消費金額・訪日外国人数等）、⑥航路・航空輸送旅客数等が挙げられている（P.17-18）。法律の10年を機に、これらKPIの達成状況の本格検証が求められる段階にある。</p>
+  </section>
+
+  <section id="okinawa">
+    <h2><span class="icon">&#127754;</span>更新にあたっての沖縄の論点</h2>
+    <div class="policy-tag">法改正・更新に向けた論点分析</div>
+    <p>有人国境離島法は平成28年（2016年）成立の10年時限立法であり、2026年はまさに更新・延長の議論が本格化する節目にあたる。以下に、法律の更新・改正にあたって沖縄にとって固有の重要論点を整理する。</p>
+
+    <p><strong>論点1：安全保障と住民生活の両立</strong><br>
+    沖縄の有人国境離島、とりわけ八重山列島（石垣島・与那国島等）と宮古列島は東シナ海・南シナ海における地政学的最前線に位置する。与那国島への陸上自衛隊沿岸監視隊配備（2016年）、石垣島・宮古島への自衛隊配備拡充は、基本方針が求める「領海外縁部における国家安全保障機能の強化」の具体化だ。一方で、自衛隊基地の存在は島内の土地利用・騒音・人口構成に変化をもたらし、住民の日常生活・自治権との摩擦をはらむ。法律の更新においては、国家安全保障と島民の生活環境のバランスをどのように担保するかが核心的な論点となる。</p>
+
+    <p><strong>論点2：土地管理・所有権問題と地域の不安</strong><br>
+    基本方針が「土地取引は国家安全保障上重要」と明記し、重要土地等調査法（令和3年成立）とも連動するこの方向性は、沖縄においては外国資本問題に限らず、地元住民・農漁業者の土地利用・相続・売買の自由との緊張関係を生む可能性がある。法律の更新にあたっては、規制の透明性・手続の公正さ・地権者への丁寧な説明と補償の在り方が問われる。</p>
+
+    <p><strong>論点3：航路・物流コスト問題の構造的改善</strong><br>
+    沖縄の離島住民にとって、先島諸島（宮古・八重山）は那覇との距離自体が遠隔性を増幅させる。航路・航空路運賃の低廉化は施策として掲げられているが、補助スキームが都道県計画の実施状況や財政力に依存するため恩恵の大きさに差が生じやすい。法改正にあたっては、補助の恒久化や国が直接関与する枠組みの強化が求められる。</p>
+
+    <p><strong>論点4：一次産業の再生——漁業・農業の後継者問題</strong><br>
+    八重山・宮古・大東の漁業（マグロ・カツオ・伊勢エビなど）やサトウキビ農業は地域経済の基盤であるが、若年層流出が止まらず後継者が慢性的に不足している。基本方針のKPI（農林水産物生産額を2027年まで現状維持）の達成状況は政策効果の重要な検証指標だ。更新にあたっては「現状維持」にとどまらない積極的な振興目標へのKPI改定と、漁業権・海業振興の具体的強化が焦点となる。</p>
+
+    <p><strong>論点5：観光振興と過剰観光（オーバーツーリズム）への対応</strong><br>
+    沖縄の有人国境離島は竹富島・波照間島など人気の観光地を多く抱える一方、特に小規模島嶼では観光客増加が自然環境・生活環境へのオーバーツーリズム問題を引き起こしている。基本方針が掲げる「滞在型観光・宿泊者数増加」という量的目標は、更新に際して環境収容力を踏まえた「質と量のバランス」への転換が沖縄の文脈では不可欠な論点となる。</p>
+
+    <p><strong>論点6：沖縄振興特別措置法との整合性</strong><br>
+    基本方針は沖縄振興特別措置法（平成14年）による地域を有人国境離島地域の定義に含め、離島振興施策との整合性確保を明記している。沖縄振興特別措置法もほぼ同じ時期に更新サイクルを迎えており、二つの大きな枠組みをどのように整合・統合させるかは行政的にも財政的にも複雑な調整を要する。制度間の重複・すき間の是正が設計上の焦点となる。</p>
+
+    <p><strong>論点7：「10年後」の目標検証と次のビジョン設定</strong><br>
+    法律の時限が来る2026年は、平成28年策定のKPI（開業率・宿泊者数・農林水産物生産額・社会増）の達成状況を本格的に評価する節目でもある。これらKPIを沖縄の各島でどの程度達成できたか——あるいはできなかったか——の実態に基づくエビデンスが、次期法律の設計に直結する。沖縄にとっては、「何を次の10年の目標に置くか」というビジョンを地域から積極的に発信し、国の政策設計に反映させることが重要な政治・行政的課題となる。</p>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>有人国境離島法は、「安全保障」を前景に置きながら「人が住み続けられる島」を現実的手段として位置付けるという二重構造を持つ。この構造は沖縄において特に際立つ。沖縄の離島は単なる「遠隔地の過疎問題」ではなく、東シナ海における主権主張の最前線であると同時に、人々が生業を営み文化を紡いできた生活空間でもある。</p>
+    <div class="point">
+      <div class="pt-title">2026年更新の核心問い</div>
+      <p>「国家の論理」と「島民の生活・自治」のどちらが実質的に優先されてきたかを正直に検証し、次の10年の施策設計に活かせるかどうか。交付金の継続・拡充は必要条件であるが十分条件ではない。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">沖縄からの主体的発信の重要性</div>
+      <p>地域に根差した産業・文化・コミュニティが自律的に再生していけるかどうかを基軸として施策の実効性を評価し直すこと。KPIの達成・未達のエビデンスを示しながら、次の10年のビジョンを地域から積極的に提言することが求められる。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">沖縄固有の横断的論点</div>
+      <p>安全保障と住民生活の両立、土地管理の透明性、航路・物流コストの恒久化、一次産業後継者問題、観光の質的転換、沖縄振興特別措置法との整合——これらは相互に絡み合っており、個別施策の積み上げではなく統合的な戦略として発信することが効果的だ。</p>
+    </div>
+    <p>法律の更新は、沖縄が国家政策の受け手から担い手へと転換する好機でもある。有人国境離島法の10年の実績と課題を沖縄自身が検証し、次の島の姿を構想する主体的な議論が今まさに必要とされている。</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>素材：有人国境離島地域の保全及び特定有人国境離島地域に係る地域社会の維持に関する基本的な方針（H29.4.7 内閣総理大臣決定）</p>
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid #dde3ea;font-size:11px;color:#8a939e;line-height:1.8;text-align:left;max-width:760px;margin-left:auto;margin-right:auto;">【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。</div></footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企業支援（需要側）属性別まとめ</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; white-space: nowrap; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .layer-grid { grid-template-columns: 1fr; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">企業支援（需要側）</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">&#9654; 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">&#9632; 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">調査レポート</div>
+  <h1>企業支援（需要側）<br>属性別まとめ</h1>
+  <p class="sub">第12次職業能力開発基本計画 ／ 地方創生に関する総合戦略（2025年12月）</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#base">全企業共通</a></li>
+    <li><a href="#sme">中小企業支援</a></li>
+    <li><a href="#dx">DX・デジタル</a></li>
+    <li><a href="#skill-viz">スキル見える化</a></li>
+    <li><a href="#info">情報発信・キャリアドック</a></li>
+    <li><a href="#subsidy">助成金活用</a></li>
+    <li><a href="#skill-inherit">技能継承・現場人材</a></li>
+    <li><a href="#side-job">副業・外部人材</a></li>
+    <li><a href="#regional">地域稼ぐ力強化</a></li>
+    <li><a href="#conclusion">総括</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- ── 全体像 ── -->
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>第12次職業能力開発基本計画（2025〜2029年度）と地方創生に関する総合戦略（2025年12月）は、「企業が人材を育て、稼ぐ力を高め、労働者に還元する」という需要側の好循環を実現するために多層的な支援体系を組み立てている。本報告書はその体系を9つの属性軸から整理したものである。</p>
+    <p>労働供給制約が強まる中、企業にとっての人材育成はもはや自助努力の範疇を超え、国策として設計・支援される時代に入った。第12次計画は事業主の義務・努力義務を整理しつつ、助成金・伴走支援・情報基盤という三つの柱で企業の能力開発投資を後押しする。同時に地方創生戦略は、地域中小・中堅企業が稼ぐ力を構造的に高めるため、産業立地促進・賃上げ環境整備・事業承継・知財活用・副業人材マッチングといった多面的施策を展開する。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">2<span>割</span></div><div class="lbl">事業内計画を<br>作成している企業割合</div></div>
+      <div class="stat"><div class="val">9<span>軸</span></div><div class="lbl">属性別分類<br>（企業規模・機能・目的）</div></div>
+      <div class="stat"><div class="val">2<span>計画</span></div><div class="lbl">参照ソース<br>第12次計画＋地方創生戦略</div></div>
+    </div>
+    <p>中小企業・小規模事業者には OJT・OFF-JT の実施率格差という構造的課題があり、「個別化した伴走支援」と「産業・地域単位の共同人材育成」の二段階アプローチが明示されている点が本計画の特徴である。一方、DX推進に関しては規模を問わず全企業が対象となるが、中小企業の経営者をデジタル戦略の起点に据えた支援が特に強調されている。</p>
+  </div>
+
+  <!-- ── 1. 全企業共通：人材育成体制 ── -->
+  <section id="base">
+    <h2><span class="icon">🏛</span>1. 全企業共通：人材育成体制と計画整備</h2>
+    <div class="policy-tag">職業能力開発促進法 ／ 第12次計画 p.29</div>
+    <p>企業が雇用する労働者の職業能力開発を段階的・体系的に行うため、職業能力開発促進法は「事業内職業能力開発計画」の作成と「職業能力開発推進者」の選任を企業の努力義務としている。計画には、経営方針を実現するために必要な人材像等を定めた<strong>人材育成方針</strong>と、配置・賃金・昇給等に関する<strong>雇用管理方針</strong>を盛り込むことが求められる。</p>
+    <div class="highlight"><strong>現状課題：</strong>事業内計画を作成している企業・推進者を選任している企業はいずれも約<strong>２割程度</strong>にとどまる（第12次計画 p.29）。計画の形骸化を防ぎ機能を発揮させるため「個別化された伴走支援の仕組み」の整備が明記された。</div>
+    <p>施策の方向としては、①人材育成目標の明確化と PDCA マネジメント体制の整備、②習得したスキルを配置・処遇に反映させる仕組みの構築、③DX による作業省力化で捻出した時間を能力開発に振り向けるサイクルの確立——の三点が柱となっている。</p>
+  </section>
+
+  <!-- ── 2. 中小企業向け集中支援 ── -->
+  <section id="sme">
+    <h2><span class="icon">🏭</span>2. 中小企業・小規模事業者向け集中支援</h2>
+    <div class="policy-tag">第12次計画 p.31–33 ／ 地方創生戦略 p.33, 93</div>
+    <p>企業規模が小さいほど、計画的 OJT・OFF-JT の実施率は低く、技能継承の積極的対策も遅れている（令和６年度能力開発基本調査）。中小企業固有の制約として、①職業能力開発の専任者不在、②受講者数が少なく社内 OFF-JT を企画しにくい、③研修中の代替要員確保が困難、④相対的に高い離職率——が指摘されており、「個別化」「共同・共有化」の二段構えの支援が設計されている。</p>
+    <p><strong>個別化支援：</strong><strong>生産性向上人材育成支援センター</strong>と<strong>中小企業リスキリング支援事業</strong>が中核機関として位置づけられ、事業戦略を踏まえた人材戦略の立案という企画段階から経営者等へのアドバイスを行う伴走支援を実施する。<strong>よろず支援拠点</strong>等との連携も明示されている。</p>
+    <p><strong>共同・共有化支援：</strong>産業・地域単位での複数企業による合同訓練の事例提供と、産業・地域等の単位での訓練を支援する効果的な仕組みの検討が盛り込まれた。また、企業が労働者に OFF-JT を実施する際の<strong>業務代替への支援</strong>についても検討事項とされている。</p>
+    <p>地方創生戦略でも中堅・中小企業への支援は重点施策として位置づけられ、賃上げ環境整備・適切な価格転嫁・生産性向上支援が打ち出されている。</p>
+  </section>
+
+  <!-- ── 3. DX・デジタル人材育成支援 ── -->
+  <section id="dx">
+    <h2><span class="icon">💻</span>3. DX・デジタル人材育成支援</h2>
+    <div class="policy-tag">第12次計画 p.7, 29–31 ／ 地方創生戦略 p.9, 42</div>
+    <p>多くの企業が DX 推進の課題として「DX を推進する人材の育成」を挙げており、第12次計画は企業のデジタル対応を全方位で支援する（p.29）。アプローチは企業規模・役割に応じて分かれる。</p>
+    <p><strong>高度専門人材：</strong>デジタル技術の開発を担う高度専門人材については、育成とともに成長分野等への労働移動を支援する仕組みを整備する。<strong>全労働者のリテラシー向上：</strong>公的職業訓練や人材開発支援助成金での支援継続と、生産性向上人材育成支援センターによる DX 関連企業支援の充実が盛り込まれた。</p>
+    <div class="highlight"><strong>中小企業経営者を起点に：</strong>中小企業については、経営者や役員が DX 推進の主な発案者となるため、<strong>経営者等への企画段階からの支援</strong>が特に重要とされている。生産性向上人材育成支援センターや中小企業リスキリング支援事業を通じた伴走支援が実施される（p.30–31）。</div>
+    <p>地方創生戦略でも GX・DX の推進が地方経済の稼ぐ力強化の核として打ち出され、産学官連携リスキリング（中小企業経営者を含む社会人が地方大学で学び直す）の推進が具体化されている。</p>
+  </section>
+
+  <!-- ── 4. スキルの標準化と見える化 ── -->
+  <section id="skill-viz">
+    <h2><span class="icon">📊</span>4. スキルの標準化と見える化</h2>
+    <div class="policy-tag">第12次計画 p.21–23 ／ 労働市場でのスキル標準化</div>
+    <p>労働市場における人材評価・企業の人材育成・労働者のキャリア形成を好循環させるには、スキルを「見える化」する共通基盤が不可欠である。第12次計画はこれを独立した章（p.2, 21–23）に位置づけている。</p>
+    <p>企業支援の具体策として、①職業に求められるスキルを整理した<strong>スキル標準</strong>の企業導入促進、②企業内職務に求められるスキルを整理した<strong>社内版スキル標準</strong>の作成支援、③<strong>技能検定・認定社内検定・団体等検定</strong>の整備・活用促進と産業界ニーズへの不断の見直し——が盛り込まれている。</p>
+    <p>業界団体向けには、業界単位の職業能力評価取組への支援拡充が明記されており、若手技能人材の確保・育成のための地域の技能士・業界団体等の連携による人材育成体制整備も含まれる。さらに、個人・企業双方に活用しやすい<strong>包括的情報プラットフォーム</strong>の構築（リスキリング支援策の省庁横断連携を含む）と、申請手続のデジタル化が方針として示されている。</p>
+  </section>
+
+  <!-- ── 5. 情報発信・セルフ・キャリアドック ── -->
+  <section id="info">
+    <h2><span class="icon">📣</span>5. 企業の職業能力開発に関する情報発信とセルフ・キャリアドック</h2>
+    <div class="policy-tag">第12次計画 p.23–24, 28, 31 ／ 人材確保・職場定着</div>
+    <p>職業能力開発に関する情報発信は、企業にとっては<strong>採用・人材確保</strong>の手段でもある。労働者の職場定着と能力開発機会への満足度・人材育成方針の策定状況との間には相関が認められており、能力開発機会を得られることが職業選択の重要な条件になりつつある（第12次計画 p.23）。</p>
+    <p>計画は、企業が行う職業能力開発の取組を労働市場に適切に発信する仕組みの検討を施策に位置づけている（p.24）。また、労働者個人が企業内の能力開発機会を自律的に活用してキャリアを形成でき、能力開発に積極的な企業が労働者から評価される状態を目指す方向性が示されている。</p>
+    <div class="highlight"><strong>セルフ・キャリアドック：</strong>キャリア面談とキャリア研修などを組み合わせ、労働者の自律的・主体的なキャリア形成への取組を体系的・定期的に支援する企業の総合的な取組。普及・促進が明記されている（p.28, 31）。キャリアコンサルタントが人材マネジメント関連専門家と協働して伴走支援に取り組む体制の整備も推進事項とされている。</div>
+  </section>
+
+  <!-- ── 6. 人材開発支援助成金等の活用 ── -->
+  <section id="subsidy">
+    <h2><span class="icon">💰</span>6. 人材開発支援助成金等の活用</h2>
+    <div class="policy-tag">第12次計画 p.18, 35, 37 ／ 地方創生戦略 p.89, 105</div>
+    <p>企業の能力開発投資を財政的に後押しする主要ツールが<strong>人材開発支援助成金</strong>である。第12次計画では、中高年労働者に対する OJT と OFF-JT を組み合わせた訓練を人材開発支援助成金の対象に加える見直しが明示されており（p.37）、非正規雇用労働者等の能力開発機会充実についても助成金活用が方針に盛り込まれている（p.35）。</p>
+    <p>企業手続の利便性向上の観点から、各種助成金の<strong>申請手続のオンライン化</strong>が推進方針として示されており（p.18）、包括的情報プラットフォーム上での申請デジタル化も検討事項となっている。</p>
+    <p>地方創生戦略では、地域金融機関や中小企業活性化協議会・信用保証協会等を通じた中小企業の資金調達・経営支援が補完的な役割を担い（p.105）、地域未来交付金・官民連携地域金融力促進事業も企業支援の財政手段として機能する（p.89）。</p>
+  </section>
+
+  <!-- ── 7. 技能継承・現場人材 ── -->
+  <section id="skill-inherit">
+    <h2><span class="icon">🔧</span>7. 技能継承・現場人材のスキル向上</h2>
+    <div class="policy-tag">第12次計画 p.32, 44–47 ／ 現場人材のスキル標準化・処遇向上</div>
+    <p>少子高齢化と労働供給制約の中で、製造業・建設業・介護業等の現場を支える人材の確保・育成は喫緊の課題である。第12次計画は「現場人材のスキル向上と人材確保のための環境整備」を独立したセクションに設け（p.44–45）、その重要性を強調している。</p>
+    <p>技能継承については、若年・中堅層への教育訓練による技能・知見等の伝承やマニュアル化・データベース化などの積極的対策が規模の大きな企業ほど進んでいるという現状を踏まえ（p.32）、中小企業における技能継承支援の拡充が求められている。</p>
+    <p>現場人材向け施策として、①現場人材のスキルを処遇向上等につなげる<strong>キャリアラダー</strong>の構築・整備（p.45）、②AI・ロボット等の技術革新を踏まえた現場人材のデジタルリテラシー向上（p.45）、③<strong>技能五輪国際大会</strong>を契機とした技能振興（p.46）——が打ち出されている。地域の技能士・業界団体等との連携による若手技能人材の確保・育成体制整備も位置づけられている（p.47）。</p>
+  </section>
+
+  <!-- ── 8. 副業・兼業・外部専門人材 ── -->
+  <section id="side-job">
+    <h2><span class="icon">🤝</span>8. 副業・兼業による外部専門人材の活用</h2>
+    <div class="policy-tag">地方創生戦略 p.74–78, 141 ／ プロフェッショナル人材事業</div>
+    <p>地方企業にとって、都市部の専門人材を「副業・兼業」という形で活用することは、正規採用が困難な状況での人材不足解消策として有効な手段となっている。地方創生戦略は、副業・兼業による専門人材活用を地方人材戦略の柱の一つに位置づけ、各地域での都市部専門人材と地域企業とのマッチング支援（<strong>プロフェッショナル人材事業</strong>）を重点措置として展開する（p.77）。</p>
+    <p>大企業の「副業・兼業への支援等に取り組むことで、関係人口の拡充につなげていく」方針も示されており（p.74）、都市から地方への人材流動を制度的に促進する枠組みが整備されつつある。</p>
+    <div class="highlight"><strong>「地域の人事部」モデル：</strong>地方において複数企業が連携して人材の確保・育成・定着を行うモデルの全国普及・定着を目指す。知見のある事業者による伴走支援や地域企業の右腕人材育成支援が推進施策として盛り込まれている（地方創生戦略 p.141）。</div>
+  </section>
+
+  <!-- ── 9. 地域企業の稼ぐ力 ── -->
+  <section id="regional">
+    <h2><span class="icon">🌏</span>9. 地域企業の稼ぐ力の構造的強化</h2>
+    <div class="policy-tag">地方創生戦略 p.33, 93, 105–106, 110, 126</div>
+    <p>地方創生戦略は、企業支援を「人材育成」にとどめず、<strong>稼ぐ力の構造改革</strong>まで射程に入れている点が特徴的である。</p>
+    <p><strong>賃上げ・価格転嫁：</strong>適切な価格転嫁と生産性向上支援等により地域経済の中小企業の賃上げ環境を整備するとされており（p.93）、地方公共団体の官公需における入札制度の適切な運用でも構造的賃上げの実現が言及されている（p.126）。</p>
+    <p><strong>事業承継支援：</strong>地域が有する優れた技術・人材の喪失を防ぎ地域の経済基盤を維持するため、関係者が一体的に円滑な事業承継環境づくりに取り組む方針が打ち出されている（p.110）。</p>
+    <p><strong>知的財産の戦略的活用：</strong>地方の中堅・中小企業に活用されてこなかった知財を地域付加価値創出の経営資源として活用する支援人材の育成・整備が推進事項とされている（p.106）。また、産業立地・本社機能の地方分散についても産業用地・インフラ確保の促進が明記されており（p.31–32）、地域への大規模投資誘致を軸としたクラスター形成も方針に含まれる（p.5）。</p>
+  </section>
+
+  <!-- ── 総括 ── -->
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>第12次職業能力開発基本計画と地方創生戦略が描く企業支援（需要側）の体系は、「人材育成投資を促す制度・財政環境の整備」と「稼ぐ力の構造改革」という二つの軸の交差点に位置している。</p>
+    <div class="point">
+      <div class="pt-title">二層構造の中小企業支援</div>
+      <p>全企業共通の基盤整備（事業内計画・スキル見える化）と、中小企業への個別化・共同化伴走支援という二層構造が鮮明。助成金・情報プラットフォームの利便性向上も並行して進められる。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">経営者を起点にしたDX支援</div>
+      <p>高度専門人材から全労働者のリテラシー向上まで、またデジタル戦略を主導する経営者への支援まで多層設計。中小企業の経営者を「人材育成の起点」として捉えた設計思想が今後の実装の試金石となる。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">地方創生戦略との接合</div>
+      <p>事業承継・知財・産業立地・副業人材活用・「地域の人事部」モデルなど、地域中小企業が単体では解決できない構造課題に対して複数施策のアーキテクチャを組み合わせる意欲的な設計。ただし多くが「必要な施策を講ずる」段階にとどまり、実施体制・予算・KPIの具体化が今後の課題。</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>出典：第12次職業能力開発基本計画（本体）_001683729.pdf ／ 地方創生に関する総合戦略_20251223_honbun.pdf ｜ 生成日：2026-05-22</p>
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid #dde3ea;font-size:11px;color:#8a939e;line-height:1.8;text-align:left;max-width:760px;margin-left:auto;margin-right:auto;">【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。</div></footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+    }, 10000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  /* ── テキスト選択 → ここから読み上げ ── */
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>
