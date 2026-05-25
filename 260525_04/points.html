@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPA DX動向 ポイント整理 2023-2025</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Timeline ── */
+.timeline { margin: 24px 0; }
+.tl-item { display: flex; gap: 16px; margin-bottom: 20px; }
+.tl-year { min-width: 56px; font-weight: 700; color: var(--blue); font-size: 13px; padding-top: 2px; }
+.tl-body { flex: 1; border-left: 2px solid var(--border); padding-left: 16px; padding-bottom: 16px; }
+.tl-body p { font-size: 14px; margin-bottom: 6px; }
+.tl-item:last-child .tl-body { border-color: var(--accent); }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+  .tl-year { min-width: 44px; font-size: 12px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">IPADX動向</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>IPA DX動向 ポイント整理 2023-2025</h1>
+  <p class="sub">「2025年の崖」の年に振り返る、日本DX 7年の軌跡と現在地｜DX白書2023・DX動向2024・2025ほか全9資料を横断</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#spread">取組の広がり</a></li>
+    <li><a href="#outcomes">成果の構造</a></li>
+    <li><a href="#talent">人材不足</a></li>
+    <li><a href="#genai">生成AI</a></li>
+    <li><a href="#comparison">日米独比較</a></li>
+    <li><a href="#conclusion">総括</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- 全体像 -->
+  <div class="overview" id="overview">
+    <h2>全体像：7年の軌跡が示すもの</h2>
+    <p>2018年9月、経済産業省は「DXレポート ～ITシステム『2025年の崖』克服とDXの本格的な展開～」を公表した。老朽化・ブラックボックス化した既存システムが刷新されなければ、2025年以降に最大12兆円／年の経済損失が生じるという警鐘は、日本企業のDX意識を大きく変えた。そしてまさにその「2025年」に、IPA（独立行政法人情報処理推進機構）は「DX動向2025」を公表し、7年間の変化を総括している。</p>
+    <p>IPAは2021年の「DX白書2021」以降、毎年継続してDX推進状況を調査してきた。一連の報告書が描く軌跡は、「量的拡大」と「質的停滞」が同時進行するという、一筋縄ではいかない現実である。DXに取り組む企業は着実に増えた。しかし成果の中身を問えば、業務効率化・コスト削減にとどまり、ビジネスモデルを根本から変える「本来のDX」に到達できた企業はごく少数にすぎない。</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">2018</div>
+        <div class="tl-body"><p>経済産業省「DXレポート」公表。「2025年の崖」という概念が広まる。</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2021</div>
+        <div class="tl-body"><p>IPA「DX白書2021」。DX取組企業割合 <strong>55.8%</strong>。人材不足調査を開始。</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2022</div>
+        <div class="tl-body"><p>IPA「DX白書2023」（2022年度調査）。DX取組 <strong>69.3%</strong>。成果が出ている <strong>58%</strong>。</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2023</div>
+        <div class="tl-body"><p>IPA「DX動向2024」。DX取組 <strong>73.7%</strong>。成果 <strong>64.3%</strong>（米国89%）。人材「大幅不足」が初めて過半数（62.1%）超え。</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2024</div>
+        <div class="tl-body"><p>IPA「DX動向2025」。DX取組 <strong>77.8%</strong>（頭打ち傾向）。人材不足合計 <strong>85.1%</strong>。生成AI導入の大企業・中小格差が鮮明に。日米独3か国比較を本格実施。</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 取組の広がり -->
+  <section id="spread">
+    <h2><span class="icon">📈</span>取組の広がり：55%から77%へ、でも頭打ちが始まった</h2>
+    <div class="policy-tag">DX白書2023 ／ DX動向2024 ／ DX動向2025</div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">55.8<span>%</span></div>
+        <div class="lbl">2021年度<br>DX取組企業割合</div>
+      </div>
+      <div class="stat">
+        <div class="val">73.7<span>%</span></div>
+        <div class="lbl">2023年度<br>DX取組企業割合</div>
+      </div>
+      <div class="stat">
+        <div class="val">77.8<span>%</span></div>
+        <div class="lbl">2024年度<br>DX取組企業割合</div>
+      </div>
+    </div>
+
+    <p>DXに「何らかの形で取り組んでいる」企業の割合は、2021年度の55.8%から2024年度の77.8%へと着実に拡大した（DX動向2025 p.2）。しかし、2023年度から2024年度にかけての伸びは鈍化しており、「頭打ちの傾向」が現れている。</p>
+    <p>企業規模の格差は依然として大きい。従業員1,001人以上の大企業で96.1%がDXに取り組む一方、100人以下の中小企業では46.8%にとどまる（DX動向2025 p.3）。米国・ドイツでは中規模企業（301〜1,000人）がもっとも取組割合が高いのと対照的であり、日本は大企業集中型のDX浸透にとどまっている。</p>
+
+    <div class="highlight">
+      <strong>中小企業がDXに取り組まない最大の理由は「メリットがわからない」（DX動向2025）</strong>——知識・情報の不足と人材不足が続く。大企業と中小企業の格差固定化が、日本全体のDX底上げの最大課題となっている。
+    </div>
+
+    <p>DX推進のための継続的な予算確保については、2023年度調査で「年度予算にDX枠として継続確保」が36.5%（2022年度：23.8%）と増加したが、2024年度調査では日本は「必要な都度申請」の割合が高く、計画的・継続的な投資を前提とした取組は米国・ドイツに比べて少ない（DX動向2025 p.6）。</p>
+  </section>
+
+  <!-- 成果の構造 -->
+  <section id="outcomes">
+    <h2><span class="icon">🎯</span>成果の構造：「効率化の成功」と「変革の停滞」</h2>
+    <div class="policy-tag">DX動向2024 ／ DX動向2025 ／ 2つの崖壁（2024年）</div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">64.3<span>%</span></div>
+        <div class="lbl">成果が出ている<br>（日本・2023年度）</div>
+      </div>
+      <div class="stat">
+        <div class="val">89.0<span>%</span></div>
+        <div class="lbl">成果が出ている<br>（米国・2022年度）</div>
+      </div>
+      <div class="stat">
+        <div class="val">～20<span>%</span></div>
+        <div class="lbl">ビジネスモデル変革・<br>新規サービス創出の成果割合</div>
+      </div>
+    </div>
+
+    <p>DXに取り組む企業のうち「成果が出ている」と答える割合は2021年度から増加しているが、米国との差は依然として25ポイント以上ある（DX動向2024 p.11）。成果の中身を分解すると、日本企業の強みと弱みが鮮明になる。</p>
+    <p>「アナログデータのデジタル化」の成果割合は64.7%、「業務の効率化による生産性向上」は56.8%と過半数を超えている。しかし、「顧客起点の価値創出によるビジネスモデルの根本的な変革」は17.7%、「新規製品・サービスの創出」は22.1%にとどまる（DX動向2024 p.15）。取組割合はいずれも80%近いにもかかわらず、成果に大きな落差がある。</p>
+
+    <div class="highlight">
+      <strong>DX動向2025は日本のDXを「内向き・部分最適」と総括</strong>——コスト削減・効率化に偏重した目的設定、部門間連携の弱さ、サイロ化が進む組織構造が、ビジネス変革を阻む根本要因として指摘されている。
+    </div>
+
+    <p>成果を上げる企業の共通特徴として、「2つの崖壁」ペーパー（DX動向2024付属）は①経営層のデジタル・IT知見、②アジャイルな経営スタイル、③全社的なデータ利活用、④AIの積極活用、⑤コア事業の内製化、⑥DX支持の企業文化・風土形成を挙げている。CDOを設置している企業ほどDX成果の評価を実施しており、経営層のデジタルリテラシーが成果の分水嶺になっている（DX動向2024 p.12）。</p>
+  </section>
+
+  <!-- 人材不足 -->
+  <section id="talent">
+    <h2><span class="icon">👥</span>人材不足の深刻化：「大幅不足」が過半数を超えた転換点</h2>
+    <div class="policy-tag">DX動向2024 ／ DX動向2025 ／ 人材不足ペーパー（2024年）</div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">85.1<span>%</span></div>
+        <div class="lbl">DX人材「不足」合計<br>（日本・2024年度）</div>
+      </div>
+      <div class="stat">
+        <div class="val">73.6<span>%</span></div>
+        <div class="lbl">「過不足なし」以上<br>（米国・2024年度）</div>
+      </div>
+      <div class="stat">
+        <div class="val">75.7<span>%</span></div>
+        <div class="lbl">評価基準「なし」<br>（日本・2024年度）</div>
+      </div>
+    </div>
+
+    <p>DXを推進する人材の不足感は調査を重ねるごとに悪化している。「大幅に不足している」と回答する企業は調査開始の2021年度から毎年増加し、2023年度（DX動向2024）にはついに62.1%と過半数を突破。2024年度（DX動向2025）では不足感の合計が85.1%に達した（DX動向2025 p.50）。</p>
+    <p>国際比較では、人材不足を強く感じているのは日本だけであることが明確になっている。米国では「過不足なし」以上が73.6%、ドイツで52.5%であるのに対し、日本は「過不足なし」が約10%にすぎない。人材の「質」についても「過不足なし」は日本3.8%・米国52.9%・ドイツ25.1%と、圧倒的な差がある（DX動向2025 p.50-51）。</p>
+
+    <div class="highlight">
+      <strong>最も不足しているのは「ビジネスアーキテクト」</strong>——DXの目的設定から導入・効果検証まで一気通貫で担う人材の不在が、成果創出の最大のボトルネックとなっている（DX動向2025 p.52 ／ DX動向2024付属 p.3）。
+    </div>
+
+    <p>問題の根底には、人材像・評価基準の未整備がある。DX人材の評価基準を「持っていない」企業は日本で75.7%（米国10.0%・ドイツ18.9%）（DX動向2025 p.57）。必要なスキルを「把握できていない」企業は日本57.1%（米国・ドイツはいずれも10%以下）（DX動向2025 p.59）。さらに、人材育成のための施策を「特に何も行っていない」企業が36.6%に上り（DX動向2025 p.56）、深刻な不足状況に対して手を打てていない企業が多数存在することが明らかになっている。</p>
+    <p>育成予算の面では、「増やした」企業の割合が日本2割強に対して米国7割弱・ドイツ6割弱と大きな差があり（DX動向2025 p.55）、人材確保においても「魅力的な処遇が提示できない」「募集しても応募が少ない」が米独比で突出している。メンバーシップ型雇用が主流の日本の雇用構造との関係が指摘されている（DX動向2025 p.54）。</p>
+  </section>
+
+  <!-- 生成AI -->
+  <section id="genai">
+    <h2><span class="icon">🤖</span>生成AIの衝撃：大企業と中小企業の間で急速に広がる格差</h2>
+    <div class="policy-tag">DX動向2025 ／ AI時代のデジタル人材育成（2025年）</div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">～80<span>%</span></div>
+        <div class="lbl">生成AI「前向き」<br>（米国・2024年度）</div>
+      </div>
+      <div class="stat">
+        <div class="val">～50<span>%</span></div>
+        <div class="lbl">生成AI「前向き」<br>（日本全体・2024年度）</div>
+      </div>
+      <div class="stat">
+        <div class="val">～80<span>%</span></div>
+        <div class="lbl">「予定なし」合計<br>（日本・100人以下）</div>
+      </div>
+    </div>
+
+    <p>生成AIへの取組状況（「導入」「試験利用」「検討中」の合計）は、米国8割弱・ドイツ7割弱に対して日本は5割弱にとどまる（DX動向2025 p.38）。ただし、日本の大企業（1,001人以上）では2023年度と比べて2024年度に「導入済み」が増加しており、本格活用フェーズへの移行が進む。一方、100人以下の中小企業では「予定なし・関心のみ」の合計が8割近くと、米国（2割）・ドイツ（4割弱）と大きな差がある（DX動向2025 p.39）。</p>
+    <p>AI人材の充足度でも、日本は研究者・開発者ともに不足が顕著だが、「自社には必要ない」と答える企業が多い点が特徴的である（AI研究者56.4%・AI開発者40.7%が「不要」）（DX動向2025 p.37）。これは日本がAIを「自社開発」ではなく「事業企画・業務適用・データ分析」の文脈で活用する方向性を示している。</p>
+
+    <div class="highlight">
+      <strong>WEF「仕事の未来レポート2025」</strong>によれば、2025〜2030年に世界で総雇用の14%に相当する新規雇用が創出されAI・データ関連職種が牽引する。9割以上のICT職種で主要スキルの過半がAIにより変化するという予測も（AI時代のデジタル人材育成 p.1）。スキル変化への対応は喫緊の課題となっている。
+    </div>
+
+    <p>生成AI活用の課題としては、「効果・リスクの理解不足」「ルール・基準の作成困難」が3か国共通して高い。日本固有の課題として「誤った回答を信じて業務に使ってしまう」というリテラシー問題や「活用できそうな業務がない」という用途認識の低さが突出している（DX動向2025 p.41）。</p>
+  </section>
+
+  <!-- 日米独比較 -->
+  <section id="comparison">
+    <h2><span class="icon">🌐</span>日米独比較が示す「日本DXの現在地」</h2>
+    <div class="policy-tag">DX動向2025 ／ 成長のためのDX（2025年）</div>
+
+    <p>DX動向2025では、日本・米国・ドイツの3か国比較分析が本格的に実施された。浮かび上がるのは、DXの「方向性」そのものの違いである。</p>
+    <p>日本のDXは「内向き・部分最適」——DXの目的はコスト削減・リードタイム短縮などの業務効率化が中心で、成果も社内効率化として捉える傾向が強い。対して米国・ドイツのDXは「外向き・全体最適」——売上増・利益増・市場シェア向上といった企業価値の向上を目的とし、組織全体の最適化を目指す（DX動向2025 p.1）。</p>
+
+    <div class="highlight">
+      <strong>データ企業間連携</strong>：「他社とのデータ連携を行っていない」が日本75.1%・米国19.8%・ドイツ27.0%（DX動向2025 p.34）。外部連携の弱さが日本の「部分最適」志向の最たる表れとなっている。
+    </div>
+
+    <p>システム開発の内製化においても、米国ではDXに取り組む企業の9割近くが内製化を進めているか内製化済みであるのに対し、日本は「外部開発を今後も利用予定」の企業が多く残る（DX動向2025 p.43）。「コア事業の内製化」は成果を上げる企業の共通特徴として指摘されており（2つの崖壁 p.1）、外部依存からの脱却が求められている。</p>
+    <p>「成長のためのDX」ペーパー（2025年）は、日本企業のDX取組割合が米国と同水準以上に達しながら、「成長のためのDX」（売上・事業拡大につながる取組）における成果が「効率化のためのDX」に比べて相対的に低いという課題を指摘している。日本でも7割超の企業が「成長のDX」に取り組んでいるが、その成果は限定的であり、単なる取組の拡大から「成果の質の転換」が次のステージとなっている。</p>
+  </section>
+
+  <!-- 総括 -->
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>2018年の「2025年の崖」という警鐘から7年。DXに取り組む企業の割合は55%から77%に達し、量的な拡大は実現した。しかし「デジタル化した」企業が増えても「デジタルで変革した」企業はまだ少数派であり、ビジネスモデルを根本的に変革した企業・新規製品サービスを生み出した企業は取組企業全体の2割程度にとどまる。</p>
+
+    <div class="point">
+      <div class="pt-title">課題①：人材戦略の根幹が未整備</div>
+      <p>DX人材が「不足」と感じる企業が85.1%に達する一方、評価基準を持たない企業が75.7%、育成予算を増やした企業が2割強にすぎない。量・質ともに深刻な不足状況にありながら、対策を講じていない企業が多数存在する。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">課題②：「内向き・部分最適」からの脱却</div>
+      <p>日本のDXは業務効率化に偏重し、部門間連携・外部連携が米独比で著しく弱い。売上増・市場拡大という「外向き」の成果を目指す米独との方向性の差が、成果格差の根本にある。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">課題③：生成AI・中小企業の取残しリスク</div>
+      <p>大企業では生成AI本格導入が進む一方、100人以下の中小企業では「予定なし」が8割近い。DX全体の底上げには、中小企業の生成AI活用と成長のDXへの橋渡しが急務である。</p>
+    </div>
+
+    <p>成果を上げる企業が示す共通項——経営層のデジタルコミットメント、アジャイルな経営スタイル、全社的なデータ利活用、AIの積極活用、内製化の推進、DXを支える企業文化——が有機的に組み合わさったとき、はじめてDXは「変革」の名にふさわしい成果をもたらす。「2025年の崖」の年に問われているのは、「取り組む」から「変革する」への本質的なギアチェンジである。</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>素材：IPA「DX白書2023」「DX動向2024」「DX動向2025」ならびに付属ペーパー群、デジタルスキル変革調査2024、個人調査2024、AI時代のデジタル人材育成2025｜生成日：2026-05-26</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection

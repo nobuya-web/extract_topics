@@ -1,0 +1,596 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT人材副業・兼業活用策 論点整理</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 120px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── 類型テーブル ── */
+.type-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; }
+.type-table th { background: var(--blue); color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 13px; }
+.type-table th:first-child { border-radius: 6px 0 0 0; }
+.type-table th:last-child { border-radius: 0 6px 0 0; }
+.type-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+.type-table tr:last-child td { border-bottom: none; }
+.type-table tr:nth-child(even) td { background: #f8fafc; }
+.badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 99px; white-space: nowrap; }
+.badge-a { background: #dff0e8; color: #1a6640; border: 1px solid #b3d9c5; }
+.badge-b { background: #ddeeff; color: #1a4f7a; border: 1px solid #b3cfee; }
+.badge-c { background: #fef3e2; color: #7a4f10; border: 1px solid #f0c878; }
+.badge-d { background: #f5f0e8; color: #7a5a1a; border: 1px solid #ddd0b3; }
+.feasibility { font-size: 13px; font-weight: 700; }
+.feasibility.high { color: #1a6640; }
+.feasibility.mid  { color: #b07a00; }
+.feasibility.low  { color: #b07a1a; }
+
+/* ── 論点カード ── */
+.ronten-num { display: inline-block; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 4px; margin-bottom: 10px; letter-spacing: .05em; }
+section h3 { font-size: 16px; font-weight: 700; color: var(--blue); margin: 22px 0 10px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+.col-card { background: var(--tag-bg); border-radius: 8px; padding: 16px 18px; border: 1px solid #c5d9ee; }
+.col-card .col-title { font-size: 13px; font-weight: 700; color: var(--blue); margin-bottom: 8px; }
+.col-card p { font-size: 13px; margin-bottom: 0; color: var(--text); line-height: 1.7; }
+
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Funnel ── */
+.funnel { margin: 20px 0; }
+.funnel-step { display: flex; align-items: center; gap: 0; }
+.funnel-box { background: var(--tag-bg); border: 1px solid #c5d9ee; border-radius: 6px; padding: 10px 20px; font-size: 14px; font-weight: 600; color: var(--blue); white-space: nowrap; }
+.funnel-arrow { font-size: 18px; color: var(--accent); padding: 0 10px; }
+
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  .two-col { grid-template-columns: 1fr; }
+  .funnel-step { flex-wrap: wrap; gap: 6px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+  .type-table { font-size: 13px; }
+  .type-table th, .type-table td { padding: 8px 10px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">沖縄振興策提案</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>IT人材副業・兼業活用策<br>論点整理</h1>
+  <p class="sub">沖縄県IT人材不足への対応策 ／ 副業・兼業スキームの類型と課題</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#types">副業類型の整理</a></li>
+    <li><a href="#ronten1">論点１：主軸の設計</a></li>
+    <li><a href="#ronten2">論点２：報酬・コスト</a></li>
+    <li><a href="#ronten3">論点３：定着ファネル</a></li>
+    <li><a href="#ronten4">論点４：行政関与の必然性</a></li>
+    <li><a href="#conclusion">総括</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- 全体像 -->
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>沖縄のIT産業は労働生産性568万円（全国1,093万円の半分以下）という構造的な低生産性を抱え、IT人材の絶対数不足が事業成長の制約になっている。この課題への対応として、東京圏のIT人材が副業・兼業で沖縄側に関与するスキームが有望な選択肢として浮上している。</p>
+    <p>ただし、「IT人材が副業できる先」には制約がある。IT企業に勤めるエンジニアが他のIT企業に副業することは、競合関係・就業規則上の障壁から実現が難しいケースが多い。競合関係・就業規則の制約を踏まえると、現実的な副業の流れは<strong>類型A（IT企業人材→事業会社）・類型B（事業会社IT人材→事業会社）・類型C（事業会社IT人材→IT企業）</strong>の3パターンが中心になる。</p>
+    <p>重要なのは、副業・兼業はあくまでも入口であるという視点だ。<strong>副業による関与を起点に、転職・移住・事業承継へとつなぐファネルを設計すること</strong>が、単なるスキルマッチングを超えた施策の核心となる。以下の4つの論点を起点に、事業スキームを設計することを提案する。</p>
+  </div>
+
+  <!-- 副業類型の整理 -->
+  <section id="types">
+    <h2><span class="icon">🗂</span>副業類型の整理</h2>
+    <div class="policy-tag">前提整理</div>
+    <p>東京圏のIT人材が沖縄側に副業する際の組み合わせは、大きく4類型（A〜D）に分けられる。競合関係・就業規則の制約を踏まえると、事業として組み立てやすいのは類型A・B・Cである。</p>
+
+    <table class="type-table">
+      <thead>
+        <tr>
+          <th>類型</th>
+          <th>副業する人（東京圏に勤務）</th>
+          <th>副業先（沖縄に所在）</th>
+          <th>競合リスク</th>
+          <th>実現性</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-a">類型 A</span></td>
+          <td><strong>IT企業</strong>のIT人材<br><small>（エンジニア・PMなど）</small></td>
+          <td><strong>事業会社</strong><br><small>（観光・農業・製造・流通等）</small></td>
+          <td>なし</td>
+          <td><span class="feasibility high">◎ 高い</span></td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-b">類型 B</span></td>
+          <td><strong>事業会社</strong>のIT系人材<br><small>（メーカー・金融・流通等のDX人材）</small></td>
+          <td><strong>事業会社</strong><br><small>（観光・農業・製造・流通等）</small></td>
+          <td>なし</td>
+          <td><span class="feasibility high">◎ 高い</span></td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-c">類型 C</span></td>
+          <td><strong>事業会社</strong>のIT系人材<br><small>（メーカー・金融・流通等のDX人材）</small></td>
+          <td><strong>IT企業</strong><br><small>（開発会社・SIer・IT支援会社）</small></td>
+          <td>なし</td>
+          <td><span class="feasibility mid">○ 条件次第</span></td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-d">類型 D</span></td>
+          <td><strong>IT企業</strong>のIT人材</td>
+          <td><strong>IT企業</strong></td>
+          <td>競合・機密漏洩のリスク</td>
+          <td><span class="feasibility low">△ 障壁大</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight">
+      <strong>解決できる課題の違い：</strong>類型A・Bは沖縄の産業全体（観光・農業・中小事業者）のDX推進に効く。類型Cは沖縄IT企業の技術力補完を狙うが、スキルマッチの成否が鍵になる。いずれも<strong>副業は入口に過ぎず、転職・移住・事業承継への転換まで見据えた設計が不可欠</strong>である。事業として最初に主軸を定めることが設計の出発点になる。
+    </div>
+  </section>
+
+  <!-- 論点1 -->
+  <section id="ronten1">
+    <h2><span class="icon">①</span>論点１：どの類型を主軸にするか</h2>
+    <div class="policy-tag">事業設計の方向性</div>
+    <p>類型A・B・Cでは、ターゲットとなる受け入れ企業、期待される効果、必要な支援の種類がいずれも異なる。最初の事業設計でどこに重点を置くかを決めることが、その後の予算規模・マッチング方式・KPI設定のすべてに影響する。</p>
+
+    <div class="two-col">
+      <div class="col-card">
+        <div class="col-title">類型 A ／ IT企業人材 → 沖縄事業会社</div>
+        <p>観光・農業・中小製造業など<strong>産業横断的なDX</strong>を推進できる効果。ITを内製できない事業者に届く点で裾野が広い。受け入れ側がITに不慣れなため、課題の定義やプロジェクト管理のサポートが別途必要になる。</p>
+      </div>
+      <div class="col-card">
+        <div class="col-title">類型 B ／ 事業会社IT人材 → 沖縄事業会社</div>
+        <p>大企業・中堅企業のDX経験を持つ人材が、同じ非IT産業の沖縄企業に入る形。業種・業務感覚が近いため<strong>課題の共有と信頼形成が速い</strong>。観光業や農業の現場に入りやすく、後継者不在企業との承継マッチングにも応用しやすい。</p>
+      </div>
+      <div class="col-card">
+        <div class="col-title">類型 C ／ 事業会社IT人材 → 沖縄IT企業</div>
+        <p>沖縄IT企業の技術力補完を狙う類型だが、<strong>実現性は条件次第</strong>。沖縄のIT企業は離島・観光・農業向けシステムなど独自領域で実力を持つケースも多く、東京の事業会社IT人材が必ずしも上位とは限らない。特定分野（大規模基幹系・金融DX・製造IoT等）のスキルマッチが成立するかどうかが鍵となる。</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>類型選択の前提として：</strong>どの類型を主軸にするにせよ、副業による関与を<strong>転職・移住・事業承継へと転換する出口設計</strong>がなければ、人材は沖縄に定着しない。類型の選択と同時に、ファネルの設計を行うことが不可欠である。
+    </div>
+
+    <p>3類型を並行して走らせることも可能だが、初年度は<strong>どれで先行事例を作るか</strong>という判断が問われる。県の現行施策（DXハンズオン支援・IT産業振興計画・移住促進施策）との接続を確認しながら主軸を選ぶことが重要である。</p>
+  </section>
+
+  <!-- 論点2 -->
+  <section id="ronten2">
+    <h2><span class="icon">②</span>論点２：報酬・コスト構造をどう設計するか</h2>
+    <div class="policy-tag">実現可能性の核心</div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">568<span>万円</span></div>
+        <div class="lbl">沖縄IT産業の<br>労働生産性</div>
+      </div>
+      <div class="stat">
+        <div class="val">1,093<span>万円</span></div>
+        <div class="lbl">全国平均<br>労働生産性</div>
+      </div>
+    </div>
+
+    <p>東京圏の副業市場では、ITエンジニアの時給は3,000〜8,000円台が一般的である。沖縄企業、特に中小の事業会社がこの単価を継続的に負担することは容易ではない。報酬水準のギャップを埋める仕組みなしには、マッチングが成立しても継続しない。</p>
+
+    <div class="highlight">
+      <strong>設計の選択肢：</strong>①受け入れ企業への費用補助（沖縄側のコスト軽減）、②副業人材へのインセンティブ支援（東京側の報酬上乗せ）、③マッチング・コーディネート機能の無償提供（仲介コストの行政負担）。この3つのどこにどれだけ公的資金を投入するかが、事業の実効性を左右する。
+    </div>
+
+    <p>なお、単発（スポット）案件か顧問型の継続契約かによっても費用設計は大きく変わる。県として狙うべき効果（即効性のある課題解決 vs. 中長期的な能力移転）に合わせて契約形態を設計する必要がある。</p>
+  </section>
+
+  <!-- 論点3 -->
+  <section id="ronten3">
+    <h2><span class="icon">③</span>論点３：副業を移住・事業承継へつなぐファネル設計</h2>
+    <div class="policy-tag">施策の出口設計（最重要）</div>
+    <p>副業・兼業の活用にとどまると、「沖縄との関わりはあるが、人材は定着しない」施策になりかねない。本事業の価値は副業マッチングではなく、<strong>副業を入口とした転職・移住・事業承継への転換</strong>にある。この視点を施策の中心に据えることで、単なるITスキル補完を超えた政策意義が生まれる。</p>
+
+    <div class="funnel">
+      <div class="funnel-step">
+        <div class="funnel-box">副業・兼業<br><small style="font-weight:400;font-size:12px">お試し関与</small></div>
+        <div class="funnel-arrow">→</div>
+        <div class="funnel-box">沖縄企業・地域<br>との関係構築</div>
+        <div class="funnel-arrow">→</div>
+        <div class="funnel-box">転職・移住<br>または事業承継</div>
+        <div class="funnel-arrow">→</div>
+        <div class="funnel-box">定住・<br>人材定着</div>
+      </div>
+    </div>
+
+    <p>特に事業承継との接続は重要な論点だ。沖縄の後継者不在率は61%（全国比+11pt）と深刻であり、後継者不在企業の多くはITによる業態転換も同時に必要としている。副業を通じて企業・経営者と関係を築いたIT人材が、そのまま承継候補になるルートは現実的かつ効果的である。</p>
+
+    <div class="highlight">
+      <strong>ファネルを機能させる周辺設計：</strong>副業期間中に「沖縄で働き続けたい」と思えるよう、生活・住まい情報の提供、地域コミュニティへの接続が必要。さらに<strong>移住支援金（単身最大100万円〜世帯300万円超）・事業承継税制・DXハンズオン支援</strong>との接続を、コーディネーターが一体的に担うことで、副業から定住・承継への転換率が高まる。
+    </div>
+
+    <p>副業件数だけをKPIにするのではなく、<strong>転職・移住・事業承継への転換率を成果指標の中核に置く</strong>ことで、施策が「人材定着と産業承継」という県の政策目標に直結する。</p>
+  </section>
+
+  <!-- 論点4 -->
+  <section id="ronten4">
+    <h2><span class="icon">④</span>論点４：なぜ行政が関与する必要があるか</h2>
+    <div class="policy-tag">事業化の前提条件</div>
+    <p>クラウドワークスやランサーズのような民間の副業マッチングプラットフォームはすでに存在する。「沖縄×IT副業」という事業を行政が主体として立ち上げる必然性を明確にすることが、県との議論および予算獲得の前提になる。</p>
+
+    <h3>民間プラットフォームだけでは機能しない理由</h3>
+    <div class="two-col">
+      <div class="col-card">
+        <div class="col-title">沖縄企業側の情報発信力の弱さ</div>
+        <p>中小の沖縄企業は「何をやってほしいか」を言語化する能力が乏しく、既存プラットフォームでは埋もれる。課題の定義から支援するコーディネート機能が必要。</p>
+      </div>
+      <div class="col-card">
+        <div class="col-title">転職・移住・補助金との接続</div>
+        <p>副業を移住や転職につなぐには、移住支援金・DX補助金・税制優遇との連携が不可欠。民間プラットフォームにはこの接続機能がない。</p>
+      </div>
+      <div class="col-card">
+        <div class="col-title">継続的なコーディネートの必要性</div>
+        <p>ミスマッチの調整、契約更新の支援、トラブル対応など、プラットフォームでは担えない伴走機能が、特に類型B（IT人材→事業会社）では不可欠になる。</p>
+      </div>
+      <div class="col-card">
+        <div class="col-title">東京側への広報・リーチ</div>
+        <p>「沖縄で副業したい」という潜在層にリーチするには、行政の信頼性を活用した広報戦略と、東京圏でのイベント・メディア展開が効果的。</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>提案の核心：</strong>行政が担うべきは、マッチングそのものではなく、<strong>①課題の定義支援（沖縄側）、②広報・スカウト（東京側）、③移住・補助金との接続（出口設計）</strong>という3機能のコーディネートである。この機能を担う専任コーディネーターの公的設置が、事業の核となる。
+    </div>
+  </section>
+
+  <!-- 総括 -->
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+
+    <div class="point">
+      <div class="pt-title">副業類型の選択が設計の出発点</div>
+      <p>「事業会社IT人材→沖縄IT企業（類型A）」と「IT企業人材→沖縄事業会社（類型B）」では、解決できる課題・必要な支援が異なる。県の現行施策との整合性を確認しながら、どちらを主軸とするかを先に決める必要がある。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">報酬ギャップの解消なしには継続しない</div>
+      <p>沖縄と東京の賃金格差は構造的である。副業単価を沖縄企業が単独で負担するのは難しいケースが多く、何らかの補助設計（受け入れ側補助・コーディネート無償提供等）がなければ、事業は定着しない。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">副業は入口。移住・事業承継への転換まで設計する</div>
+      <p>本事業の価値は副業マッチングではなく、副業を通じた人材定着・事業承継の実現にある。沖縄の後継者不在率61%という課題を踏まえると、IT人材が副業で関与した企業の承継候補になるルートは現実的かつ政策的意義が大きい。副業件数ではなく、転職・移住・事業承継への転換率を成果指標の中核に置くことが重要である。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">行政の役割はコーディネートに絞る</div>
+      <p>マッチングの実行は民間に委ねつつ、「課題定義（沖縄側）」「広報・リーチ（東京側）」「移住・補助金との接続（出口）」の3機能を担う専任コーディネーターを行政として設置することが、事業設計の核となる。</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>沖縄振興策提案 ／ IT人材副業・兼業活用策 論点整理 ／ 2026年5月</p>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+
+<footer>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer></body>
+</html>
+                                                                                                                               

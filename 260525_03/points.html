@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>おきなわITセンサス 時系列分析とDX推進論点</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">おきなわITセンサス</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>おきなわITセンサス<br>時系列分析とDX推進論点</h1>
+  <p class="sub">令和3〜6年度（2021〜2024年度）4回分の調査報告書より横断抽出・分析</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#r3">令和3年度</a></li>
+    <li><a href="#r4">令和4年度</a></li>
+    <li><a href="#r5">令和5年度</a></li>
+    <li><a href="#r6">令和6年度</a></li>
+    <li><a href="#conclusion">DX論点</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像：産業の規模と構造転換の軌跡</h2>
+    <p>「おきなわITセンサス」は、沖縄県商工労働部が一般財団法人沖縄ITイノベーション戦略センターを調査機関として毎年実施する、県内情報通信関連企業の集積状況・雇用・売上の実態調査である。令和4年7月に「おきなわSmart産業ビジョン」が策定されたことに伴い、産業分類が旧6大分類14中分類から新6大分類17中分類に改定され、セキュリティ・テスティング・組込ソフトウェアなど高付加価値領域が追加された。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">899<span>社</span></div>
+        <div class="lbl">令和6年度 企業数<br>（4年で+146社）</div>
+      </div>
+      <div class="stat">
+        <div class="val">36,004<span>人</span></div>
+        <div class="lbl">令和6年度 雇用者数<br>（4年でほぼ横ばい）</div>
+      </div>
+      <div class="stat">
+        <div class="val">4,749<span>億円</span></div>
+        <div class="lbl">令和6年度 売上高<br>（4年で+25%増）</div>
+      </div>
+      <div class="stat">
+        <div class="val">1,319<span>万円</span></div>
+        <div class="lbl">令和6年度 1人当たり売上高<br>（R3年比+21%向上）</div>
+      </div>
+    </div>
+
+    <p>売上高は4年間で約25%増加している一方、雇用者数は令和4年度以降ほぼ横ばい〜微減で推移している。「少ない人数でより多くの売上を生む」高付加価値化の傾向が産業全体に浸透しつつある。コールセンターが縮退し、ソフトウェア開発・情報サービスが拡大するという業種間の重心シフトも4年を通じて一貫している。</p>
+
+    <div class="highlight">
+      <strong>構造の特徴：</strong>立地企業（県外本社）が雇用者数の約73%を占め、コールセンターでは99%が立地企業。売上は県内企業・立地企業がほぼ拮抗（53：47）という二重構造が続いている。
+    </div>
+  </div>
+
+  <section id="r3">
+    <h2><span class="icon">📋</span>令和3年度調査——コロナ禍の痕跡と産業再定義</h2>
+    <div class="policy-tag">調査基準日：R4年3月末 ／ 報告：R5年3月</div>
+    <p>旧分類での企業数は912社・雇用者数42,185人・売上高4,261億円。コロナ禍の影響で雇用者数が前年比445人減少した。コールセンターと情報サービスが雇用の半数以上（約60%）を占め、売上ではコールセンター・通信ITインフラ・ソフトウェア開発の3業種が全体の約7割を担うという二重構造が鮮明だった。</p>
+    <p>特筆すべきは、立地企業（県外本社）が企業数の55%・雇用者数の75%を占め、コールセンターに至っては雇用の99%が立地企業という極端な依存構造である。大規模な雇用吸収力を持ちながら、意思決定と利益の大部分は県外に帰属するというこの構造は、その後の分析においても繰り返し問われることになる。</p>
+    <p>同年7月の「おきなわSmart産業ビジョン」策定は、単なる分類整理にとどまらず、県全産業のDX推進に向けてIT産業が担うべき役割を再定義する出発点として位置づけられた。産業ビジョンは今後10年間の構想であり、経済センサスから得る労働生産性をKGI、本調査から得る企業数・雇用者数・売上高・従業者1人当たり売上額をKPIとする管理フレームが導入された。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">753<span>社</span></div>
+        <div class="lbl">企業数（新分類）</div>
+      </div>
+      <div class="stat">
+        <div class="val">34,793<span>人</span></div>
+        <div class="lbl">雇用者数（新分類）</div>
+      </div>
+      <div class="stat">
+        <div class="val">3,802<span>億円</span></div>
+        <div class="lbl">売上高（新分類）</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="r4">
+    <h2><span class="icon">📈</span>令和4年度調査——コロナ明けの回復と人材不足の台頭</h2>
+    <div class="policy-tag">調査基準日：R5年3月末 ／ 報告：R6年3月</div>
+    <p>新分類に完全移行した最初の正式集計。企業数791社・雇用者数36,321人・売上高4,031億円。コロナ明けの需要回復を受け売上は増加基調に転じた。特にソフトウェア開発・情報サービスで受注が拡大し、県内企業の売上高が立地企業を同等まで拡大した（それぞれ2,028億円・2,003億円）。</p>
+    <p>この年に最も顕在化したのが人材不足問題である。実態調査では企業全体の66%が「人員不足」と回答し、ソフトウェア開発（79%）・情報サービス（67%）・コールセンター（63%）で特に深刻だった。不足職種はSE・プログラマ・プロジェクトマネージャが上位を占め、「採用難が続いている」という声が目立った。</p>
+    <p>売上高の増加要因として「新規顧客の開拓」と「受注増」が並んで挙げられており、DXニーズや情報システム投資の活発化を取り込めている企業が増えている。一方で取引先はIT・情報通信産業への集中が依然強く、観光・製造・農水産など他産業へのDX支援が次の成長軸として意識され始めた段階であった。</p>
+
+    <div class="highlight">
+      <strong>人材不足の深刻度：</strong>企業全体の66%が「人員不足」と回答。特にソフトウェア開発では79%が不足感を抱えており、DX需要の取り込みを阻む最大のボトルネックとなっている。
+    </div>
+  </section>
+
+  <section id="r5">
+    <h2><span class="icon">🔄</span>令和5年度調査——「売上増・雇用減」の構造転換と退職者問題</h2>
+    <div class="policy-tag">調査基準日：R6年3月末 ／ 報告：R7年3月</div>
+    <p>企業数780社（前年比11社減）・雇用者数36,156人（165人減）・売上高4,464億円（433億円増）。数字の組み合わせが端的に示す通り、「少数精鋭化」が進んだ年である。売上433億円増にもかかわらず雇用者数は165人減少するという逆行は、1人当たり売上高の上昇（1,110万円→1,235万円）として現れた。</p>
+    <p>最大の変化はコールセンター業の縮退である。雇用者数は前年の13,113人から11,392人へと1,721人もの急減を記録した。生成AIの台頭や立地コストの上昇を背景に、雇用の最大吸収源だった業種が転換期を迎えた形だ。一方、情報サービス・ソフトウェア開発・通信ITインフラは雇用・売上ともに増加し、高付加価値分野への重心シフトが加速した。</p>
+    <p>実態調査で浮かび上がったのは、採用難よりも深刻な「人材流出」の問題である。雇用者数減少の主因として「退職者の増加（81.5%）」が圧倒的に高く、「受注減（16.7%）」「求人応募者の減少（13.0%）」を大きく上回った。いくら採用しても辞めていくという構造的な定着率の低さが、人材確保の本質的な課題として浮かび上がった。</p>
+    <p>地域分布では那覇市への集中（全体の52%・468社）が続き、北部・離島では企業が極めて少数にとどまる。デジタル化の恩恵が地理的に偏在しているという問題は、この年の調査でも解消されていない。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">81.5<span>%</span></div>
+        <div class="lbl">雇用減少の主因「退職者増」<br>の回答割合</div>
+      </div>
+      <div class="stat">
+        <div class="val">52<span>%</span></div>
+        <div class="lbl">那覇市への企業集中率<br>（468社）</div>
+      </div>
+      <div class="stat">
+        <div class="val">-1,721<span>人</span></div>
+        <div class="lbl">コールセンター雇用者数<br>前年比減少数</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="r6">
+    <h2><span class="icon">🤖</span>令和6年度調査——生成AI元年と産業構造の次の転換点</h2>
+    <div class="policy-tag">調査基準日：R7年3月末 ／ 報告：R8年3月</div>
+    <p>民間信用調査機関データの活用により調査精度が大幅に向上し、企業数が780社から899社へと119社増加した（実態の補捕強化による）。雇用者数36,004人（152人減）・売上高4,749億円（285億円増）という基調は前年を踏襲しつつ、「生成AI・先端技術の影響」が初めて実態調査の主題として加わった。</p>
+    <p>生成AI活用の現状を見ると、回答企業のうち約6割（61.7%）が業務で使用中またはトライアル中であり、「積極的に活用する方針」が39.8%に達している。利用を禁止している企業はわずか0.4%にとどまり、生成AI活用は「導入を検討する段階」から「どのようなガバナンスのもとで実務に使うか検討する段階」へと移行している。</p>
+    <p>業務効率化・人手不足解消への期待は92.5%と最も高く、イノベーション創出（84.0%）、スキル・人材像の変化（82.9%）が続く。一方、「人員の解雇や配置換えが必要」とする認識は否定的意見が67.4%を占め、生成AIは「人を置き換えるツール」ではなく「仕事の質と人的資本の役割を変えるツール」として受け止められている。</p>
+    <p>導入検討時の課題としては、セキュリティの確保（129件）・専門人材の不足（112件）・精度と信頼性への懸念（99件）が3大障壁として挙げられた。今後5年でビジネスモデルがある程度以上変化すると見ている企業は73.7%に達しており、変化の不可避性は業界横断的なコンセンサスとなっている。</p>
+    <p>また他事業者との共同受注への関心（58.7%、特にソフトウェア開発・コンテンツ制作）や海外人材採用への関心も顕在化しており、50人未満が85%を占める中小企業中心の産業構造の中で、連携と国際化によって競争力を補おうとする動きが始まっている。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">61.7<span>%</span></div>
+        <div class="lbl">生成AI使用中・<br>トライアル中の割合</div>
+      </div>
+      <div class="stat">
+        <div class="val">92.5<span>%</span></div>
+        <div class="lbl">業務効率化・人手不足<br>解消への期待（肯定）</div>
+      </div>
+      <div class="stat">
+        <div class="val">73.7<span>%</span></div>
+        <div class="lbl">5年以内にビジネスモデル<br>変化すると回答</div>
+      </div>
+      <div class="stat">
+        <div class="val">58.7<span>%</span></div>
+        <div class="lbl">共同受注への<br>関心あり</div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>生成AIの3大課題：</strong>①セキュリティの確保（129件）、②専門知識・技術を持つ人材の不足（112件）、③精度や信頼性への懸念（99件）。経営者の理解不足（12件）は主要なボトルネックではなく、現場・実務レベルの問題が中心となっている。
+    </div>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>沖縄DX推進のための7つの論点</h2>
+    <p>4年間のデータを横断すると、沖縄のIT産業は「量的な拡大」から「質的な深化」へと転換期を迎えている。以下の7つの論点が、今後のDX推進政策と産業戦略の核心となる。</p>
+
+    <div class="point">
+      <div class="pt-title">① 構造依存からの脱却</div>
+      <p>コールセンター偏重の産業基盤が生成AI普及と立地コスト上昇で縮退しつつある。同じ労働力をソフトウェア開発・DX支援にリスキリングする、県全体の移行戦略が急務である。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">② IT産業の恩恵を他産業へ届けるメカニズムの欠如</div>
+      <p>取引先がIT産業内に閉塞しており、観光・農水産・医療・物流などへのDX支援に繋がっていない。IT企業と非IT企業をつなぐマッチング・共同開発の仕組みが整っていない。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">③ 那覇集中と地域間格差</div>
+      <p>企業の52%が那覇市に集中し、北部・離島は数社程度にとどまる。リモートワーク活用や離島拠点設置への優遇措置など、地理的偏在を是正するインセンティブ設計が必要だ。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">④ 人材の「来させる・育てる・引き止める」三位一体戦略</div>
+      <p>退職者増加が雇用縮小の主因（81.5%）という事実は深刻で、採用強化だけでは解決できない。賃金水準・働き方改革・キャリアパス設計による定着率向上と、県外・海外からの誘致・県内育成を三位一体で設計する必要がある。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">⑤ 中小企業主体の産業構造における規模の経済問題</div>
+      <p>雇用者50人未満の企業が全体の85%を占め、単独では大型案件を受注できない。共同受注への関心（58.7%）はあるが制度・体制が未整備。沖縄独自のITクラスター共同体の設計——法人格・契約管理・利益配分の標準化——が鍵になる。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">⑥ 生成AIが迫るスキルセットの再定義への対応</div>
+      <p>「求められるスキルや人物像が変化している」と82.9%が答える一方、専門人材不足が阻害要因の2位に挙がっている。学校教育・産業訓練・OJTの全段階でAIリテラシーを再設計しなければ、全国の先行地域に対し競争力を失う。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">⑦ コールセンターの業態転換という機会</div>
+      <p>生成AIが最も影響を及ぼす可能性があるのはコールセンター業であるが、同業種が培った多言語対応・夜間対応・大規模オペレーション管理のノウハウは、観光産業向けAI応対や多言語DXとして転用できる潜在力を持つ。単なる縮退ではなく業態転換として設計できるかが、次の10年の分水嶺となる。</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>素材：おきなわITセンサス報告書（令和5〜8年3月発行）／沖縄県商工労働部・一般財団法人沖縄ITイノベーション戦略センター</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  /* ── テキスト選択 → ここから読み上げ ── */
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>
