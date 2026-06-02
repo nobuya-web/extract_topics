@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人材チャンプルー 実態調査レポート</title>
+  <style>
+    :root {
+      --blue:    #1a4f7a;
+      --blue-lt: #2d7ab5;
+      --accent:  #e8811a;
+      --bg:      #f5f7fa;
+      --white:   #ffffff;
+      --text:    #1e2832;
+      --muted:   #5a6472;
+      --border:  #dde3ea;
+      --tag-bg:  #e8f0f9;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.85;
+      padding-top: 56px;
+    }
+
+    /* Header */
+    header {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 56px;
+      background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+      color: #fff;
+      display: flex; align-items: center;
+      padding: 0 24px; gap: 1rem;
+      z-index: 200;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+    .tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+    .tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+    .tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+    .tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+    .tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+    .tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+    .tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+    .hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+    .hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+    .hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+    /* Nav */
+    nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+    nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 860px; margin: 0 auto; }
+    nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+    nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+    /* Layout */
+    .container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    /* Overview */
+    .overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+    .overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+    .overview p { margin-bottom: 14px; }
+
+    /* Section */
+    section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 110px; }
+    section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+    section p { margin-bottom: 16px; }
+    section p:last-child { margin-bottom: 0; }
+    section h3 { font-size: 15px; font-weight: 700; color: var(--blue-lt); margin: 24px 0 10px; }
+
+    /* Policy tag */
+    .policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+    /* Highlight */
+    .highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+    .highlight strong { color: var(--accent); }
+
+    /* Stats */
+    .stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+    .stat { flex: 1; min-width: 140px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+    .stat .val { font-size: 26px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+    .stat .val span { font-size: 14px; }
+    .stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+    /* Flow diagram */
+    .flow { display: flex; flex-direction: column; gap: 0; margin: 24px 0; }
+    .flow-step { display: flex; align-items: flex-start; gap: 16px; }
+    .flow-connector { display: flex; flex-direction: column; align-items: center; width: 36px; flex-shrink: 0; }
+    .flow-dot { width: 36px; height: 36px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .flow-line { width: 2px; height: 28px; background: var(--border); margin: 4px 0; }
+    .flow-body { padding: 6px 0 28px; flex: 1; }
+    .flow-body strong { display: block; font-size: 14px; color: var(--blue); margin-bottom: 4px; }
+    .flow-body p { font-size: 13px; color: var(--muted); margin: 0; }
+
+    /* Route cards */
+    .route-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin: 20px 0; }
+    .route-card { background: var(--tag-bg); border-radius: 8px; padding: 18px 16px; border: 1px solid #c5d9ee; }
+    .route-card .route-num { font-size: 11px; font-weight: 700; color: var(--blue-lt); margin-bottom: 6px; letter-spacing:.05em; }
+    .route-card .route-title { font-size: 14px; font-weight: 700; color: var(--blue); margin-bottom: 8px; line-height: 1.4; }
+    .route-card p { font-size: 12px; color: var(--muted); margin: 0; line-height: 1.6; }
+    .route-card .badge-fee { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px; margin-top: 8px; }
+    .fee-zero { background: #dcfce7; color: #166534; }
+    .fee-cost { background: #fee2e2; color: #991b1b; }
+    .fee-low { background: #fef9c3; color: #713f12; }
+
+    /* Case study */
+    .case { background: #f8faff; border: 1px solid #c5d9ee; border-radius: 8px; padding: 20px 22px; margin: 16px 0; }
+    .case .case-tag { font-size: 11px; font-weight: 700; color: var(--blue-lt); margin-bottom: 6px; }
+    .case .case-title { font-size: 14px; font-weight: 700; color: var(--blue); margin-bottom: 8px; line-height: 1.4; }
+    .case p { font-size: 13px; color: var(--text); margin: 0; line-height: 1.65; }
+
+    /* Trend bar */
+    .trend-row { display: flex; align-items: center; gap: 10px; margin: 8px 0; font-size: 13px; }
+    .trend-label { width: 80px; flex-shrink: 0; color: var(--muted); font-size: 12px; }
+    .trend-bar-wrap { flex: 1; background: var(--border); border-radius: 4px; height: 20px; overflow: hidden; }
+    .trend-bar { height: 100%; border-radius: 4px; display: flex; align-items: center; padding: 0 8px; font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; transition: width .6s; }
+    .bar-blue { background: var(--blue); }
+    .bar-accent { background: var(--accent); }
+
+    /* Conclusion */
+    .conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+    .conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+    .conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+    .conclusion p:last-child { margin-bottom: 0; }
+    .conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+    .conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+    .conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+    /* Footer */
+    footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      body { padding-top: 48px; }
+      header { padding: 0 0.75rem; height: auto; min-height: 48px; flex-wrap: nowrap; }
+      .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+      .tts-bar { gap: 0.25rem; }
+      .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+      .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+      .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+      .tts-label { display: none; }
+      nav { top: 48px; padding: 0 12px; }
+      nav ul li a { padding: 12px 10px; font-size: 11px; }
+      .hero { padding: 40px 20px 36px; }
+      .hero h1 { font-size: 20px; }
+      .container { padding: 32px 16px 60px; }
+      section, .overview { padding: 28px 20px; }
+      .conclusion { padding: 28px 24px; }
+      .route-grid { grid-template-columns: 1fr; }
+      .stats { gap: 10px; }
+      .stat { min-width: 130px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">沖縄IT副業</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>人材チャンプルー 実態調査レポート</h1>
+  <p class="sub">首都圏IT人材へのアプローチ手法・全国実績・沖縄活用事例・課題の整理｜2026年6月調査</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#mechanism">仕組み</a></li>
+    <li><a href="#routes">3つのルート</a></li>
+    <li><a href="#jisseki">全国実績</a></li>
+    <li><a href="#cases">活用事例</a></li>
+    <li><a href="#conclusion">課題と示唆</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- 全体像 -->
+  <div class="overview" id="overview">
+    <h2>全体像：チャンプルーは「沖縄側の窓口」</h2>
+    <p>人材チャンプルー（沖縄県プロフェッショナル人材戦略拠点）は、内閣府の「プロフェッショナル人材事業」の沖縄版実施機関として、沖縄県産業振興公社が運営する無料の公的相談窓口だ。重要な前提として、<strong>チャンプルー自身が首都圏のIT人材に直接アプローチするわけではない</strong>。チャンプルーの役割はあくまで「沖縄の中小企業の経営課題を整理して人材ニーズを言語化し、提携する民間人材紹介会社につなぐ」コーディネーターだ。首都圏人材へのリーチは提携会社・副業プラットフォーム側が担う構造になっている。</p>
+    <p>全国では45道府県に同様の拠点が置かれており、累計120,008件の相談・32,496件の成約（令和6年度末）という実績を持つ。副業・兼業の成約比率は令和2年度の10%から令和6年度には29.1%へ急上昇しており、国全体として副業推進にシフトしている。沖縄単独の数値は公開されていない。</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="val">120,008<span>件</span></div>
+        <div class="lbl">全国累計相談件数<br>（令和6年度末）</div>
+      </div>
+      <div class="stat">
+        <div class="val">32,496<span>件</span></div>
+        <div class="lbl">全国累計成約件数<br>（令和6年度末）</div>
+      </div>
+      <div class="stat">
+        <div class="val">29.1<span>%</span></div>
+        <div class="lbl">副業・兼業の成約割合<br>（令和6年度。令和2年度は10%）</div>
+      </div>
+      <div class="stat">
+        <div class="val">64.3<span>%</span></div>
+        <div class="lbl">受入企業のうち<br>業績・生産性向上につながったと回答</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 仕組み -->
+  <section id="mechanism">
+    <h2><span class="icon">⚙️</span>アプローチの仕組み：5ステップ</h2>
+    <div class="policy-tag">企業訪問型の課題ヒアリング ／ 民間人材紹介会社への取り次ぎ</div>
+
+    <p>チャンプルーが「待ちの姿勢」ではなく積極的に企業を訪問する点が特徴だ。沖縄の現場を知る民間出身マネージャー（経営計画・人事・マーケティングの専門家）が直接足を運び、経営者の課題を聞き出す。以下が標準的な5ステップ。</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-connector"><div class="flow-dot">1</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <strong>企業訪問・経営者との面談</strong>
+          <p>マネージャーが県内企業に訪問し、新規事業・販路開拓・DX推進など経営課題を深掘りして人材ニーズを明らかにする。相談・面談は無料。</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-connector"><div class="flow-dot">2</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <strong>人材紹介会社・プラットフォームへの取り次ぎ</strong>
+          <p>具体化した人材ニーズ情報を提携する民間人材紹介会社や副業プラットフォームに通知。ここで初めて首都圏IT人材へのリーチが発生する。</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-connector"><div class="flow-dot">3</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <strong>候補者の選定・紹介</strong>
+          <p>人材紹介会社が登録者データベースから適合する候補者を選定・紹介。チャンプルーは紹介・面接が円滑に進むよう橋渡しをする。</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-connector"><div class="flow-dot">4</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <strong>雇用契約または業務委託契約の締結</strong>
+          <p>正社員採用なら雇用契約、副業・兼業なら業務委託契約を締結。副業の場合、沖縄県の補助金（初回は費用の8割、上限50万円）も活用可能。</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-connector"><div class="flow-dot">5</div></div>
+        <div class="flow-body">
+          <strong>採用後のフォローアップ</strong>
+          <p>採用後も円滑に活躍できるようチャンプルーが継続サポート。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>構造上の特徴：</strong>チャンプルーは沖縄に1拠点のみで、首都圏に常駐スタッフはいない。首都圏IT人材への直接アプローチは全て提携先に委ねられており、チャンプルーは「供給側を持たない需要整理機関」として機能している。
+    </div>
+  </section>
+
+  <!-- 3つのルート -->
+  <section id="routes">
+    <h2><span class="icon">🔀</span>首都圏IT人材にリーチする3ルート</h2>
+    <div class="policy-tag">民間人材紹介会社 ／ 大企業連携 ／ ふるさと副業プラットフォーム</div>
+
+    <p>首都圏人材との接点は大きく3種類ある。コスト・対象・動機がそれぞれ異なる。</p>
+
+    <div class="route-grid">
+      <div class="route-card">
+        <div class="route-num">ルート①</div>
+        <div class="route-title">提携民間<br>人材紹介会社</div>
+        <p>ビズリーチ系・リクルート系など大手・中小の人材紹介会社と連携。登録者データベースから適合人材を探す。IT系プロ人材の多くがこのルート。成約時に紹介手数料が発生する。</p>
+        <span class="badge-fee fee-cost">手数料あり</span>
+      </div>
+      <div class="route-card">
+        <div class="route-num">ルート②</div>
+        <div class="route-title">都市部大企業<br>との人材交流</div>
+        <p>大企業に在籍したまま、副業・出向の形で沖縄企業に派遣。人材紹介会社が介在しないため紹介手数料がゼロ。大企業の役員・幹部クラスを低コストで活用できる点が魅力。</p>
+        <span class="badge-fee fee-zero">手数料ゼロ</span>
+      </div>
+      <div class="route-card">
+        <div class="route-num">ルート③</div>
+        <div class="route-title">ふるさと副業<br>「サンカク」連携</div>
+        <p>沖縄での副業・社会人インターンシップを目的とした副業プラットフォーム「サンカク」と提携。「沖縄が好き・沖縄に関わりたい」という動機を持つフリーランス・首都圏人材が自主登録している。</p>
+        <span class="badge-fee fee-low">動機型マッチング</span>
+      </div>
+    </div>
+
+    <p>3ルートの中でIT副業と最も親和性が高いのはルート③の「サンカク」経由だ。沖縄との縁や好意を持つIT系フリーランスが自発的に登録するため、動機の質が高く、業務委託・フルリモートでのマッチングがしやすい。一方でルート①は対象が広く、IT特化の採用には人材紹介会社側のデータベースの質に依存する。ルート②は役員・幹部クラスの経営知識を無料で活用できる点で破格だが、IT技術者よりも経営・マネジメント系に偏りやすい。</p>
+  </section>
+
+  <!-- 全国実績 -->
+  <section id="jisseki">
+    <h2><span class="icon">📈</span>全国実績：副業比率が5年で3倍に</h2>
+    <div class="policy-tag">全国45道府県合計 ／ 沖縄単独の数値は非公開</div>
+
+    <p>内閣府が令和7年5月に公表した施策説明会資料より、全国のプロフェッショナル人材事業の実績が確認できる。</p>
+
+    <h3>副業・兼業の成約比率の推移</h3>
+    <div style="margin: 16px 0 24px;">
+      <div class="trend-row">
+        <span class="trend-label">令和2年度</span>
+        <div class="trend-bar-wrap"><div class="trend-bar bar-blue" style="width:10%">10.0%</div></div>
+      </div>
+      <div class="trend-row">
+        <span class="trend-label">令和3年度</span>
+        <div class="trend-bar-wrap"><div class="trend-bar bar-blue" style="width:17.9%">17.9%</div></div>
+      </div>
+      <div class="trend-row">
+        <span class="trend-label">令和4年度</span>
+        <div class="trend-bar-wrap"><div class="trend-bar bar-blue" style="width:21%">21.0%</div></div>
+      </div>
+      <div class="trend-row">
+        <span class="trend-label">令和5年度</span>
+        <div class="trend-bar-wrap"><div class="trend-bar bar-blue" style="width:24.9%">24.9%</div></div>
+      </div>
+      <div class="trend-row">
+        <span class="trend-label">令和6年度</span>
+        <div class="trend-bar-wrap"><div class="trend-bar bar-accent" style="width:29.1%">29.1%</div></div>
+      </div>
+    </div>
+
+    <h3>副業・兼業人材の詳細（令和5年度実績）</h3>
+    <div class="stats">
+      <div class="stat">
+        <div class="val">85<span>%</span></div>
+        <div class="lbl">月収10万円以下<br>（副業・兼業の月収分布）</div>
+      </div>
+      <div class="stat">
+        <div class="val">40<span>%</span></div>
+        <div class="lbl">ミッションが「販路拡大」<br>（常勤雇用は「生産性向上」が最多）</div>
+      </div>
+      <div class="stat">
+        <div class="val">1<span>倍以下</span></div>
+        <div class="lbl">副業の求人倍率<br>（企業にとって有利な市場環境）</div>
+      </div>
+    </div>
+
+    <p>副業人材の月収が10万円以下に集中している点が示すのは、「特定プロジェクト単位で月数日稼働」という使い方が主流だということだ。IT分野でいえば、EC立ち上げ・SNS運用・DXコンサルなど期間限定のプロジェクト型業務が典型的なニーズに当たる。また副業求人倍率が1倍を下回る（＝求人より副業希望者が多い）ことは、企業側にとって有利な買い手市場であることを意味する。</p>
+
+    <div class="highlight">
+      <strong>令和7年度からの制度強化：</strong>内閣府はプロ人型交付金のメニューとして全国共通の「副業兼業補助金」を新設。プロ拠点を通じて初めて副業人材を活用する企業に対し、報酬・手数料・旅費の合計の最大8割（上限50万円）を補助する。沖縄のプロフェッショナル人材確保支援補助金の初回活用条件と同じ設計で、国の方針と県の施策が揃った形になった。
+    </div>
+  </section>
+
+  <!-- 活用事例 -->
+  <section id="cases">
+    <h2><span class="icon">💼</span>沖縄の活用事例（公開7件から）</h2>
+    <div class="policy-tag">IT・デジタル関連を中心に抜粋</div>
+
+    <p>人材チャンプルーのウェブサイトで公開されている活用事例は7件。業種・人材タイプともに多様で、IT特化ではなく経営全般にわたる。以下はIT・デジタル色の強い事例を中心に整理した。</p>
+
+    <div class="case">
+      <div class="case-tag">事例① SaaS営業 × 副業</div>
+      <div class="case-title">豊富な「SaaS営業知識」を備えたプロ人材を採用<br>→ トライアル移行率 76%→90% に向上</div>
+      <p>SaaSビジネスの関係構築力・営業知識を持つプロ人材を副業で採用。入社後、トライアルから本契約への移行率が14ポイント改善するという定量的な成果が確認されている。IT系副業の効果が数値で示された数少ない事例。</p>
+    </div>
+
+    <div class="case">
+      <div class="case-tag">事例② フルリモート副業 × ふるさと副業「サンカク」経由</div>
+      <div class="case-title">株式会社YOLO：チャンプルー経由で延べ11名と業務委託契約<br>→ 全スタッフをフリーランスで運営する経営モデル</div>
+      <p>東京在住のフリーランス（40代男性、編集プロダクション出身）が「サンカク」経由で応募。沖縄のキャンプブランド「ZEN Camps」のSNS運用・マーケティングをフルリモートで担当。同社は役員1名を除き全スタッフ業務委託という異色のスタイルを持ち、チャンプルー経由で商品開発・ブランディング・新規事業など多様な人材を延べ11名活用している。人材側の声として「沖縄が好きで役に立ちたかった」という動機が示されており、「サンカク」による動機型マッチングの有効性を示す典型事例。</p>
+    </div>
+
+    <div class="case">
+      <div class="case-tag">事例③ 大企業役員経験 × ルート②（大企業連携）</div>
+      <div class="case-title">海外進出に向けて人事部を新設<br>→ 大手企業役員経験のプロ人材と成約（手数料ゼロ）</div>
+      <p>都市部大企業からの在籍型出向・副業という「大企業連携ルート」を活用し、役員経験者クラスのプロ人材を紹介手数料なしで獲得した事例。通常の人材紹介では高額な手数料が発生するレベルの人材を低コストで活用できた点がポイント。</p>
+    </div>
+
+    <div class="case">
+      <div class="case-tag">事例④ SNS運用アドバイザー × 副業（最新・2025年11月）</div>
+      <div class="case-title">「コンサルタントではなく現場アドバイザー」として雑談しながら運用スタイルを確立</div>
+      <p>最新の活用事例（2025年11月掲載）。SNS担当者の「楽しみながら成長できる環境」を目指し、外部アドバイザーを副業形式で起用。正式なコンサル契約ではなく、現場担当者と並走する形での関与がポイント。デジタルマーケティング人材を副業で使う際の関与モデルとして参考になる。</p>
+    </div>
+  </section>
+
+  <!-- 課題と示唆 -->
+  <div class="conclusion" id="conclusion">
+    <h2>課題と示唆：チャンプルーの限界と可能性</h2>
+
+    <div class="point">
+      <div class="pt-title">① 首都圏IT人材への「能動的アプローチ」チャネルがない</div>
+      <p>チャンプルーは沖縄1拠点で首都圏常駐スタッフなし。首都圏人材へのリーチは提携人材紹介会社とサンカクに委ねており、「沖縄で副業したいIT人材」が自発的に登録するのを待つ構造だ。他県では副業マッチング特化イベントを首都圏で開催したり、SNSで沖縄企業の副業ニーズを発信するなどの能動的施策が見られるが、沖縄での展開は確認できない。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">② IT人材特化の実績が見えない</div>
+      <p>公開事例7件のうちIT・デジタル色が明確なのは3〜4件。SaaS営業、SNS運用、フリーランスのライター・マーケターが中心で、エンジニアリング・開発・DXコンサルといった技術系IT人材の成約事例は確認できなかった。「デジタル人材の地域還流」を国の方針として位置づけているにもかかわらず、IT技術者の供給実績が薄い可能性がある。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">③ 沖縄単独の数値が完全に非公開</div>
+      <p>全国120,008件・32,496件という数字は45道府県の合計で、沖縄分は開示されていない。活用事例が7件という少なさからスケールは大きくないとみられるが、実態は不明。「チャンプルーを通じて副業IT人材を採用した沖縄企業が何社あるか」が分からない状態では、施策評価も改善策の立案も難しい。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">④「サンカク」モデルに可能性</div>
+      <p>事例②が示すように、「沖縄が好き・沖縄に関わりたい」という動機を持つ首都圏IT人材は一定数いる。この層はフルリモートでの副業に親和的で、定着率も高い傾向がある。副業の求人倍率が1倍を下回る（希望者過多）市場であることも踏まえると、動機形成（なぜ沖縄の仕事をするのか）に訴えるコンテンツ発信・イベントを通じた独自チャネル構築が、最もコストパフォーマンスの高い打ち手になりうる。</p>
+    </div>
+
+    <p>総じて人材チャンプルーは「沖縄企業の課題整理と民間紹介会社への橋渡し」という機能は果たしているが、首都圏IT人材との間に「沖縄への関心と副業ニーズをつなぐ独自の磁力」を持っていない。令和7年度から国が副業補助を8割まで強化した追い風をいかして、IT特化の副業人材採用に踏み込めるかが問われている。</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>調査対象：人材チャンプルー公式サイト・内閣府プロフェッショナル人材戦略ポータル・内閣府施策説明会資料（令和7年5月）等 ／ 調査日：2026年6月2日</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>
