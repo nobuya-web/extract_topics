@@ -1,0 +1,424 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>テーマ抽出レポート ライブラリ</title>
+  <style>
+    :root {
+      --blue:    #1a4f7a;
+      --blue-lt: #2d7ab5;
+      --accent:  #e8811a;
+      --bg:      #f5f7fa;
+      --white:   #ffffff;
+      --text:    #1e2832;
+      --muted:   #5a6472;
+      --border:  #dde3ea;
+      --tag-bg:  #e8f0f9;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Noto Sans JP","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+      color: #fff;
+      padding: 48px 40px 40px;
+      text-align: center;
+    }
+    header .label {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 4px;
+      font-size: 11px;
+      letter-spacing: .1em;
+      padding: 4px 12px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    header h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+    header p  { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+    /* Main */
+    main { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    /* Section group */
+    .group { margin-bottom: 48px; }
+    .group-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--blue);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+
+    /* Card grid */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+
+    /* Card */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px 22px 18px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: box-shadow .2s, border-color .2s, transform .15s;
+    }
+    .card:hover {
+      box-shadow: 0 4px 16px rgba(26,79,122,.12);
+      border-color: var(--blue-lt);
+      transform: translateY(-2px);
+    }
+    .card-icon {
+      width: 36px; height: 36px;
+      background: var(--blue);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .card-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--blue);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid #c5d9ee;
+      width: fit-content;
+    }
+    .card h2 {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--text);
+    }
+    .card p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .card .arrow {
+      font-size: 12px;
+      color: var(--blue-lt);
+      font-weight: 600;
+      align-self: flex-end;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 36px 20px 32px; }
+      header h1 { font-size: 20px; }
+      main { padding: 32px 16px 60px; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="label">Extracted Reports</div>
+  <h1>テーマ抽出レポート ライブラリ</h1>
+  <p>法令や大型レポート、複数の資料から特定のテーマについてAIが分析したレポート集</p>
+</header>
+
+<main>
+
+  <!-- 性別役割分担意識 -->
+  <div class="group">
+    <div class="group-title">性別役割分担意識</div>
+    <div class="cards">
+      <a class="card" href="260602_02/gender-roles.html">
+        <div class="card-icon">⚖️</div>
+        <span class="card-tag">政策・企業取り組み</span>
+        <h2>性別役割分担意識<br>政策・企業取り組みレポート</h2>
+        <p>国の政策（1985年〜第6次基本計画）・自治体施策・企業の取り組み事例（資生堂・パナソニック・ヤマハ・日本IBM等）を過去・現在・今後の視点で整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260602_02/behavioral-econ.html">
+        <div class="card-icon">🧠</div>
+        <span class="card-tag">行動経済学</span>
+        <h2>行動経済学から見る<br>性別役割分担意識の解消</h2>
+        <p>ナッジ・デフォルト変更・ワークデザイン・社会規範アプローチがジェンダーバイアス解消に有効かを実証研究（千葉市育休事例・UNDP実験・Bohnet等）をもとに整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260602_02/issues.html">
+        <div class="card-icon">❓</div>
+        <span class="card-tag">先行研究・論点分析</span>
+        <h2>固定的性別役割分担意識<br>先行研究と主要論点の分析</h2>
+        <p>「固定的」vs「役割自体」・国の方針と個人の価値観の乖離・少子化との関係・認識ギャップを先行研究（RIETI・日本総研・内閣府等）をもとに5論点で整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 沖縄IT副業 -->
+  <div class="group">
+    <div class="group-title">沖縄IT副業支援事業</div>
+    <div class="cards">
+      <a class="card" href="260602_01/matrix.html">
+        <div class="card-icon">📊</div>
+        <span class="card-tag">支援マトリクス</span>
+        <h2>沖縄IT副業支援事業マトリクス<br>国・県・ISCO別 全施策俯瞰</h2>
+        <p>企業支援（IT会社・事業会社）×人材支援（県外・県内）の4象限と、国/県/ISCO等の実施主体を掛け合わせた全施策整理。副業直接支援と間接支援の違いも明示。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260602_01/chanpuru.html">
+        <div class="card-icon">🤝</div>
+        <span class="card-tag">実態調査</span>
+        <h2>人材チャンプルー 実態調査レポート<br>首都圏IT人材へのアプローチと実績</h2>
+        <p>3つのマッチングルート（民間紹介会社・大企業連携・サンカク）の構造と全国実績（累計32,496件・副業比率29%）、沖縄の活用事例7件、課題を整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260602_01/kochi-compare.html">
+        <div class="card-icon">🔍</div>
+        <span class="card-tag">他県比較</span>
+        <h2>高知県×沖縄県<br>IT副業支援事業 比較分析</h2>
+        <p>副業特化の先進事例「高知モデル」（Skill Shift公式指定・高知家ITコミュニティ・市レベル展開）と沖縄の構造差を11項目で比較。沖縄への示唆4点を整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- IPA DX動向 -->
+  <div class="group">
+    <div class="group-title">IPA DX動向 調査レポート群</div>
+    <div class="cards">
+      <a class="card" href="260525_04/points.html">
+        <div class="card-icon">💻</div>
+        <span class="card-tag">ポイント整理</span>
+        <h2>IPA DX動向 ポイント整理<br>2023-2025 時系列まとめ</h2>
+        <p>DX白書2023・DX動向2024・2025など全9資料を横断し、「2025年の崖」から7年間の取組推移・成果構造・人材不足・生成AI・日米独比較を時系列で整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- おきなわITセンサス -->
+  <div class="group">
+    <div class="group-title">おきなわITセンサス</div>
+    <div class="cards">
+      <a class="card" href="260525_03/points.html">
+        <div class="card-icon">📊</div>
+        <span class="card-tag">時系列分析</span>
+        <h2>おきなわITセンサス<br>時系列分析とDX推進論点</h2>
+        <p>令和3〜6年度の4回分を時系列で分析。沖縄IT産業の構造変化（売上25%増・雇用横ばい）とDX推進のための7つの論点を整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 副業・兼業 -->
+  <div class="group">
+    <div class="group-title">副業・兼業</div>
+    <div class="cards">
+      <a class="card" href="260525_02/fukugyo.html">
+        <div class="card-icon">💼</div>
+        <span class="card-tag">トピックス</span>
+        <h2>首都圏IT人材×沖縄副業<br>事業構想のための必要情報まとめ</h2>
+        <p>副業・兼業促進ガイドライン・フリーランス保護法・おきなわITセンサスをもとに、首都圏IT人材が沖縄で副業する事業の制度・需要・法的留意点・事業モデルを整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 沖縄振興策提案 -->
+  <div class="group">
+    <div class="group-title">沖縄振興策 企画素案</div>
+    <div class="cards">
+      <a class="card" href="260525_01/teian.html">
+        <div class="card-icon">🌺</div>
+        <span class="card-tag">提案書</span>
+        <h2>沖縄振興策<br>2つの提案</h2>
+        <p>沖縄の地域課題データに基づき、行政事業と企業新規事業の提案フレームワークを整理した企画素案。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260525_01/chosa-iju.html">
+        <div class="card-icon">🔍</div>
+        <span class="card-tag">調査設計</span>
+        <h2>移住型第三者承継<br>調査仮説と調査方法の案</h2>
+        <p>企画素案①の事業性を検証するための4ブロック構成の調査フレームワーク。東京側需要・企業受け入れ意向・コーディネーター機能・先行事例を網羅。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260525_01/fukugyo.html">
+        <div class="card-icon">💻</div>
+        <span class="card-tag">トピックス</span>
+        <h2>IT人材副業・兼業活用策<br>論点整理</h2>
+        <p>沖縄県IT人材不足への対応策として、副業・兼業スキームの類型と課題を整理したトピックス。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 有人国境離島法 -->
+  <div class="group">
+    <div class="group-title">有人国境離島法</div>
+    <div class="cards">
+      <a class="card" href="260524_02/points.html">
+        <div class="card-icon">🏝️</div>
+        <span class="card-tag">ポイント整理・沖縄の論点</span>
+        <h2>有人国境離島法 基本方針の<br>ポイント整理と沖縄の論点</h2>
+        <p>H29内閣総理大臣決定の基本方針から法の骨格・施策・KPIを整理し、2026年更新に向けた沖縄固有の論点を分析。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 沖縄の離島 -->
+  <div class="group">
+    <div class="group-title">沖縄の離島</div>
+    <div class="cards">
+      <a class="card" href="260524_01/report.html">
+        <div class="card-icon">🏝️</div>
+        <span class="card-tag">包括リサーチレポート</span>
+        <h2>沖縄の離島<br>包括リサーチレポート</h2>
+        <p>概要・暮らしとビジネス機会・政策の3編を通じ、沖縄離島の現状・課題・施策を包括的に整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 高年齢者雇用安定法 -->
+  <div class="group">
+    <div class="group-title">高年齢者雇用安定法</div>
+    <div class="cards">
+      <a class="card" href="260523_01/points.html">
+        <div class="card-icon">👴</div>
+        <span class="card-tag">改正ポイント整理</span>
+        <h2>高年齢者雇用安定法<br>改正ポイント整理</h2>
+        <p>令和3年4月施行の改正内容（70歳まで就業確保措置）と令和8年4月適用の新基本方針を、Q&amp;A・指針を含めて実務向けに整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 女性活躍 -->
+  <div class="group">
+    <div class="group-title">女性活躍推進法</div>
+    <div class="cards">
+      <a class="card" href="260522_02/points.html">
+        <div class="card-icon">🌸</div>
+        <span class="card-tag">改正ポイント整理</span>
+        <h2>女性活躍推進法<br>改正ポイント整理</h2>
+        <p>令和7年改正法（令和8年4月1日施行）の主要ポイントを情報公表・管理職比率・認定制度等に整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 職業能力開発 -->
+  <div class="group">
+    <div class="group-title">第12次職業能力開発基本計画</div>
+    <div class="cards">
+      <a class="card" href="260522_01/kigyo.html">
+        <div class="card-icon">🏢</div>
+        <span class="card-tag">企業支援（需要側）</span>
+        <h2>企業支援の属性別まとめ</h2>
+        <p>第12次職業能力開発基本計画における企業・需要側への支援施策を属性別に整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260522_01/shugyo.html">
+        <div class="card-icon">👩‍💼</div>
+        <span class="card-tag">就業者支援（供給側）</span>
+        <h2>就業者支援の属性別まとめ</h2>
+        <p>第12次職業能力開発基本計画における就業者・供給側への支援施策を属性別に整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260522_0A/cross-kigyo.html">
+        <div class="card-icon">🔀</div>
+        <span class="card-tag">横断：企業支援×地方創生</span>
+        <h2>企業支援 × 地方創生視点まとめ</h2>
+        <p>職業能力開発と地方創生を横断し、企業支援施策の地域文脈での意義を整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260522_0A/cross-shugyo.html">
+        <div class="card-icon">🔀</div>
+        <span class="card-tag">横断：就業者支援×地方創生</span>
+        <h2>就業者支援 × 地方創生視点まとめ</h2>
+        <p>職業能力開発と地方創生を横断し、就業者支援施策の地域文脈での意義を整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 地方創生 -->
+  <div class="group">
+    <div class="group-title">地方創生に関する総合戦略</div>
+    <div class="cards">
+      <a class="card" href="260521_02/digital.html">
+        <div class="card-icon">💻</div>
+        <span class="card-tag">デジタル施策</span>
+        <h2>地方創生総合戦略<br>デジタル施策レポート</h2>
+        <p>令和7年12月閣議決定の地方創生総合戦略から、デジタル関連施策を体系的に抽出。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260521_02/jinzai.html">
+        <div class="card-icon">👥</div>
+        <span class="card-tag">人材施策</span>
+        <h2>地方創生総合戦略<br>人材施策レポート</h2>
+        <p>地方創生総合戦略から、人材育成・確保・還流に関する施策を横断的に整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 沖縄 -->
+  <div class="group">
+    <div class="group-title">沖縄21世紀ビジョン実施計画</div>
+    <div class="cards">
+      <a class="card" href="260521_01/digital.html">
+        <div class="card-icon">🌐</div>
+        <span class="card-tag">デジタル施策</span>
+        <h2>沖縄21世紀ビジョン実施計画<br>デジタル施策まとめ</h2>
+        <p>新・沖縄21世紀ビジョン実施計画（中期）全7編を横断し、デジタル関連施策を抽出・整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260521_01/jigyo-shokei.html">
+        <div class="card-icon">🤝</div>
+        <span class="card-tag">事業承継</span>
+        <h2>沖縄21世紀ビジョン実施計画<br>事業承継支援まとめ</h2>
+        <p>全805ページの実施計画から事業承継関連施策を抽出。後継者不在率73.3%の現状と目標・取組を整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+      <a class="card" href="260521_01/shien-guide.html">
+        <div class="card-icon">🏢</div>
+        <span class="card-tag">支援機関ガイド</span>
+        <h2>沖縄県 事業承継支援<br>企業・機関ガイド</h2>
+        <p>公的機関・金融機関・士業事務所・M&A仲介の4カテゴリで沖縄の事業承継支援機関を網羅整理。</p>
+        <span class="arrow">読む →</span>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>政策レポート集 — 大型報告書から特定テーマを横断抽出</p>
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid #dde3ea;font-size:11px;color:#8a939e;line-height:1.8;text-align:left;max-width:760px;margin-left:auto;margin-right:auto;">【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。</div></footer>
+
+</body>
+</html>

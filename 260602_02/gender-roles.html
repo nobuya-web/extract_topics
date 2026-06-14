@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>性別役割分担意識 政策・企業取り組みレポート</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section h3 { font-size: 15px; font-weight: 700; color: var(--blue-lt); margin: 24px 0 10px; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+section ul { padding-left: 20px; margin-bottom: 16px; }
+section ul li { margin-bottom: 6px; font-size: 14px; line-height: 1.75; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Timeline ── */
+.timeline { list-style: none; padding: 0; margin: 20px 0; }
+.timeline li { display: flex; gap: 18px; margin-bottom: 24px; position: relative; }
+.timeline li:not(:last-child)::after { content: ''; position: absolute; left: 35px; top: 40px; bottom: -10px; width: 2px; background: var(--border); }
+.timeline .era { flex-shrink: 0; width: 72px; }
+.timeline .era .year { display: inline-block; background: var(--blue); color: #fff; border-radius: 6px; font-size: 11px; font-weight: 700; padding: 4px 6px; width: 72px; text-align: center; }
+.timeline .body { flex: 1; }
+.timeline .body strong { display: block; font-size: 14px; font-weight: 700; color: var(--blue); margin-bottom: 4px; }
+.timeline .body p { font-size: 13px; color: var(--text); margin: 0; line-height: 1.7; }
+
+/* ── Phase block ── */
+.phase-block { background: var(--tag-bg); border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0; padding: 18px 22px; margin: 16px 0; }
+.phase-block.present { border-left-color: var(--accent); }
+.phase-block.future  { border-left-color: #27ae60; }
+.phase-block h3 { font-size: 15px; font-weight: 700; color: var(--blue); margin-bottom: 10px; }
+.phase-block ul { padding-left: 18px; }
+.phase-block ul li { font-size: 14px; margin-bottom: 5px; line-height: 1.7; }
+
+/* ── Case study ── */
+.case { background: #f8faff; border: 1px solid #c5d9ee; border-radius: 8px; padding: 22px 24px; margin: 16px 0; }
+.case .case-tag { font-size: 11px; font-weight: 700; color: var(--blue-lt); margin-bottom: 6px; }
+.case .case-title { font-size: 15px; font-weight: 700; color: var(--blue); margin-bottom: 10px; }
+.case p { font-size: 13px; color: var(--text); margin: 0 0 8px; line-height: 1.7; }
+.case ul { padding-left: 18px; }
+.case ul li { font-size: 13px; margin-bottom: 4px; line-height: 1.65; }
+
+/* ── Local grid ── */
+.local-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin: 20px 0; }
+.local-card { background: var(--tag-bg); border: 1px solid #c5d9ee; border-radius: 8px; padding: 16px 18px; }
+.local-card h4 { font-size: 13px; font-weight: 700; color: var(--blue); margin-bottom: 6px; }
+.local-card p  { font-size: 12px; color: var(--text); line-height: 1.65; }
+
+/* ── Law box ── */
+.law-box { background: #fffbf0; border: 1px solid #f0c040; border-radius: 8px; padding: 16px 20px; margin: 14px 0; }
+.law-box h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #5a3a00; }
+.law-box p  { font-size: 13px; line-height: 1.7; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+footer a { color: var(--blue-lt); text-decoration: none; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+  .local-grid { grid-template-columns: 1fr; }
+}
+
+/* inline citation */
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+
+/* references */
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+@media (max-width: 640px) { .references { padding: 28px 20px; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">性別役割分担意識</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>性別役割分担意識<br>政策・企業取り組みレポート</h1>
+  <p class="sub">国の政策（過去〜現在〜今後）・自治体施策・企業の取り組み事例｜2026年6月調査</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">概況・統計</a></li>
+    <li><a href="#past">政策の歩み</a></li>
+    <li><a href="#present">現在の施策</a></li>
+    <li><a href="#future">今後の方向性</a></li>
+    <li><a href="#local">自治体事例</a></li>
+    <li><a href="#enterprise">企業取り組み</a></li>
+    <li><a href="#law">関連法制</a></li>
+    <li><a href="#conclusion">総括</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- 概況・統計 -->
+  <div class="overview" id="overview">
+    <h2>概況・統計</h2>
+    <p>「夫は外で働き、妻は家庭を守るべき」という固定的な性別役割分担意識は、長期的に反対割合が増加し、2016年以降は反対が賛成を上回っている<sup class="cite-ref">※1</sup>。ただし世代差は顕著で、若い世代ほど平等な分担志向が強い。共働き世帯でも家事・育児の負担は女性に偏りがちで、意識と実態のギャップが大きな課題となっている。</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="val">約55<span>%</span></div>
+        <div class="lbl">「夫は外で働き妻は家庭を守るべき」反対割合（令和6年世論調査）</div>
+      </div>
+      <div class="stat">
+        <div class="val">35.1<span>%</span></div>
+        <div class="lbl">家事を「配偶者と半々に分担」と回答（令和6年9月調査）</div>
+      </div>
+      <div class="stat">
+        <div class="val">40<span>%超</span></div>
+        <div class="lbl">資生堂グループの女性管理職比率（2024年1月時点）</div>
+      </div>
+    </div>
+    <p>賛成の主な理由は「育児・介護と両立しながら妻が働き続けることは大変だから」（61.3%）、「妻が家庭を守った方がこどもの成長に良いから」（56.0%）であり<sup class="cite-ref">※1</sup>、実態面の困難さと価値観の両面から意識が形成されていることがわかる。</p>
+  </div>
+
+  <!-- 政策の歩み -->
+  <section id="past">
+    <h2><span class="icon">📜</span>国の政策：過去の歩み</h2>
+    <div class="policy-tag">1985年〜2020年 法制度・基本計画の変遷</div>
+
+    <ul class="timeline">
+      <li>
+        <div class="era"><span class="year">1985年</span></div>
+        <div class="body">
+          <strong>男女雇用機会均等法 制定</strong>
+          <p>採用・昇進での性別差別を禁止。女性の職場進出の法的根拠となった最初の立法だが当初は努力義務にとどまった。</p>
+        </div>
+      </li>
+      <li>
+        <div class="era"><span class="year">1995年</span></div>
+        <div class="body">
+          <strong>北京行動綱領採択（第4回世界女性会議）</strong>
+          <p>「固定的性別役割分担意識の払拭」を国際目標に明記。日本も国内政策の見直しを本格化させた。</p>
+        </div>
+      </li>
+      <li>
+        <div class="era"><span class="year">1999年</span></div>
+        <div class="body">
+          <strong>男女共同参画社会基本法 制定</strong>
+          <p>「固定的な性別役割分担意識を克服し、男女が対等なパートナーとして社会に参画できる社会の実現」を基本理念に掲げ、5年ごとの基本計画策定を義務付けた。以降の政策の土台となる。</p>
+        </div>
+      </li>
+      <li>
+        <div class="era"><span class="year">2001〜</span></div>
+        <div class="body">
+          <strong>第1〜3次 男女共同参画基本計画</strong>
+          <p>「夫は外で働き、妻は家庭を守る」という意識への広報・啓発を本格開始。2001年発足の内閣府男女共同参画局が政策推進の中核を担う。</p>
+        </div>
+      </li>
+      <li>
+        <div class="era"><span class="year">2003年</span></div>
+        <div class="body">
+          <strong>「2020年30%」目標の設定</strong>
+          <p>政策・方針決定過程における女性の割合を2020年までに30%にするという数値目標を設定。性別役割分担意識が女性活躍の大きな障壁として明確に位置づけられた。</p>
+        </div>
+      </li>
+      <li>
+        <div class="era"><span class="year">2015年</span></div>
+        <div class="body">
+          <strong>女性活躍推進法 制定</strong>
+          <p>一定規模以上の企業に女性活躍に関する行動計画の策定・公表を義務化。性別役割分担意識の「組織文化」としての問題が政策上明示された。</p>
+        </div>
+      </li>
+      <li>
+        <div class="era"><span class="year">2020年</span></div>
+        <div class="body">
+          <strong>第5次男女共同参画基本計画</strong>
+          <p>「無意識の思い込み（アンコンシャス・バイアス）」という概念が国の政策文書で初めて主要課題として位置づけられた。「社会全体の意識変革」が重点施策となる。</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 現在の施策 -->
+  <section id="present">
+    <h2><span class="icon">🎯</span>国の政策：現在の取り組み</h2>
+    <div class="policy-tag">2025〜2026年 施策の現状</div>
+
+    <div class="phase-block present">
+      <h3>女性版骨太の方針2025</h3>
+      <p>2025年6月決定の「女性活躍・男女共同参画の重点方針2025」<sup class="cite-ref">※4</sup>では、固定的な性別役割分担意識の解消を重点課題として継続。管理職・経営者層と次世代を担う若者に向けた「ターゲット別戦略的広報」の推進を明記している。</p>
+    </div>
+
+    <div class="phase-block present">
+      <h3>アンコンシャス・バイアス解消事業（内閣府）</h3>
+      <ul>
+        <li>「性別による無意識の思い込み（アンコンシャス・バイアス）事例集」を作成・公開</li>
+        <li>「男性は外で働く」「家事・育児は女性の役割」などの代表的バイアスを整理</li>
+        <li>ドラマ・SNS・動画コンテンツなど多様なメディアを活用したプロモーションを実施</li>
+        <li>地方公共団体・企業との連携による地域での普及啓発を推進</li>
+      </ul>
+    </div>
+
+    <div class="phase-block present">
+      <h3>令和7年版 男女共同参画白書（2025年発表）</h3>
+      <p>特集テーマ「男女共同参画の視点から見た魅力ある地域づくり」<sup class="cite-ref">※2</sup>。地域コミュニティ・農林漁業・防災・観光等において残存する固定的な性別役割分担意識の構造的問題を深掘り分析。</p>
+    </div>
+
+    <div class="highlight">
+      <strong>現在の主要課題：</strong>意識調査では「反対」が増えているものの、実態（家事分担・女性管理職比率・男性育休取得率）の変化は意識に追いついていない。共働き世帯における家事・育児の女性偏重と、地方部における固定観念の温存が重点的な政策対象となっている。
+    </div>
+  </section>
+
+  <!-- 今後の方向性 -->
+  <section id="future">
+    <h2><span class="icon">🔮</span>国の政策：今後の方向性</h2>
+    <div class="policy-tag">第6次男女共同参画基本計画（令和8年3月閣議決定・令和12年度末まで）</div>
+
+    <div class="phase-block future">
+      <h3>第6次男女共同参画基本計画の柱</h3>
+      <ul>
+        <li><strong>性別役割分担意識の根本的解消</strong>を基本方針に明記。長時間労働と女性への家事・育児の偏り、その根底にある固定観念が「女性の潜在能力を生かせていない主因」と位置づけ</li>
+        <li>第11分野「教育・メディア等を通じた男女双方の意識改革・理解の促進」で広報・啓発の着実な実施を具体的施策として明記</li>
+        <li>関心の低い層・若者・経営者等へのターゲット別戦略的広報の強化</li>
+        <li>地方自治体との連携深化による地域差の解消</li>
+      </ul>
+    </div>
+
+    <div class="phase-block future">
+      <h3>男性の家庭参画促進</h3>
+      <ul>
+        <li>男性育児休業取得率の目標：2025年度65%以上（2030年度85%）</li>
+        <li>育休取得を「当たり前」にする職場文化の醸成。パタニティハラスメント対策の強化</li>
+        <li>家事・育児参画を促す男性向けプログラムの普及</li>
+      </ul>
+    </div>
+
+    <div class="phase-block future">
+      <h3>教育・学校現場での意識変革</h3>
+      <ul>
+        <li>学習指導要領における「固定的性別役割分担意識を排除する」観点の反映</li>
+        <li>高校・大学でのキャリア教育に男女平等の視点を組み込む</li>
+        <li>教員・保育士等への研修強化</li>
+      </ul>
+    </div>
+
+    <div class="phase-block future">
+      <h3>AIとテクノロジーを活用した意識改革</h3>
+      <ul>
+        <li>第5分野「テクノロジーの進展を踏まえた男女共同参画推進」として新設</li>
+        <li>AIモデルに組み込まれた性別バイアスの是正、デジタル空間での固定観念の拡散防止</li>
+        <li>テクノロジーを活用した啓発コンテンツの開発・展開</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 自治体施策 -->
+  <section id="local">
+    <h2><span class="icon">🏛️</span>自治体の取り組み事例</h2>
+    <div class="policy-tag">各都道府県の独自施策</div>
+
+    <div class="local-grid">
+      <div class="local-card">
+        <h4>🏔️ 富山県</h4>
+        <p>「ジェンダー平等推進プロジェクト2030 アンコンシャス・バイアス解消アクション！」を展開。アンバサダー（推進員）が地域・職場・学校に出向き啓発。料理教室や避難訓練への男性参加促進など実践型アプローチを実施。</p>
+      </div>
+      <div class="local-card">
+        <h4>🌾 山形県</h4>
+        <p>「固定的役割分担意識の解消を促す啓発媒体」を作成・配布。職場・家庭・地域での固定観念を具体例で示したツールキットを県内企業・学校へ普及。</p>
+      </div>
+      <div class="local-card">
+        <h4>🌸 東京都</h4>
+        <p>「東京都男女平等参画審議会」が性別役割分担意識の解消を継続テーマとして審議。都内企業への意識改革研修助成、女性リーダー育成プログラムの拡充を推進。</p>
+      </div>
+      <div class="local-card">
+        <h4>🌊 沖縄県</h4>
+        <p>地方における固定観念が強い地域特性を踏まえ、「女性活躍推進計画」で家事・育児の男女共同実施を重点施策に設定。自治会・PTA等の地縁組織への働きかけを強化。</p>
+      </div>
+    </div>
+
+    <p>自治体施策は国の基本計画に準拠しながらも地域の実情（農山漁村の慣習、高齢化、若者流出等）に合わせた独自展開が特徴。地域コミュニティ・自治会・地縁組織へのアプローチが、国の施策では届きにくい層へのリーチに有効とされている。2025年版白書の特集「魅力ある地域づくり」を機に各都道府県でのアクションプランが強化傾向にある。</p>
+  </section>
+
+  <!-- 企業の取り組み -->
+  <section id="enterprise">
+    <h2><span class="icon">🏢</span>企業の取り組み事例</h2>
+    <div class="policy-tag">組織的・制度的介入へのシフト</div>
+
+    <div class="case">
+      <div class="case-tag">DE&amp;Iラボ設立 · 産学連携</div>
+      <div class="case-title">💄 資生堂</div>
+      <p>早期から女性活躍推進に取り組み、国内グループの女性管理職比率は40%超（2024年時点）。2023年に「資生堂DE&amp;Iラボ」を設立し、東京大学山口慎太郎教授チームと共同研究。「アンコンシャスバイアスは特定個人の問題ではなく組織全体の課題」という実証結果（2024年10月公表）<sup class="cite-ref">※7</sup>は業界全体に影響を与えている。</p>
+      <ul>
+        <li>管理職・全社員向けアンコンシャスバイアス研修の体系化</li>
+        <li>昇格・後継者候補選抜への女性を意識的に含める仕組みの導入</li>
+        <li>ジェンダーバランスの均衡自体がバイアス軽減に有効と実証</li>
+        <li>定期的なバイアス可視化（測定）と継続的改善サイクルの確立</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <div class="case-tag">啓発ツール開発 · 社外展開</div>
+      <div class="case-title">🔌 パナソニックグループ</div>
+      <p>パナソニック インダストリーが2024年に独自制作した「アンコンシャスバイアスかるた」が社外企業の研修ツールとしても採用。ゲーム感覚で職場の無意識バイアスへの気づきを促し、有償提供にまで発展した。</p>
+      <ul>
+        <li>「アンコンかるた」でバイアスをゲーム感覚で体感・気づく研修設計</li>
+        <li>社内にとどまらず社外企業への展開により社会全体の意識変革に貢献</li>
+        <li>管理職〜一般社員まで幅広い層を対象としたプログラム体系</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <div class="case-tag">管理職研修 · 育休復職支援</div>
+      <div class="case-title">🎵 ヤマハ株式会社</div>
+      <p>育休復職者を持つ管理職・ライン長向けに特化した研修を実施。「女性には一般職の方が向いている」「育休明けは負荷をかけない方が良い」といった過剰な配慮が、実は女性のキャリア機会を阻害していると認識し、時間制約のある社員のマネジメントスキルの底上げを図っている。</p>
+      <ul>
+        <li>育休復職者の上司向け研修で「特別扱い」の弊害を具体的に学ぶ</li>
+        <li>時間制約を前提としたマネジメントスキルの習得に特化</li>
+        <li>キャリア構築への管理職の積極的関与を促す仕組みの整備</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <div class="case-tag">スポンサー制度 · 登用壁の解消</div>
+      <div class="case-title">💻 日本IBM</div>
+      <p>男性経営層が女性のNEXTリーダー層に対するスポンサーになる「スポンサー制度」を導入。メンタリング（助言）にとどまらず、スポンサーが積極的にリーダー候補の女性を推薦・支援することで、「女性は管理職に向かない」という無意識の思い込みによる機会損失を構造的に是正している。</p>
+      <ul>
+        <li>経営層（男性）と次世代女性リーダーのスポンサーシップ制度</li>
+        <li>推薦・機会提供を通じた「見えない天井」の構造的解消</li>
+        <li>上位職登用を阻む性別役割分担意識への組織的介入</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <div class="case-tag">経産省認定 · 男性育休推進</div>
+      <div class="case-title">🏅 なでしこ銘柄「共働き・共育て支援企業」群</div>
+      <p>令和5年度「Nextなでしこ共働き・共育て支援企業」認定企業群では、男性育休の取得推進と性別役割分担意識の払拭を一体として取り組んでいる。「育休取得奨励金」「イクボス同盟加盟」「取得状況の上司評価への反映」などが共通手法として確認されている。</p>
+      <ul>
+        <li>男性育休取得率の数値目標設定と経営コミットメントの明示</li>
+        <li>育休取得を上司の評価指標に組み込み組織文化を変革</li>
+        <li>イクボス研修・管理職向けダイバーシティ研修のセット実施</li>
+        <li>取得率の社内外公開による透明性確保と競争意識の醸成</li>
+      </ul>
+    </div>
+
+    <div class="highlight">
+      <strong>企業取り組みのトレンド：</strong>「個人の意識改革」から「組織・制度の設計変更」へシフトしている。研修だけでなく評価制度・登用プロセス・人事データの可視化という「構造的介入」が有効とされており、バイアスを組織全体の課題として捉えることが重要な知見として定着しつつある。
+    </div>
+  </section>
+
+  <!-- 関連法制 -->
+  <section id="law">
+    <h2><span class="icon">⚖️</span>関連法制・制度の動向</h2>
+    <div class="policy-tag">直近の法改正と企業への影響</div>
+
+    <div class="law-box">
+      <h4>🆕 改正女性活躍推進法（2025年6月公布・2026年4月施行）</h4>
+      <p>101人以上の企業を対象に「女性管理職比率」「男女間賃金差異」の公表が新たに義務化（改正前は300人超の企業のみ）<sup class="cite-ref">※5</sup>。情報公開の強化により、組織における性別役割分担の実態が可視化される。有効期限10年延長、女性の健康上の特性への配慮も明記。</p>
+    </div>
+
+    <div class="law-box">
+      <h4>📋 育児・介護休業法（2025年改正施行）</h4>
+      <p>男性育児休業の取得促進のため、上司が部下に育休取得の意向確認を行うことが義務化<sup class="cite-ref">※6</sup>。育休取得を妨げるパタニティハラスメントへの対策強化。「男は働く、女は育てる」という固定観念に由来する職場慣行の是正を法的に推進。</p>
+    </div>
+
+    <div class="law-box">
+      <h4>📊 男女共同参画社会基本法に基づく第6次基本計画（令和8年3月）</h4>
+      <p>5年ごとの基本計画策定が義務付けられており、第6次計画<sup class="cite-ref">※3</sup>が現在の基本的枠組み。固定的性別役割分担意識の解消は全6次計画を通じた一貫した課題として位置づけられており、2030年度末を見通した数値目標が設定されている。</p>
+    </div>
+  </section>
+
+  <!-- 総括 -->
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>性別役割分担意識の変革は、1985年の均等法制定から約40年をかけて、「法的禁止」→「啓発・普及」→「組織文化・制度変革」という段階を経て深化してきた。現在は第6次男女共同参画基本計画（2026年3月）のもと、意識改革と制度改革の両輪で取り組みが進んでいる。</p>
+
+    <div class="point">
+      <div class="pt-title">意識と実態のギャップの解消が急務</div>
+      <p>「反対」という意識は過半数を超えたが、家事・育児の実際の分担、女性管理職比率、男性育休取得率はいずれも意識の変化に追いついていない。意識のみならず「行動変容」を促す制度設計が鍵となる。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">「個人の問題」から「組織・社会の構造問題」へ</div>
+      <p>資生堂DE&Iラボの実証研究が示すように、バイアスは個人の問題ではなく組織全体の課題。ジェンダーバランスの均衡自体がバイアス軽減効果を持つという知見は、今後の政策・企業施策の設計に大きく影響する。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">地域差・世代差への対応</div>
+      <p>地方コミュニティでの固定観念の温存、上の世代に残る意識など、均一ではない課題への対応が必要。自治体による地縁組織へのアプローチや、若い世代を対象にした教育段階での介入が、長期的変革のカギを握る。</p>
+    </div>
+  </div>
+
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-num">1</span>
+        <span>内閣府「男女共同参画社会に関する世論調査」（令和6年度）<span class="ref-tag">世論調査</span><br>
+        <a href="https://survey.gov-online.go.jp/r06/r06-danjo/" target="_blank" rel="noopener">https://survey.gov-online.go.jp/r06/r06-danjo/</a></span>
+      </li>
+      <li>
+        <span class="ref-num">2</span>
+        <span>内閣府「令和7年版 男女共同参画白書」（2025年）<span class="ref-tag">白書</span><br>
+        <a href="https://www.gender.go.jp/about_danjo/whitepaper/r07/zentai/index.html" target="_blank" rel="noopener">https://www.gender.go.jp/about_danjo/whitepaper/r07/zentai/index.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">3</span>
+        <span>内閣府「第6次男女共同参画基本計画」（2020年12月閣議決定）<span class="ref-tag">政策文書</span><br>
+        <a href="https://www.gender.go.jp/about_danjo/basic_plans/6th/index.html" target="_blank" rel="noopener">https://www.gender.go.jp/about_danjo/basic_plans/6th/index.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">4</span>
+        <span>「女性活躍・男女共同参画の重点方針2025（女性版骨太の方針2025）」（2025年6月閣議決定）<span class="ref-tag">政策文書</span><br>
+        <a href="https://www.gender.go.jp/policy/sokushin/seisaku/r07.html" target="_blank" rel="noopener">https://www.gender.go.jp/policy/sokushin/seisaku/r07.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">5</span>
+        <span>女性活躍推進法（2015年制定・2022年改正）および改正女性活躍推進法（2026年4月施行）<span class="ref-tag">法令</sp
