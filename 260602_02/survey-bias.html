@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世論調査バイアス分析 — 問題点と改善の方向性</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-rate { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; width: 72px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Bias severity badge ── */
+.severity { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; }
+.severity.high { background: #fdecea; color: #b71c1c; border: 1px solid #f5c6c2; }
+.severity.med  { background: #fff3e0; color: #e65100; border: 1px solid #ffd59e; }
+.severity.low  { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
+
+/* ── Data table ── */
+.data-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+.data-table th { background: var(--tag-bg); color: var(--blue); font-weight: 700; padding: 10px 14px; text-align: left; border-bottom: 2px solid var(--border); }
+.data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.65; }
+.data-table tr:last-child td { border-bottom: none; }
+
+/* ── Improvement card ── */
+.improve-list { list-style: none; margin: 20px 0; }
+.improve-list li { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.7; }
+.improve-list li:last-child { border-bottom: none; }
+.improve-num { flex-shrink: 0; width: 28px; height: 28px; background: var(--blue); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-top: 2px; }
+.improve-text strong { display: block; font-size: 13px; color: var(--blue); margin-bottom: 4px; }
+
+/* ── Stats ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── cite-ref ── */
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+
+/* ── references ── */
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-rate { font-size: 0.7rem; width: 60px; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+  .references { padding: 28px 20px; }
+  .data-table { font-size: 13px; }
+  .data-table th, .data-table td { padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="site-title">性別役割分担意識</span>
+  <div class="tts-bar">
+    <select id="tts-voice" class="tts-select" aria-label="音声選択"></select>
+    <select id="tts-rate" class="tts-rate" aria-label="読み上げ速度">
+      <option value="0.8">0.8×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.2">1.2×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.8">1.8×</option>
+    </select>
+    <button id="tts-btn" class="tts-btn" data-state="idle">▶ 読み上げ</button>
+    <button id="tts-stop" class="tts-stop">■ 停止</button>
+    <span id="tts-label" class="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <span class="label">トピックス</span>
+  <h1>「男女共同参画社会に関する世論調査」<br>バイアス分析と改善の方向性</h1>
+  <p class="sub">令和6年9月調査（内閣府）の設計・実施上の問題点を検討する</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#framing">フレーミング</a></li>
+    <li><a href="#desirability">望ましさバイアス</a></li>
+    <li><a href="#choices">選択肢の問題</a></li>
+    <li><a href="#sampling">サンプリング</a></li>
+    <li><a href="#structure">設問構造</a></li>
+    <li><a href="#missing">欠落した視点</a></li>
+    <li><a href="#improve">改善の方向性</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- 全体像 -->
+  <div class="overview" id="overview">
+    <h2>分析の前提：調査の概要と問いの立て方</h2>
+    <p>内閣府「男女共同参画社会に関する世論調査」は5年ごとに実施され、政策立案の基礎データとして広く参照される。令和6年（2024年）9月の調査では有効回収2,673人（回収率53.5%）から多岐にわたる設問への回答が得られ<sup class="cite-ref">※1</sup>、「政治の場では87.9%が男性優遇と感じる」「役割分担意識への賛成は33.1%」などの数値が報告されている。</p>
+    <p>しかしこの調査には、<strong>設計・実施・解釈の各段階で複数のバイアス要因が存在する</strong>。本レポートはそれらを体系的に整理し、数値を参照する際の留意点と今後の改善方向を示す。以下のバイアスは相互に影響しており、単独では説明しきれない部分もある点に注意されたい。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">53.5<span>%</span></div><div class="lbl">有効回収率<br>（残り46.5%の傾向は不明）</div></div>
+      <div class="stat"><div class="val">8</div><div class="lbl">本報告が指摘する<br>バイアス類型の数</div></div>
+      <div class="stat"><div class="val">6</div><div class="lbl">改善の方向性<br>（具体策の数）</div></div>
+    </div>
+  </div>
+
+  <!-- 1. フレーミングバイアス -->
+  <section id="framing">
+    <h2><span class="icon">🏛</span>フレーミングバイアス — 推進側が評価者でもある構造問題</h2>
+    <span class="severity high">影響度：大</span>
+
+    <p>最も根本的な問題は、<strong>政策を推進する内閣府が調査の設計・実施・公表を一手に担う</strong>という構造にある<sup class="cite-ref">※2</sup>。「男女共同参画社会に関する世論調査」というタイトル自体が、「男女共同参画は望ましい」という前提を調査の外枠として固定している。</p>
+
+    <p>回答者は調査の主旨（内閣府＝共同参画推進機関が実施）を知った上で回答するため、「政策に沿った答えが期待されている」という無意識の認識が生じやすい。これはフレーミング効果として確立された心理的メカニズムであり<sup class="cite-ref">※3</sup>、選択的に設問を設計・公表する余地がある主体が調査者を兼ねる限り、構造的に排除できない。</p>
+
+    <div class="highlight">
+      <strong>比較の不在が問題を深刻にする：</strong>同じ設問を第三者機関が実施した場合の結果が存在しないため、フレーミング効果がどの程度数値を歪めているかを検証するすべがない。内閣府調査の時系列データは「意識の変化」を示すが、それが実態の変化なのか測定方法の一貫した偏りなのかを区別できない。
+    </div>
+  </section>
+
+  <!-- 2. 社会的望ましさバイアス -->
+  <section id="desirability">
+    <h2><span class="icon">🎭</span>社会的望ましさバイアス — 「正しい答え」への引力</h2>
+    <span class="severity high">影響度：大</span>
+    <span class="policy-tag">第２テーマ：性別役割分担設問</span>
+
+    <p>「夫は外で働き、妻は家庭を守るべきだと思うか」という設問は、社会的望ましさバイアス（Social Desirability Bias）の典型的な発生源だ<sup class="cite-ref">※4</sup>。この設問には3つの問題が重なっている。</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>問題点</th><th>内容</th><th>影響の方向</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>「べき」という規範語</td><td>価値判断を強く求める語は反発を引きやすい。「望む」「好む」と聞けば賛成率が変わる可能性がある</td><td>賛成を過小評価</td></tr>
+        <tr><td>時代規範の圧力</td><td>現代日本では「役割分担賛成」は「古い・差別的」と見なされやすく、本音と回答が乖離する</td><td>賛成を過小評価</td></tr>
+        <tr><td>行動との乖離</td><td>共働き世帯でも家事・育児の主な担い手は女性が多い実態と、「反対多数」という意識調査の結果が矛盾する</td><td>行動実態を反映しない</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight">
+      <strong>実態データとの乖離が証左：</strong>NHK放送文化研究所の生活時間調査によれば、共働き世帯でも家事時間は女性が男性の約4〜5倍<sup class="cite-ref">※5</sup>。「役割分担に反対」と答える人が65%近くいながら、現実の分担は依然として非対称であるという矛盾は、この設問の回答が本音の行動意向を反映していないことを強く示唆する。
+    </div>
+  </section>
+
+  <!-- 3. 選択肢の非対称性 -->
+  <section id="choices">
+    <h2><span class="icon">⚖</span>選択肢の設計問題 — 3択が生む強制と粗さ</h2>
+    <span class="severity med">影響度：中</span>
+
+    <p>「男性優遇・女性優遇・平等」という3分類は実態の複雑さを捉えられない<sup class="cite-ref">※6</sup>。「職場では男性優遇だが、家事・育児の責任帰属という点では女性に過重」という複合的な認識を持つ人は、どの選択肢にも正確に収まらない。</p>
+
+    <p>また「賛成・どちらかといえば賛成・どちらかといえば反対・反対」という4択では、「どちらともいえない」が選べない設問が存在する。意見を持たない層・熟慮中の層が強制的に二項対立のどちらかに割り当てられ、数値が実際より明確な分布を示す。</p>
+
+    <div class="highlight">
+      <strong>「どちらかといえば賛成＋賛成」の合算報告：</strong>報告書では「賛成33.1%（賛成8.3%＋どちらかといえば賛成24.8%）」のように合算値が強調される。強い確信を持つ「賛成8.3%」と留保付きの「どちらかといえば賛成24.8%」は政策的意味が異なるが、合算することで数値の印象が強まる。
+    </div>
+  </section>
+
+  <!-- 4. サンプリング問題 -->
+  <section id="sampling">
+    <h2><span class="icon">📊</span>サンプリングと回収バイアス — 見えない46.5%</h2>
+    <span class="severity high">影響度：大</span>
+
+    <p>回収率53.5%は、残る46.5%（約2,327人）の傾向が一切不明であることを意味する<sup class="cite-ref">※1</sup>。調査方法論の研究では、無回答者は回答者と系統的に異なる傾向（たとえば関心が低い・多忙・社会的マイノリティ）を持つことが多く、これが無回答バイアス（Non-response Bias）を生む。</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>バイアス源</th><th>脱落しやすい層</th><th>影響の方向</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>郵送法の負担</td><td>忙しい共働き世帯、若年層、デジタルネイティブ</td><td>男女平等に関心の高い層が過剰代表される可能性</td></tr>
+        <tr><td>日本国籍限定</td><td>在日外国人（約340万人）</td><td>文化的多様性が完全に欠落</td></tr>
+        <tr><td>18歳以上の住所固定者</td><td>ホームレス状態の人、施設入居者、頻繁な転居者</td><td>困難な状況にある女性の声が届かない</td></tr>
+        <tr><td>テーマへの無関心層</td><td>調査テーマに関心の薄い人</td><td>関心高い＝意識高い層が過剰代表</td></tr>
+      </tbody>
+    </table>
+
+    <p>内閣府調査では無回答者調査（non-response survey）は実施されておらず、この限界が数値の信頼区間に与える影響は定量化されていない。「日本人の87.9%が政治の場を男性優遇と感じる」という表現は、正確には「回答した53.5%の中の87.9%」であり、全体への一般化には慎重さが求められる。</p>
+  </section>
+
+  <!-- 5. 設問の順序・構造 -->
+  <section id="structure">
+    <h2><span class="icon">🔗</span>設問順序と前提の問題 — プライミングと異性婚の固定</h2>
+    <span class="severity med">影響度：中</span>
+    <span class="policy-tag">設問設計の問題</span>
+
+    <p>心理学のプライミング効果研究によれば、先行する設問が後続の設問の回答に影響する<sup class="cite-ref">※3</sup>。「政治の場は男性優遇か→職場は→家庭は」と平等感を確認した後で「夫は外で、妻は家庭を」という設問が来ると、直前に「不平等」を確認した記憶が「反対」方向の回答を引きやすくする。設問順序のランダム化が行われているかは公表資料から確認できない。</p>
+
+    <p>さらに、「夫婦の名字」「育児分担の希望」「育児・介護中の就業継続」といった設問群は、<strong>すべて異性婚カップル・法律婚を暗黙の前提</strong>として設計されている。「夫」「妻」という語の使用が、以下の層の回答を著しく困難にする。</p>
+
+    <div class="highlight">
+      <strong>設問構造から排除されている人々：</strong>同性カップル、事実婚パートナー、シングル親、選択的非婚者、離別・死別後の単独世帯。令和5年の国勢調査では事実婚世帯が約50万世帯に達しており、これらの家族形態に生きる人々は「夫婦」設問に自分の状況を当てはめられず、回答を歪めるか放棄するかを強いられる。
+    </div>
+  </section>
+
+  <!-- 6. 欠落した視点 -->
+  <section id="missing">
+    <h2><span class="icon">🔍</span>欠落した問いと視点 — 測れないものは変えられない</h2>
+    <span class="severity med">影響度：中</span>
+
+    <p>現行の設問体系では政策立案に必要な情報が複数計測されていない。「意識はどうか」は問えていても、「なぜそうなのか」「何が障壁か」「何が変われば行動が変わるか」が問われていないため、数値が政策に接続しにくい。</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>欠落している問い</th><th>政策的重要性</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>「現在の働き方・家事分担を変えたいか」</td><td>意識と行動意向のギャップを測定できる</td></tr>
+        <tr><td>「パートナーの育休取得に本当に賛成か、また会社の反応を含めて」</td><td>建前と本音・組織圧力の影響を分離できる</td></tr>
+        <tr><td>「男性が家庭参加を増やす上での最大の障壁は何か」</td><td>男性側の制約の実態が見えていない</td></tr>
+        <tr><td>LGBTQ+の視点からの平等感・課題</td><td>「男女」の二項対立に収まらない現実を反映できる</td></tr>
+        <tr><td>「意識は変えたいが変えられない」と感じるか、その理由</td><td>規範変化のボトルネックを特定できる</td></tr>
+        <tr><td>外国人・障害者・ヤングケアラー等の複合困難</td><td>インターセクショナルな課題が不可視化されている</td></tr>
+      </tbody>
+    </table>
+
+    <p>また「進路選択に影響を与えたもの」（母親63%・父親59%）は過去の出来事についての自己評価であり、記憶の再構成バイアスが強く働く<sup class="cite-ref">※3</sup>。実際に影響を受けたが意識していない要因（メディアの描写、地域規範、教材のジェンダー描写）は体系的に過小評価される。</p>
+  </section>
+
+  <!-- 7. 改善の方向性 -->
+  <section id="improve">
+    <h2><span class="icon">🛠</span>改善の方向性 — 調査が政策に貢献するために</h2>
+    <span class="policy-tag">提言</span>
+
+    <p>上記のバイアス群は相互に絡み合っており、単一の改善で解消できるものではない。以下に優先度の高い6つの方向性を示す。</p>
+
+    <ul class="improve-list">
+      <li>
+        <span class="improve-num">1</span>
+        <div class="improve-text">
+          <strong>第三者機関への調査委託</strong>
+          政策推進機関である内閣府が設計・実施・公表を一手に担う構造を改め、独立した学術機関や調査会社に設計の核心部分を委託する。結果の解釈も複数の有識者が独立して行い、報告書に異なる解釈を併記する形式が望ましい。
+        </div>
+      </li>
+      <li>
+        <span class="improve-num">2</span>
+        <div class="improve-text">
+          <strong>設問の中立化と三層化</strong>
+          「べき論（規範）」「希望（行動意向）」「現実（実態）」を別の設問で測定する三層構造に変える。例：「あなたの家庭で現在どう分担しているか」→「理想はどうか」→「変えられない理由は何か」という順序で聞くことで、意識・意向・制約を分離して計測できる。
+        </div>
+      </li>
+      <li>
+        <span class="improve-num">3</span>
+        <div class="improve-text">
+          <strong>無回答者調査（Non-response Survey）の実施</strong>
+          回収率53.5%の残り約2,300人に対し、簡易版（3〜5問）のフォローアップ調査を電話・オンラインで試み、無回答者の傾向を推定する。これにより結果の外的妥当性（一般化可能性）を数値で示せる。
+        </div>
+      </li>
+      <li>
+        <span class="improve-num">4</span>
+        <div class="improve-text">
+          <strong>多様な家族形態への対応</strong>
+          「夫・妻」という語を「パートナー・配偶者・主な生計者・主な育児担当者」等に変え、選択肢に「法律婚」「事実婚」「同性パートナーシップ」「シングル」を明示する。LGBTQ+の方が自分の状況で回答できる設問設計が必要だ<sup class="cite-ref">※7</sup>。
+        </div>
+      </li>
+      <li>
+        <span class="improve-num">5</span>
+        <div class="improve-text">
+          <strong>定性調査との組み合わせ</strong>
+          定量調査（現行の郵送調査）に加え、フォーカスグループインタビューや深層インタビューを年次で実施し、「なぜそう感じるか」「何が行動を妨げているか」という量的調査では捉えられない文脈を把握する。数値の背景にある理由が分かることで、政策の矢を正確に当てられる。
+        </div>
+      </li>
+      <li>
+        <span class="improve-num">6</span>
+        <div class="improve-text">
+          <strong>客観データとの対照掲載</strong>
+          意識調査の結果を、NHK放送文化研究所の生活時間調査・国税庁の賃金統計・厚生労働省の育休取得率等の行動・実態データと同じ報告書内に対照掲載する<sup class="cite-ref">※5</sup>。「意識と実態のギャップ○ポイント」を可視化することで、政策の優先課題を明確にできる。
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 総括 -->
+  <div class="conclusion" id="conclusion">
+    <h2>総括：数値を正しく使うために</h2>
+    <div class="point">
+      <div class="pt-title">調査の有用性を否定するものではない</div>
+      <p>本レポートで指摘したバイアスは、この調査を無効とするものではない。同一設計による時系列比較で「意識の方向性の変化」を捉える点、政策議論の共通基盤を提供する点での価値は依然として高い。問題はその数値を「日本人の○%がこう考えている」と単純に引用することにある。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">数値を引用する際の必須注釈</div>
+      <p>「政治の場では87.9%が男性優遇と感じる」という数値を使う際は、「内閣府郵送調査・回収率53.5%の回答者における割合」「社会的望ましさバイアスの影響を排除できていない」「異性婚カップルを前提とした設問設計」という注釈を付けることが、誠実な活用といえる。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">最も重要な改善：意識と行動の乖離を直視する設問へ</div>
+      <p>「意識はどうか」だけでなく「なぜ行動が伴わないのか」を問う設問へのシフトが、この調査が政策に最も貢献できる改善だ。「役割分担に反対65%・しかし家事・育児は依然として女性が主な担い手」というギャップを数値化し、その障壁を特定することが、実効的な男女共同参画政策の出発点となる。</p>
+    </div>
+    <p>バイアスを知ったうえで数値を読む——それがこのような調査を政策・研究・実務において責任ある形で活用するための基本姿勢である。</p>
+  </div>
+
+  <!-- 参考文献 -->
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-num">1</span>
+        <span>内閣府「男女共同参画社会に関する世論調査」（令和7年2月公表、令和6年9月実施）<span class="ref-tag">世論調査</span><br>
+        <a href="https://survey.gov-online.go.jp/r06/r06-danjo/index.html" target="_blank" rel="noopener">https://survey.gov-online.go.jp/r06/r06-danjo/index.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">2</span>
+        <span>内閣府男女共同参画局「男女共同参画基本計画の推進状況報告」<span class="ref-tag">政策文書</span><br>
+        <a href="https://www.gender.go.jp/about_danjo/basic_plans/index.html" target="_blank" rel="noopener">https://www.gender.go.jp/about_danjo/basic_plans/index.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">3</span>
+        <span>Kahneman, D.「ファスト＆スロー」（2011年）/ Tversky, A. & Kahneman, D.「Judgment under Uncertainty: Heuristics and Biases」（Science, 1974）<span class="ref-tag">論文</span></span>
+      </li>
+      <li>
+        <span class="ref-num">4</span>
+        <span>Tourangeau, R., Rips, L. J., & Rasinski, K.「The Psychology of Survey Response」（Cambridge University Press, 2000）<span class="ref-tag">論文</span></span>
+      </li>
+      <li>
+        <span class="ref-num">5</span>
+        <span>NHK放送文化研究所「2020年国民生活時間調査報告書」（2021年）<span class="ref-tag">調査報告</span><br>
+        <a href="https://www.nhk.or.jp/bunken/research/yoron/20210521_1.html" target="_blank" rel="noopener">https://www.nhk.or.jp/bunken/research/yoron/20210521_1.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">6</span>
+        <span>上瀬由美子「ステレオタイプの社会心理学」（サイエンス社, 2002年）<span class="ref-tag">論文</span></span>
+      </li>
+      <li>
+        <span class="ref-num">7</span>
+        <span>宮田加久子・池田謙一（編）「ネットが変える消費者行動」ほか、調査方法論文献 / LGBT総合研究所「LGBT意識行動調査2023」<span class="ref-tag">調査報告</span><br>
+        <a href="https://www.daiko.co.jp/dwp/wp-content/uploads/2023/08/2023_LGBT_survey_report.pdf" target="_blank" rel="noopener">LGBT総合研究所調査（2023年）</a></span>
+      </li>
+    </ul>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <p>素材：「男女共同参画社会に関する世論調査」概要（令和6年9月実施、内閣府政府広報室）をもとにバイアス分析を実施</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+
+</body>
+</html>

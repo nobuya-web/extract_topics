@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>固定的な性別役割分担意識に関する後継調査 — 設計提案</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Meiryo",sans-serif; background:var(--bg); color:var(--text); font-size:15px; line-height:1.85; padding-top:56px; }
+
+header { position:fixed; top:0; left:0; right:0; height:56px; background:linear-gradient(135deg,var(--blue) 0%,#0f3356 100%); color:#fff; display:flex; align-items:center; padding:0 24px; gap:1rem; z-index:200; box-shadow:0 2px 8px rgba(0,0,0,.25); }
+.site-title { font-size:13px; font-weight:700; color:rgba(255,255,255,.9); white-space:nowrap; flex-shrink:0; }
+.tts-bar { display:flex; align-items:center; gap:.5rem; margin-left:auto; }
+.tts-btn { display:inline-flex; align-items:center; gap:.4rem; padding:.3rem .9rem; border-radius:99px; border:1.5px solid rgba(200,214,232,.5); background:transparent; color:#c8d6e8; font-size:.82rem; font-weight:600; cursor:pointer; transition:background .2s,color .2s; white-space:nowrap; }
+.tts-btn:hover,.tts-btn.playing { background:rgba(255,255,255,.18); color:#fff; border-color:rgba(255,255,255,.7); }
+.tts-stop { display:none; align-items:center; padding:.3rem .75rem; border-radius:99px; border:1.5px solid rgba(200,214,232,.3); background:transparent; color:#c8d6e8; font-size:.82rem; cursor:pointer; white-space:nowrap; }
+.tts-select { padding:.28rem .6rem; border-radius:99px; border:1.5px solid rgba(200,214,232,.3); background:rgba(255,255,255,.08); color:#c8d6e8; font-size:.8rem; cursor:pointer; max-width:200px; }
+.tts-rate { padding:.28rem .6rem; border-radius:99px; border:1.5px solid rgba(200,214,232,.3); background:rgba(255,255,255,.08); color:#c8d6e8; font-size:.8rem; cursor:pointer; width:72px; }
+
+.hero { background:linear-gradient(135deg,var(--blue) 0%,#0f3356 100%); color:#fff; padding:56px 40px 48px; text-align:center; }
+.hero .label { display:inline-block; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:4px; font-size:11px; letter-spacing:.1em; padding:4px 12px; margin-bottom:20px; }
+.hero h1 { font-size:26px; font-weight:700; line-height:1.4; margin-bottom:12px; }
+.hero p.sub { font-size:13px; color:rgba(255,255,255,.7); }
+
+nav { background:var(--white); border-bottom:1px solid var(--border); padding:0 32px; position:sticky; top:56px; z-index:100; }
+nav ul { display:flex; flex-wrap:wrap; list-style:none; max-width:1000px; margin:0 auto; }
+nav ul li a { display:block; padding:14px 12px; font-size:12px; color:var(--muted); text-decoration:none; border-bottom:2px solid transparent; transition:color .2s,border-color .2s; white-space:nowrap; }
+nav ul li a:hover { color:var(--blue-lt); border-bottom-color:var(--blue-lt); }
+
+.container { max-width:860px; margin:0 auto; padding:48px 24px 80px; }
+
+.overview { background:var(--white); border-radius:10px; border:1px solid var(--border); padding:36px 40px; margin-bottom:48px; }
+.overview h2 { font-size:20px; font-weight:700; color:var(--blue); margin-bottom:16px; }
+.overview p { margin-bottom:14px; }
+
+section { background:var(--white); border-radius:10px; border:1px solid var(--border); padding:36px 40px; margin-bottom:28px; scroll-margin-top:56px; }
+section h2 { font-size:19px; font-weight:700; color:var(--blue); padding-bottom:12px; border-bottom:2px solid var(--blue); margin-bottom:24px; display:flex; align-items:center; gap:12px; }
+section h2 .icon { width:32px; height:32px; background:var(--blue); color:#fff; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+section h3 { font-size:16px; font-weight:700; color:var(--blue); margin:24px 0 12px; }
+section p { margin-bottom:16px; }
+section p:last-child { margin-bottom:0; }
+
+.policy-tag { display:inline-block; background:var(--tag-bg); color:var(--blue); font-size:11px; font-weight:700; padding:3px 10px; border-radius:4px; margin-bottom:18px; border:1px solid #c5d9ee; }
+
+.highlight { background:#fff8ee; border-left:4px solid var(--accent); border-radius:0 6px 6px 0; padding:16px 20px; margin:20px 0; font-size:14px; color:#5a3a00; }
+.highlight strong { color:var(--accent); }
+
+/* 4次元フレーム */
+.dim-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0; }
+.dim-card { border-radius:8px; padding:18px 20px; border:1px solid var(--border); }
+.dim-num { font-size:26px; font-weight:700; color:var(--accent); }
+.dim-title { font-size:14px; font-weight:700; color:var(--blue); margin:4px 0 8px; }
+.dim-card p { font-size:13px; color:var(--muted); margin-bottom:0; line-height:1.65; }
+
+/* Bias table */
+.bias-table { width:100%; border-collapse:collapse; margin:16px 0; font-size:13px; }
+.bias-table th { background:var(--blue); color:#fff; padding:10px 14px; text-align:left; font-size:12px; }
+.bias-table td { padding:11px 12px; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.65; }
+.bias-table tr:last-child td { border-bottom:none; }
+.bias-table tr:nth-child(even) td { background:#fafbfd; }
+.btag { display:inline-block; font-size:10px; font-weight:700; border-radius:4px; padding:2px 8px; margin-right:4px; white-space:nowrap; }
+.btag-r { background:#ffe4e4; color:#8b0000; }
+.btag-o { background:#fff3cc; color:#6b4700; }
+.btag-g { background:#e0f0e0; color:#1a5c1a; }
+
+/* Q block */
+.q-block { background:var(--bg); border-radius:8px; padding:18px 22px; margin:14px 0; border:1px solid var(--border); }
+.q-block .q-label { font-size:10px; font-weight:700; letter-spacing:.1em; color:var(--blue-lt); background:var(--tag-bg); padding:3px 10px; border-radius:4px; display:inline-block; margin-bottom:8px; }
+.q-block .q-technique { font-size:10px; font-weight:700; letter-spacing:.05em; color:#6b4700; background:#fff3cc; padding:2px 8px; border-radius:4px; display:inline-block; margin-left:6px; margin-bottom:8px; }
+.q-block .q-text { font-size:14px; font-weight:700; color:var(--text); margin-bottom:8px; line-height:1.55; }
+.q-block .q-note { font-size:12px; color:var(--muted); margin-bottom:10px; font-style:italic; }
+.q-choices { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.q-choices span { background:var(--white); border:1px solid var(--border); border-radius:4px; padding:4px 12px; font-size:12px; }
+
+/* before/after */
+.ba-grid { display:grid; grid-template-columns:1fr 1fr; gap:0; margin:20px 0; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.ba-col { padding:18px 20px; }
+.ba-col.before { background:#fff0f0; border-right:1px solid var(--border); }
+.ba-col.after  { background:#f0f8e8; }
+.ba-label { font-size:10px; font-weight:700; letter-spacing:.1em; padding:3px 8px; border-radius:4px; display:inline-block; margin-bottom:10px; }
+.ba-col.before .ba-label { background:#fcc; color:#8b0000; }
+.ba-col.after  .ba-label { background:#b8e0a0; color:#2d6a00; }
+.ba-col h4 { font-size:13px; font-weight:700; margin-bottom:10px; }
+.ba-col ul { list-style:none; }
+.ba-col ul li { font-size:13px; padding:5px 0; border-bottom:1px solid rgba(0,0,0,.07); line-height:1.6; }
+.ba-col ul li:last-child { border-bottom:none; }
+.ba-col.before ul li::before { content:"✕ "; color:#cc0000; font-weight:700; }
+.ba-col.after  ul li::before { content:"✓ "; color:#2a8000; font-weight:700; }
+
+/* section flow */
+.flow-list { list-style:none; margin:16px 0; counter-reset:flow; }
+.flow-list li { counter-increment:flow; display:flex; gap:14px; padding:14px 0; border-bottom:1px solid var(--border); }
+.flow-list li:last-child { border-bottom:none; }
+.flow-num { flex-shrink:0; width:32px; height:32px; background:var(--blue); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; margin-top:2px; }
+.flow-body strong { display:block; font-size:13px; color:var(--blue); margin-bottom:4px; }
+.flow-body p { font-size:14px; margin-bottom:0; }
+
+/* stats */
+.stats { display:flex; gap:14px; margin:20px 0; flex-wrap:wrap; }
+.stat { flex:1; min-width:140px; background:var(--tag-bg); border-radius:8px; padding:16px 18px; text-align:center; }
+.stat .val { font-size:26px; font-weight:700; color:var(--blue); line-height:1; margin-bottom:4px; }
+.stat .val span { font-size:14px; }
+.stat .lbl { font-size:11px; color:var(--muted); line-height:1.4; }
+
+/* conclusion */
+.conclusion { background:linear-gradient(135deg,var(--blue) 0%,#0f3356 100%); color:#fff; border-radius:10px; padding:40px 44px; margin-bottom:28px; }
+.conclusion h2 { font-size:20px; font-weight:700; margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,.25); }
+.conclusion p { margin-bottom:16px; color:rgba(255,255,255,.9); line-height:1.9; }
+.conclusion p:last-child { margin-bottom:0; }
+.conclusion .point { background:rgba(255,255,255,.1); border-radius:8px; padding:16px 20px; margin-bottom:12px; border-left:3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight:700; font-size:14px; margin-bottom:5px; color:#fff; }
+.conclusion .point p { font-size:13px; margin-bottom:0; color:rgba(255,255,255,.85); }
+
+.cite-ref { font-size:.78em; vertical-align:super; color:var(--blue-lt); font-weight:700; white-space:nowrap; margin-left:1px; }
+
+.references { background:var(--white); border-radius:10px; border:1px solid var(--border); padding:36px 40px; margin-bottom:28px; scroll-margin-top:56px; }
+.references h2 { font-size:19px; font-weight:700; color:var(--blue); padding-bottom:12px; border-bottom:2px solid var(--blue); margin-bottom:24px; }
+.ref-list { list-style:none; }
+.ref-list li { padding:14px 0; border-bottom:1px solid var(--border); font-size:14px; line-height:1.75; display:flex; gap:12px; align-items:baseline; }
+.ref-list li:last-child { border-bottom:none; }
+.ref-num { flex-shrink:0; font-size:11px; font-weight:700; color:var(--blue-lt); background:var(--tag-bg); border-radius:4px; padding:2px 7px; }
+.ref-list a { color:var(--blue-lt); text-decoration:none; word-break:break-all; }
+.ref-list a:hover { text-decoration:underline; }
+.ref-tag { display:inline-block; font-size:10px; font-weight:700; background:#f0f4f8; color:var(--muted); border-radius:4px; padding:1px 6px; margin-left:6px; vertical-align:middle; }
+
+footer { text-align:center; font-size:12px; color:var(--muted); padding:24px; }
+
+@media(max-width:640px){
+  body{padding-top:48px;}
+  header{padding:0 .75rem;height:auto;min-height:48px;}
+  .site-title{font-size:11px;max-width:90px;overflow:hidden;text-overflow:ellipsis;}
+  .tts-select{max-width:95px;font-size:.7rem;}
+  .tts-rate{width:60px;font-size:.7rem;}
+  .hero{padding:40px 20px 36px;}
+  .hero h1{font-size:20px;}
+  .container{padding:32px 16px 60px;}
+  section,.overview{padding:28px 20px;}
+  .conclusion{padding:28px 24px;}
+  .dim-grid,.ba-grid{grid-template-columns:1fr;}
+  .ba-col.before{border-right:none;border-bottom:1px solid var(--border);}
+  .references{padding:28px 20px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="site-title">性別役割分担意識</span>
+  <div class="tts-bar">
+    <select id="tts-voice" class="tts-select" aria-label="音声選択"></select>
+    <select id="tts-rate"  class="tts-rate"  aria-label="速度">
+      <option value="0.8">0.8×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.2">1.2×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.8">1.8×</option>
+    </select>
+    <button id="tts-btn"  class="tts-btn"  data-state="idle">▶ 読み上げ</button>
+    <button id="tts-stop" class="tts-stop">■ 停止</button>
+    <span   id="tts-label" style="font-size:.75rem;color:rgba(200,214,232,.7);white-space:nowrap;"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <span class="label">トピックス</span>
+  <h1>固定的な性別役割分担意識に関する<br>後継調査 — バイアスを排除した設計提案</h1>
+  <p class="sub">令和6年度「地域における女性活躍・男女共同参画に関する調査」の後継として、固定的役割分担意識の測定精度を抜本的に高める</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">提案の概要</a></li>
+    <li><a href="#r6limit">R6調査の限界</a></li>
+    <li><a href="#four-dim">4次元測定モデル</a></li>
+    <li><a href="#questions">設問設計</a></li>
+    <li><a href="#sampling">実施設計</a></li>
+    <li><a href="#continuity">R6との接続</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- 全体像 -->
+  <div class="overview" id="overview">
+    <h2>この提案の目的と位置づけ</h2>
+    <p>令和6年度「地域における女性活躍・男女共同参画に関する調査」（以下、R6地域調査）は、固定的な性別役割分担意識の地域差を可視化した先駆的な調査だ<sup class="cite-ref">※1</sup>。しかしその測定方法には構造的な限界がある。9項目（Q43・Q44）は「周囲にそういう意識があるか」という<strong>環境認知</strong>を問うにとどまり、「あなた自身はそう思うか」「それが実際の行動を変えたか」「何があれば変わるか」という<strong>内面化・行動影響・変化機制</strong>を問えていない。</p>
+    <p>本提案は、R6地域調査を後継しつつ、固定的性別役割分担意識の測定を「環境認知」から「認知→内面化→行動影響→変化機制」の<strong>4次元</strong>に拡張する。同時に、社会的望ましさバイアスへの対策として<strong>リスト実験・行動ヴィネット・自他非対称比較</strong>という3つの先進的測定技法を導入し、回答者の本音に近い数値を得ることを目指す。</p>
+    <p>政策的な狙いは明確だ。「地方に固定的役割分担意識がある（30〜40%程度）」という事実確認からもう一歩進んで、「<strong>だから若い女性が地方を離れているのかを数値で検証する</strong>」「<strong>何が変われば意識が変わるか</strong>」を問える設計にする。</p>
+
+    <div class="stats">
+      <div class="stat"><div class="val">9<span>項目</span></div><div class="lbl">R6が測定した<br>役割分担意識</div></div>
+      <div class="stat"><div class="val">1<span>次元</span></div><div class="lbl">R6の測定次元<br>（環境認知のみ）</div></div>
+      <div class="stat"><div class="val">4<span>次元</span></div><div class="lbl">本提案の測定次元<br>（認知→変化機制）</div></div>
+    </div>
+  </div>
+
+  <!-- R6の限界 -->
+  <section id="r6limit">
+    <h2><span class="icon">🔍</span>R6地域調査の測定上の限界</h2>
+    <span class="policy-tag">課題の整理</span>
+
+    <p>R6地域調査の固定的役割分担意識測定（Q43・Q44）には7つの構造的課題がある。</p>
+
+    <table class="bias-table">
+      <thead><tr><th>課題</th><th>具体的な問題</th><th>影響</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="btag btag-r">重大</span>環境認知のみ</td>
+          <td>「周囲にそういう意識があるか」を問うが、「あなた自身がそう思うか」は問わない。個人の内面化した意識（Internalized attitude）と環境規範の知覚（Perceived norm）は別概念で、測定値を混同すると政策の矢が外れる<sup class="cite-ref">※2</sup></td>
+          <td>意識変革のターゲットを個人への働きかけにすべきか、環境・規範変革にすべきかが判断できない</td>
+        </tr>
+        <tr>
+          <td><span class="btag btag-r">重大</span>行動影響を問わない</td>
+          <td>「（そういう意識が）あったか」は問うが「それが自分の進路選択・居住地選択・就労判断に影響したか」は問わない。因果の連鎖が証明されない</td>
+          <td>「地方に固定的意識がある」→「若年女性が転出する」という因果主張が傍証にとどまる</td>
+        </tr>
+        <tr>
+          <td><span class="btag btag-r">重大</span>社会的望ましさバイアス</td>
+          <td>「自分はどう思うか」を直接問わないことで望ましさバイアスを一定回避しているが、「周囲の意識」設問でも「自分は関係ない」という心理から過小報告が起きる可能性がある</td>
+          <td>固定的意識の実際の強度を過小評価する可能性</td>
+        </tr>
+        <tr>
+          <td><span class="btag btag-o">中</span>変化機制を問わない</td>
+          <td>「何があれば意識や行動が変わるか」を問わない。政策立案には「障壁の除去」情報が必要だが、現調査では得られない<sup class="cite-ref">※3</sup></td>
+          <td>「意識がある」事実はわかるが「変え方」がわからない</td>
+        </tr>
+        <tr>
+          <td><span class="btag btag-o">中</span>9項目の等価性の仮定</td>
+          <td>9項目を合算する際に「等間隔」（1.5/0.5/-0.5/-1.5）を仮定するが、「家事・育児は女性の仕事」と「世間体が大事」は概念的に異なる。因子分析を行わずに合算している</td>
+          <td>単一スコアが複数の異質な概念を混在させている可能性</td>
+        </tr>
+        <tr>
+          <td><span class="btag btag-o">中</span>男性役割への圧力不測定</td>
+          <td>「女性が不当な役割を押し付けられる」側面のみ測定。「男性が家庭参加を制限される」「男性が育休取得を阻まれる」という男性への役割固定は問わない</td>
+          <td>男性施策の立案根拠が欠落する</td>
+        </tr>
+        <tr>
+          <td><span class="btag btag-g">軽</span>情報源の特定なし</td>
+          <td>「誰から／どこで」その意識を受け取ったかを問わない（家族か、職場か、地域組織か）</td>
+          <td>施策の対象（職場改革か、地域文化改革か、家庭内教育か）が絞れない</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight">
+      <strong>最重要の欠落：</strong>R6調査の結果として「地方出身・都会居住女性の42.5%が、出身地で『家事・育児・介護は女性の仕事』という意識があったと感じている」という数値がある。しかしこれが「だから転出した」という因果関係は調査では直接確認できていない。有識者（小安・山田・高見）は因果関係を推定しているが、設問設計上は傍証に過ぎない。後継調査でこの因果を直接問う。
+    </div>
+  </section>
+
+  <!-- 4次元測定モデル -->
+  <section id="four-dim">
+    <h2><span class="icon">🧩</span>4次元測定モデル：「知覚→内面化→行動→変化」</h2>
+    <span class="policy-tag">後継調査の設計原則</span>
+
+    <p>固定的性別役割分担意識を「一枚岩の変数」として扱うのをやめ、4つの異なる次元を独立して測定する。それぞれが政策的に異なる介入先を示す。</p>
+
+    <div class="dim-grid">
+      <div class="dim-card">
+        <div class="dim-num">D1</div>
+        <div class="dim-title">環境知覚（Perceived Norm）</div>
+        <p>「周囲にこういう意識があるか」。R6のQ43・Q44に相当。社会規範の分布を測る。施策対象：地域社会・職場の規範変革。</p>
+      </div>
+      <div class="dim-card">
+        <div class="dim-num">D2</div>
+        <div class="dim-title">内面化（Internalized Attitude）</div>
+        <p>「あなた自身がこう思うか」。R6では測定していない最重要次元。行動ヴィネット法で社会的望ましさバイアスを回避して測定する。施策対象：個人の意識変革教育。</p>
+      </div>
+      <div class="dim-card">
+        <div class="dim-num">D3</div>
+        <div class="dim-title">行動影響（Behavioral Impact）</div>
+        <p>「その意識が自分の具体的な選択を変えたか」。進路・就職・居住地・結婚の各場面で直接問う。施策対象：選択の自由を拡大する構造的支援。</p>
+      </div>
+      <div class="dim-card">
+        <div class="dim-num">D4</div>
+        <div class="dim-title">変化機制（Change Mechanism）</div>
+        <p>「何があれば意識や環境が変わるか」「あなた自身の意識はいつ・なぜ変わったか」。施策立案に最も直結する次元。施策対象：具体的な変革トリガーの設計。</p>
+      </div>
+    </div>
+
+    <div class="ba-grid">
+      <div class="ba-col before">
+        <span class="ba-label">R6調査の設計</span>
+        <h4>測定できていたこと</h4>
+        <ul>
+          <li>出身地域・現住地域での規範環境（D1のみ）</li>
+          <li>9項目の規範の地域差・男女差・年代差</li>
+          <li>地方出身・都会居住女性が最も高い数値を示す</li>
+          <li>親や親戚からの言葉かけ（D3の部分的代理）</li>
+        </ul>
+      </div>
+      <div class="ba-col after">
+        <span class="ba-label">後継調査で追加すること</span>
+        <h4>新たに測定すること</h4>
+        <ul>
+          <li>自分自身がその規範をどう思うか（D2）</li>
+          <li>その規範が実際の選択を変えたか（D3強化）</li>
+          <li>規範の情報源（誰から・どこで受け取ったか）</li>
+          <li>意識変化のトリガー・変えられない障壁（D4）</li>
+          <li>男性への役割固定プレッシャーの測定</li>
+          <li>リスト実験による本音測定</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 設問設計 -->
+  <section id="questions">
+    <h2><span class="icon">📝</span>設問設計：バイアスを排除する3つの技法</h2>
+    <span class="policy-tag">社会的望ましさバイアス対策の核心</span>
+
+    <p>固定的性別役割分担意識の測定で最も深刻なのは<strong>社会的望ましさバイアス</strong>だ。「家事は女性がすべき」と思っていても「そんなことは思わない」と答える。このバイアスを低減するために3つの先進的技法を組み合わせる。</p>
+
+    <h3>技法①　リスト実験（List Experiment）— D2内面化の測定</h3>
+    <p>リスト実験は、センシティブな意見への直接的な同意を問わずに、集団レベルの賛同率を推定する技法だ<sup class="cite-ref">※4</sup>。グループAには4つの「無害な」項目のリストを見せ、グループBには同じ4項目に加えて問題の1項目（固定的役割分担に関するもの）を追加したリストを見せる。両グループの「当てはまる項目の数」の平均の差が、問題項目への賛同率の推定値となる。回答者は「どれが当てはまるか」ではなく「何個当てはまるか」だけを答えるため、個人の回答が特定できず、本音が出やすい。</p>
+
+    <div class="q-block">
+      <span class="q-label">リスト実験（グループB用）</span>
+      <span class="q-technique">リスト実験</span>
+      <div class="q-text">以下のそれぞれについて、「自分もそう思う」「自分の家庭ではそうなっている」に当てはまる項目の数を教えてください（どれが当てはまるかは聞きません）。</div>
+      <div class="q-note">グループA（コントロール）には①〜④のみ提示。グループB（実験）には①〜⑤を提示。⑤が固定的役割分担意識項目。差が推定値になる。</div>
+      <div class="q-choices">
+        <span>①週に1回以上外食する</span><span>②スポーツを趣味にしている</span><span>③ペットを飼っている</span><span>④旅行が好きだ</span><span>⑤（実験項目：家事・育児の主な担い手は女性がよいと思う）</span>
+      </div>
+    </div>
+
+    <h3>技法②　行動ヴィネット法（Behavioral Vignette）— D2内面化をより正確に</h3>
+    <p>直接「家事は女性がすべきか」と問う代わりに、具体的な仮想場面を提示して自然な反応を引き出す<sup class="cite-ref">※5</sup>。規範への賛否でなく「感情・行動意向」を問うため、社会的望ましさバイアスが入りにくい。</p>
+
+    <div class="q-block">
+      <span class="q-label">ヴィネット設問①（育児・家事）</span>
+      <span class="q-technique">行動ヴィネット</span>
+      <div class="q-text">友人Aさん（30代・共働き夫婦）は、「仕事が忙しくて家事をほぼしていない。妻が全部やってくれている」と言いました。あなたはどう感じますか？（最も近い1つを選んでください）</div>
+      <div class="q-choices">
+        <span>自然なことだと思う</span><span>本人が構わないなら問題ない</span><span>少し気になるが言わない</span><span>Aさんに家事を増やすよう言いたい</span><span>問題だと思うが正直わからない</span>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <span class="q-label">ヴィネット設問②（職場・役職）</span>
+      <span class="q-technique">行動ヴィネット</span>
+      <div class="q-text">あなたの職場で、育休から復帰した女性Bさんが「管理職になりたくない。子育てがあるから責任を減らしたい」と言いました。どう思いますか？</div>
+      <div class="q-choices">
+        <span>本人の希望だから当然</span><span>理解できるが、もったいない気もする</span><span>子育てを言い訳にしているように感じる</span><span>組織として支援すべきだと思う</span><span>なんとも言えない</span>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <span class="q-label">ヴィネット設問③（地域・接待）</span>
+      <span class="q-technique">行動ヴィネット</span>
+      <div class="q-text">自治会の会合で食事の準備と片付けをいつも女性がやっています。男性Cさんは「こういうもんだ」と言いました。あなたはどう感じますか？</div>
+      <div class="q-choices">
+        <span>そういうもので仕方ない</span><span>少し変だと思うが特に言わない</span><span>おかしいと思うが波風は立てたくない</span><span>変えるべきだと思う・実際に行動する</span><span>わからない</span>
+      </div>
+    </div>
+
+    <h3>技法③　自他非対称比較法（Self–Other Asymmetry）— D2の補完的測定</h3>
+    <p>「あなた自身は?」と「理想のパートナーは?」を同じ内容で聞くと、自分への期待と他者への期待のズレが浮かび上がる<sup class="cite-ref">※5</sup>。このズレ自体が内面化された役割規範の指標になる。</p>
+
+    <div class="q-block">
+      <span class="q-label">自他非対称設問（家事分担）</span>
+      <span class="q-technique">自他非対称比較</span>
+      <div class="q-text">【あなた自身について】平日1日あたり、家事・育児に何時間使っていますか（理想）？<br>【パートナー・将来の伴侶について】相手には何時間使ってほしいですか（理想）？</div>
+      <div class="q-note">「自分は少ない時間・相手には多くを求める」あるいは「自分は多く引き受ける・相手は少なくてよい」という非対称性が固定的役割意識の指標になる。性別変数とクロスすることで役割分担期待の男女差を定量化。</div>
+    </div>
+
+    <h3>新設問：D3 行動影響の直接測定</h3>
+    <p>R6では「進学・就職時に周囲から言われたこと」は問うが、「その言葉が実際の決定を変えたか」は問わない。因果の連鎖を閉じる設問を追加する。</p>
+
+    <div class="q-block">
+      <span class="q-label">行動影響設問（居住地選択）</span>
+      <span class="q-technique">D3：行動影響</span>
+      <div class="q-text">「現在の居住地を選んだ理由の一つに、出身地域の固定的な性別役割分担意識・慣習からの影響がありましたか？」</div>
+      <div class="q-note">R6の「地元から離れたかった（女性26.8%、男性15.0%）」を補完し、その背景が役割分担意識と紐づくかを直接確認する。</div>
+      <div class="q-choices">
+        <span>大いに影響した</span><span>ある程度影響した</span><span>あまり影響しなかった</span><span>全く関係ない</span><span>考えたことがない</span>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <span class="q-label">行動影響設問（キャリア）</span>
+      <span class="q-technique">D3：行動影響</span>
+      <div class="q-text">「固定的な性別役割分担意識が周囲にあったために、あなたが実現できなかった・諦めたことはありますか？」（当てはまるものを選択）</div>
+      <div class="q-choices">
+        <span>希望していた学校・学部への進学</span><span>希望していた職種・職場</span><span>管理職・昇進への挑戦</span><span>居住地の選択</span><span>結婚・非婚の選択</span><span>出産・子育ての形</span><span>特になかった</span><span>その他（自由記述）</span>
+      </div>
+    </div>
+
+    <h3>新設問：D4 変化機制の測定</h3>
+    <div class="q-block">
+      <span class="q-label">変化機制設問（環境変化）</span>
+      <span class="q-technique">D4：変化機制</span>
+      <div class="q-text">「あなたの出身地域や現住地域の固定的な性別役割分担意識が変わるとしたら、最も効果的なのは何だと思いますか？（上位2つ選択）」</div>
+      <div class="q-choices">
+        <span>地域リーダー・首長が率先して変える</span><span>若い人・外から来た人が増える</span><span>企業が育休・時短等の制度を整える</span><span>学校教育でジェンダー平等を教える</span><span>法律・条例で変える</span><span>メディアの描写が変わる</span><span>経済的格差が縮まる</span><span>時間が解決する</span><span>変わらないと思う</span>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <span class="q-label">変化機制設問（個人の意識変化）</span>
+      <span class="q-technique">D4：変化機制</span>
+      <div class="q-text">「固定的な性別役割分担意識に対するあなた自身の考えが変わった（変わりつつある）きっかけは何ですか？当てはまるものを選んでください」</div>
+      <div class="q-choices">
+        <span>別の地域での生活経験</span><span>職場での経験</span><span>パートナーとの生活</span><span>子育て経験</span><span>本・映画・SNS</span><span>友人・同僚との対話</span><span>特に変わっていない</span><span>もとから意識していなかった</span>
+      </div>
+    </div>
+
+    <h3>男性役割プレッシャーの追加測定</h3>
+    <p>R6はもっぱら女性が不当な役割を押し付けられる方向の意識を測定しているが、男性への役割固定（「男は稼がなければならない」「育休は取るべきでない」「弱音を見せるな」）も固定的性別役割分担意識の一部だ。後継調査では男性側のプレッシャーを対称的に測定する。</p>
+
+    <div class="q-block">
+      <span class="q-label">男性役割プレッシャー設問</span>
+      <span class="q-technique">D1・D2（対称測定）</span>
+      <div class="q-text">（男性回答者向け）「以下のプレッシャーを周囲から感じたことがありますか？」「また、あなた自身もそう思いますか？」</div>
+      <div class="q-choices">
+        <span>主な家計は男性が担うべき</span><span>育休は取りにくい雰囲気がある</span><span>職場では感情を見せるべきでない</span><span>出世を目指さないのはおかしいと思われる</span><span>家事・育児を積極的にしたら奇妙に見られた</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 実施設計 -->
+  <section id="sampling">
+    <h2><span class="icon">⚙️</span>実施設計：R6の強みを引き継ぎながら限界を超える</h2>
+    <span class="policy-tag">サンプリング・実施体制・分析設計</span>
+
+    <h3>調査名称の中立化</h3>
+    <p>R6の「女性活躍・男女共同参画に関する調査」というタイトルは政策的フレーミングが強く、回答者が「推進機関が望む答えを期待されている」と感じやすい。後継調査では<strong>「社会規範と生き方の選択に関する調査」</strong>に変更する。「性別役割」という語も外し、調査の政策的意図を前面に出さない。</p>
+
+    <h3>対象・サンプリング設計</h3>
+
+    <ul class="flow-list">
+      <li>
+        <span class="flow-num">1</span>
+        <div class="flow-body">
+          <strong>対象年齢の拡張（18〜49歳）</strong>
+          <p>R6は18〜39歳のみだったが、40代は職場における管理職比率・育休取得率に直結する意思決定者層であり、地域リーダー層でもある。40〜49歳を追加することで「意識の世代間伝達」の分析も可能になる。</p>
+        </div>
+      </li>
+      <li>
+        <span class="flow-num">2</span>
+        <div class="flow-body">
+          <strong>地域ブロック別過剰サンプリング</strong>
+          <p>R6では地方ブロック（東北・四国・北陸等）のセル数が少なく、県別分析が不可能だった。後継調査は国勢調査比例ベースのn=10,000に加え、地域ブロック7ブロックで各n=500の最低保証（合計n=13,500程度）とする。追加コストは限定的だが地域政策立案の実用性が大幅に上がる。</p>
+        </div>
+      </li>
+      <li>
+        <span class="flow-num">3</span>
+        <div class="flow-body">
+          <strong>パネル設計（縦断追跡）</strong>
+          <p>今回調査参加者の50%（無作為抽出）を2年後の再調査に招待するパネルコホートを設定する。同一個人の意識変化を追跡できれば、「地域移動が固定的役割分担意識を変えるか」を縦断的に検証できる。高見（JILPT）の個票分析がR6で示した「移動後に意識が変わる」という仮説の本格的な検証になる<sup class="cite-ref">※1</sup>。</p>
+        </div>
+      </li>
+      <li>
+        <span class="flow-num">4</span>
+        <div class="flow-body">
+          <strong>リスト実験のためのスプリットサンプル</strong>
+          <p>技法①（リスト実験）のためにサンプルをランダムに2分割（グループA・B）する。両グループに同数の男女・年代・地域を割り当てるため、実際の回収n=13,500のうちn=6,750ずつが各グループに割り当てられる。リスト実験項目を3〜4個用意するため、計3〜4回のスプリットを行う（各設問で別のスプリットを使用）。</p>
+        </div>
+      </li>
+    </ul>
+
+    <h3>設問数と回答時間の最適化</h3>
+    <p>R6の調査票は約50設問・推定35〜40分で、長すぎることが後半設問の質の低下（疲労バイアス）を招く可能性がある。後継調査は4次元測定を追加しながら設問数を最適化するため、以下の整理を行う。① R6のD1相当（Q43・Q44）は項目数を9から6に絞り（因子分析に基づく代表項目を選定）、② 居住地満足度・転居経緯は簡略化してR6の中核設問のみを維持、③ 新設のD2〜D4設問を14設問追加する。全体で約45設問・25〜30分を目標にする。</p>
+
+    <h3>分析設計の強化</h3>
+    <p>R6の高見分析が行った固定的役割分担スコアの標準化手法を継承しつつ、後継調査では<strong>確認的因子分析（CFA）</strong>を実施して「D1環境知覚」「D2内面化」「D3行動影響」の3スコアを独立して算出する。D2（内面化）スコアはリスト実験値・ヴィネット反応・自他非対称値を統合したコンポジットスコアとして設計する。さらに<strong>媒介分析（Mediation Analysis）</strong>により「地方の固定的環境意識（D1）→本人の内面化（D2）→居住地選択（D3）」の因果パスを統計的に検証する。</p>
+  </section>
+
+  <!-- R6との接続 -->
+  <section id="continuity">
+    <h2><span class="icon">🔗</span>R6地域調査との時系列・比較接続</h2>
+
+    <p>後継調査がR6の知見を否定するものでないことを明示し、データの連続性を確保する。</p>
+
+    <p><strong>継続する設問（そのまま引き継ぐ）：</strong>D1測定として9項目のうち代表的な6項目（家事・育児・介護は女性の仕事 / 重要な役職は男性の仕事 / 職場サポート業務は女性の仕事 / 子供が生まれたら女性は仕事を控えめに / 家を継ぐのは男性がよい / 個人の価値観より世間体が大事）を継続する。これにより2024年→後継調査年の経年比較が可能。</p>
+
+    <p><strong>換算設問（橋渡し用）：</strong>削除する3項目（正社員は男性・非正規は女性 / 男性が前に立って女性が後ろで支える / 地域の集まりでの食事準備は女性の仕事）については、後継調査の第1回のみ削除前の設問も並列掲載し、新旧の換算係数を算出する。</p>
+
+    <p><strong>R6に存在しない情報として追加するもの：</strong>内面化スコア（D2）、行動影響スコア（D3）、変化機制（D4）は後継調査で初めて測定されるため、過去との比較は不可能だが「新たなベースライン値」として位置づける。</p>
+  </section>
+
+  <!-- 総括 -->
+  <div class="conclusion" id="conclusion">
+    <h2>総括：「意識がある」から「なぜあり、どう変わるか」へ</h2>
+    <div class="point">
+      <div class="pt-title">R6が開いた扉、後継調査が踏み込む先</div>
+      <p>R6地域調査は「地方に固定的役割分担意識がある」「地方出身都会居住女性がその意識を最も強く感じていた」という重要な事実を初めて全国規模で定量化した。後継調査はその先——「本人自身がそう思っているか」「それが具体的な選択を変えたか」「何があれば変わるか」——を問い、政策の矢を正確に当てる情報を提供する。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">リスト実験が測る「本音の5〜10%」</div>
+      <p>「家事は女性がすべき」に直接「そう思う」と答える人は近年急減している。しかし生活時間調査では家事・育児の女性担当率は依然として高い。この乖離の正体を測るのがリスト実験だ。直接質問値とリスト実験推定値の差が「言えない本音の規模」を定量化する。政策立案者が「国民は意識が変わった」と誤判断するのを防ぐことが、この技法の最大の貢献だ。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">パネルデータが解く因果の謎</div>
+      <p>「地方から都会に出た女性ほど固定的役割分担意識が薄い」という発見は移住の選択効果（意識の強い人が残り弱い人が出る）なのか、都会生活の処置効果（都会暮らしが意識を変える）なのかが断面調査ではわからない。2年後追跡パネルで同一人物の意識変化を測ることで、初めてこの問いに答えられる。この答えが「地方に残っている若年女性の意識を変えるには何が効果的か」という政策設計の根拠になる。</p>
+    </div>
+    <p>測定しなければ変えられない。しかし測定が不正確なら間違った場所に政策を打つ。本提案は「測定の質」への投資が最も確実な政策効率化であるという信念に基づいている。</p>
+  </div>
+
+  <!-- 参考文献 -->
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-num">1</span>
+        <span>内閣府委託（株式会社マーケティング・コミュニケーションズ）「令和6年度 地域における女性活躍・男女共同参画に関する調査報告書」（令和7年3月）— 高見具広による個票データ分析（pp.182–187）を特に参照<span class="ref-tag">調査報告</span></span>
+      </li>
+      <li>
+        <span class="ref-num">2</span>
+        <span>Cialdini, R. B., Kallgren, C. A., &amp; Reno, R. R.「A Focus Theory of Normative Conduct」Advances in Experimental Social Psychology, 24（1991）— 知覚規範（Perceived Norm）と内面化規範（Internalized Norm）の概念的区別<span class="ref-tag">論文</span></span>
+      </li>
+      <li>
+        <span class="ref-num">3</span>
+        <span>Ajzen, I.「The Theory of Planned Behavior」Organizational Behavior and Human Decision Processes, 50（1991）— 意識→意図→行動の因果モデルの古典的文献<span class="ref-tag">論文</span></span>
+      </li>
+      <li>
+        <span class="ref-num">4</span>
+        <span>Glynn, A. N.「What Can We Learn with Statistical Truth Serum? Design and Analysis of the List Experiment」Public Opinion Quarterly, 77(S1)（2013）— リスト実験の設計・分析方法論<span class="ref-tag">論文</span></span>
+      </li>
+      <li>
+        <span class="ref-num">5</span>
+        <span>Tourangeau, R., Rips, L. J., &amp; Rasinski, K.「The Psychology of Survey Response」Cambridge University Press（2000）— ヴィネット法・自他非対称比較法の方法論的根拠<span class="ref-tag">論文</span></span>
+      </li>
+      <li>
+        <span class="ref-num">6</span>
+        <span>労働政策研究・研修機構（JILPT）「UIJターンの促進・支援と地方の活性化」JILPT調査シリーズNo.152（2016）— 地域移動と意識変化に関する実証研究<span class="ref-tag">調査報告</span><br>
+        <a href="https://www.jil.go.jp/institute/research/2016/documents/152.pdf" target="_blank" rel="noopener">https://www.jil.go.jp/institute/research/2016/documents/152.pdf</a></span>
+      </li>
+      <li>
+        <span class="ref-num">7</span>
+        <span>山田昌弘「家族難民」朝日新書（2014）および「底辺への競争」朝日新書（2017）— 地方の家族規範と若年女性流出に関する理論的背景<span class="ref-tag">書籍</span></span>
+      </li>
+    </ul>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <p>本企画はR6「地域における女性活躍・男女共同参画に関する調査」（内閣府、令和7年3月）を後継し、固定的性別役割分担意識の4次元測定と先進的バイアス対策を提案するものです。</p>
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid #e0e0e0;font-size:11px;color:#8a939e;line-height:1.8;text-align:left;max-width:760px;margin-left:auto;margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function(){
+  const btn=document.getElementById('tts-btn'),stopBtn=document.getElementById('tts-stop'),select=document.getElementById('tts-voice'),label=document.getElementById('tts-label');
+  const article=document.querySelector('.container');
+  if(!btn||!article||!window.speechSynthesis)return;
+  const overview=article.querySelector('.overview');
+  const sections=article.querySelectorAll('section');
+  const conclusion=article.querySelector('.conclusion');
+  const parts=[];
+  if(overview)parts.push(overview.innerText);
+  sections.forEach(s=>parts.push(s.innerText));
+  if(conclusion)parts.push(conclusion.innerText);
+  const rawText=parts.length?parts.join('\n\n'):(article.innerText||article.textContent||'');
+  let allVoices=[],chunks=[],resumeIdx=0,currentIdx=0,intentionalStop=false,keepAliveTimer=null,watchdogTimer=null;
+  const PREFER=['七海','圭太','Nanami','Keita'];
+  function populateSelect(voices){const pref=voices.filter(v=>v.lang.startsWith('ja')&&PREFER.some(n=>v.name.includes(n)));const allJa=voices.filter(v=>v.lang.startsWith('ja'));const list=pref.length?pref:allJa.length?allJa:voices;if(!list.length){select.style.display='none';return;}select.innerHTML='';const sorted=[...list.filter(v=>v.localService),...list.filter(v=>!v.localService)];sorted.forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=(v.localService?'🔒 ':'☁ ')+v.name.replace('Microsoft ','').replace(' - Japanese (Japan)','');select.appendChild(o);});allVoices=sorted;}
+  function loadVoices(){const v=speechSynthesis.getVoices();if(v.length){populateSelect(v);return;}speechSynthesis.addEventListener('voiceschanged',()=>populateSelect(speechSynthesis.getVoices()),{once:true});}
+  loadVoices();
+  function getVoice(){return allVoices[parseInt(select.value)]||null;}
+  function clean(t){return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu,'').replace(/\s+/g,' ').trim();}
+  function splitChunks(t){return t.split(/\n+/).map(s=>s.trim()).filter(s=>s.length>0);}
+  function startKA(){stopKA();keepAliveTimer=setInterval(()=>{if(speechSynthesis.speaking&&!speechSynthesis.paused){speechSynthesis.pause();setTimeout(()=>speechSynthesis.resume(),50);}},14000);}
+  function stopKA(){if(keepAliveTimer){clearInterval(keepAliveTimer);keepAliveTimer=null;}}
+  function armWD(i){clearWD();watchdogTimer=setTimeout(()=>{if(btn.dataset.state==='playing'&&currentIdx===i){resumeIdx=i+1;speakFrom(i+1);}},25000);}
+  function clearWD(){if(watchdogTimer){clearTimeout(watchdogTimer);watchdogTimer=null;}}
+  function setIdle(){stopKA();clearWD();if(resumeIdx>0&&resumeIdx<chunks.length){btn.textContent='▶ 途中から再開';label.textContent=Math.round(resumeIdx/chunks.length*100)+'% 地点〜';}else{btn.textContent='▶ 読み上げ';label.textContent='';}btn.classList.remove('playing');btn.dataset.state='idle';stopBtn.style.display='none';}
+  function speakFrom(idx){clearWD();if(intentionalStop||idx>=chunks.length){if(!intentionalStop)resumeIdx=0;setIdle();return;}currentIdx=idx;const v=getVoice(),rate=parseFloat((document.getElementById('tts-rate')||{}).value||'1.0'),text=clean(chunks[idx]);if(!text){resumeIdx=idx+1;speakFrom(idx+1);return;}const utt=new SpeechSynthesisUtterance(text);utt.lang='ja-JP';utt.rate=rate;if(v)utt.voice=v;let done=false;utt.addEventListener('end',()=>{if(done||intentionalStop)return;done=true;clearWD();resumeIdx=idx+1;speakFrom(idx+1);});utt.addEventListener('error',(e)=>{if(done)return;if(intentionalStop){done=true;return;}if(e.error==='interrupted'||e.error==='canceled'){setTimeout(()=>{if(!done&&!intentionalStop&&btn.dataset.state==='playing')speakFrom(idx);},250);return;}done=true;clearWD();resumeIdx=idx;setIdle();});speechSynthesis.speak(utt);armWD(idx);}
+  function startSpeech(from){intentionalStop=false;chunks=splitChunks(rawText);speechSynthesis.cancel();setTimeout(()=>{if(intentionalStop)return;const v=getVoice();btn.textContent='⏸ 一時停止';btn.classList.add('playing');btn.dataset.state='playing';stopBtn.style.display='inline-flex';label.textContent=v&&v.localService?'ローカル':v?'クラウド':'';startKA();speakFrom(from);},300);}
+  btn.addEventListener('click',()=>{const s=btn.dataset.state||'idle';if(s==='idle'){startSpeech(resumeIdx);}else if(s==='playing'){speechSynthesis.pause();btn.textContent='▶ 再開';btn.classList.remove('playing');btn.dataset.state='paused';}else{speechSynthesis.resume();btn.textContent='⏸ 一時停止';btn.classList.add('playing');btn.dataset.state='playing';}});
+  stopBtn.addEventListener('click',()=>{intentionalStop=true;resumeIdx=0;stopKA();clearWD();speechSynthesis.cancel();setIdle();});
+  let selTip=null;
+  function getOrCreateTip(){if(selTip)return selTip;selTip=document.createElement('button');selTip.textContent='▶ ここから読み上げ';Object.assign(selTip.style,{position:'fixed',zIndex:'9999',background:'#1a56a0',color:'#fff',border:'none',borderRadius:'6px',padding:'6px 14px',fontSize:'13px',cursor:'pointer',display:'none',boxShadow:'0 2px 10px rgba(0,0,0,.35)',whiteSpace:'nowrap'});document.body.appendChild(selTip);return selTip;}
+  function hideTip(){if(selTip)selTip.style.display='none';}
+  function chunkIdxFromSel(sel){if(!chunks.length)chunks=splitChunks(rawText);const range=sel.getRangeAt(0);let node=range.startContainer;if(node.nodeType===Node.TEXT_NODE)node=node.parentNode;const BLOCK=new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);while(node&&node!==article){if(node.nodeType===1&&BLOCK.has(node.tagName))break;node=node.parentNode;}const bt=(node&&node!==article?(node.innerText||node.textContent||''):sel.toString()).trim();const key=bt.substring(0,40).replace(/\s+/g,' ');for(let i=0;i<chunks.length;i++){if(chunks[i].substring(0,40).replace(/\s+/g,' ')===key||chunks[i].includes(key.substring(0,20)))return i;}return 0;}
+  document.addEventListener('mouseup',(e)=>{if(e.target===selTip)return;const sel=window.getSelection();if(!sel||sel.isCollapsed||!sel.toString().trim()){hideTip();return;}try{if(!article.contains(sel.getRangeAt(0).commonAncestorContainer)){hideTip();return;}}catch{hideTip();return;}chunks=splitChunks(rawText);const idx=chunkIdxFromSel(sel);const tip=getOrCreateTip();const rect=sel.getRangeAt(0).getBoundingClientRect();tip.style.left=Math.max(4,Math.min(rect.left,window.innerWidth-220))+'px';tip.style.top=(rect.top-44)+'px';tip.style.display='block';tip.onclick=()=>{hideTip();window.getSelection().removeAllRanges();resumeIdx=idx;startSpeech(idx);};});
+  document.addEventListener('mousedown',(e)=>{if(selTip&&e.target!==selTip)hideTip();});
+  document.addEventListener('scroll',hideTip,{passive:true});
+  window.addEventListener('beforeunload',()=>speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>

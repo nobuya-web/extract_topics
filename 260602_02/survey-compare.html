@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2調査比較：世論調査 vs 地域における女性活躍調査</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-rate { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; width: 72px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── 比較テーブル（2列） ── */
+.compare-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13.5px; }
+.compare-table th { padding: 12px 16px; text-align: center; font-weight: 700; font-size: 12px; border-bottom: 2px solid var(--border); }
+.compare-table th.label-col { width: 22%; background: var(--bg); color: var(--muted); text-align: left; }
+.compare-table th.survey-a { background: #e8f0f9; color: var(--blue); }
+.compare-table th.survey-b { background: #fff3e0; color: #7a3e00; }
+.compare-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.7; }
+.compare-table td.label-col { font-size: 11px; font-weight: 700; color: var(--muted); background: var(--bg); }
+.compare-table td.survey-a { background: #f5f8fc; }
+.compare-table td.survey-b { background: #fffaf3; }
+.compare-table tr:last-child td { border-bottom: none; }
+
+/* ── Stats ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Role box ── */
+.role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+.role-card { border-radius: 8px; padding: 20px 22px; }
+.role-card.blue { background: #e8f0f9; border: 1px solid #b8d0ea; }
+.role-card.orange { background: #fff3e0; border: 1px solid #f5c97a; }
+.role-card .rc-title { font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+.role-card.blue .rc-title { color: var(--blue); }
+.role-card.orange .rc-title { color: #7a3e00; }
+.role-card .rc-name { font-size: 14px; font-weight: 700; margin-bottom: 10px; line-height: 1.4; }
+.role-card .rc-kw { display: inline-block; font-size: 11px; font-weight: 700; background: rgba(255,255,255,0.7); border-radius: 4px; padding: 2px 8px; margin: 2px 2px 2px 0; }
+
+/* ── Finding row ── */
+.finding-list { list-style: none; margin: 16px 0; }
+.finding-list li { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.7; }
+.finding-list li:last-child { border-bottom: none; }
+.finding-num { flex-shrink: 0; width: 28px; height: 28px; background: var(--blue); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-top: 2px; }
+.finding-text strong { display: block; font-size: 13px; color: var(--blue); margin-bottom: 4px; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── cite-ref ── */
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+
+/* ── references ── */
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-rate { font-size: 0.7rem; width: 60px; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .compare-table { font-size: 12px; }
+  .compare-table td, .compare-table th { padding: 8px 10px; }
+  .role-grid { grid-template-columns: 1fr; }
+  .references { padding: 28px 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="site-title">性別役割分担意識</span>
+  <div class="tts-bar">
+    <select id="tts-voice" class="tts-select" aria-label="音声選択"></select>
+    <select id="tts-rate" class="tts-rate" aria-label="読み上げ速度">
+      <option value="0.8">0.8×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.2">1.2×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.8">1.8×</option>
+    </select>
+    <button id="tts-btn" class="tts-btn" data-state="idle">▶ 読み上げ</button>
+    <button id="tts-stop" class="tts-stop">■ 停止</button>
+    <span id="tts-label" class="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <span class="label">トピックス</span>
+  <h1>内閣府2調査の比較分析<br>世論調査 vs 地域における女性活躍調査</h1>
+  <p class="sub">なぜ同じ内閣府が似た調査を2つ行うのか——目的・設計・知見の違いを整理する</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#spec">基本情報比較</a></li>
+    <li><a href="#purpose">目的の違い</a></li>
+    <li><a href="#design">設計の違い</a></li>
+    <li><a href="#chiiki">地域調査固有知見</a></li>
+    <li><a href="#why2">なぜ2つあるか</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- 全体像 -->
+  <div class="overview" id="overview">
+    <h2>2つの調査の位置づけ</h2>
+    <p>内閣府は「男女共同参画社会に関する世論調査」（以下、<strong>世論調査</strong>）と「地域における女性活躍・男女共同参画に関する調査」（以下、<strong>地域調査</strong>）という、テーマが重なる2種類の調査を実施している<sup class="cite-ref">※1</sup><sup class="cite-ref">※2</sup>。一見重複しているように見えるが、両者は調査機関・対象・規模・目的のいずれもが大きく異なり、政策上の役割も異なる。</p>
+    <p>一言で表せば、世論調査は<strong>「温度計」</strong>——国民全体の意識を定期的に測る定点観測器であり、地域調査は<strong>「内視鏡」</strong>——特定の政策課題（若年女性の地方流出・東京一極集中）の原因を深掘りする課題探索型調査だ。この2調査は補完関係にあり、どちらかが不要というわけではない。</p>
+
+    <div class="role-grid">
+      <div class="role-card blue">
+        <div class="rc-title">調査A（世論調査）</div>
+        <div class="rc-name">男女共同参画社会に関する<br>世論調査</div>
+        <span class="rc-kw">全年齢</span>
+        <span class="rc-kw">郵送法</span>
+        <span class="rc-kw">定点観測</span>
+        <span class="rc-kw">2年ごと</span>
+        <span class="rc-kw">内閣府直接実施</span>
+      </div>
+      <div class="role-card orange">
+        <div class="rc-title">調査B（地域調査）</div>
+        <div class="rc-name">地域における女性活躍・<br>男女共同参画に関する調査</div>
+        <span class="rc-kw">若年層限定</span>
+        <span class="rc-kw">ネット調査</span>
+        <span class="rc-kw">課題深掘り</span>
+        <span class="rc-kw">不定期</span>
+        <span class="rc-kw">民間委託</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 基本情報比較 -->
+  <section id="spec">
+    <h2><span class="icon">📋</span>基本情報の比較</h2>
+    <span class="policy-tag">令和6年度実施分を比較</span>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th class="label-col">項目</th>
+          <th class="survey-a">世論調査（調査A）</th>
+          <th class="survey-b">地域調査（調査B）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-col">実施主体</td>
+          <td class="survey-a">内閣府大臣官房<br>政府広報室（直接実施）</td>
+          <td class="survey-b">内閣府委託<br>株式会社マーケティング・コミュニケーションズ</td>
+        </tr>
+        <tr>
+          <td class="label-col">調査期間</td>
+          <td class="survey-a">令和6年9月26日〜11月3日</td>
+          <td class="survey-b">令和6年12月4日〜12月20日</td>
+        </tr>
+        <tr>
+          <td class="label-col">調査対象</td>
+          <td class="survey-a">18歳以上の日本国籍を持つ全国の男女</td>
+          <td class="survey-b">国内在住18〜39歳のインターネットパネル登録モニター（国籍不問）</td>
+        </tr>
+        <tr>
+          <td class="label-col">サンプル数</td>
+          <td class="survey-a">配布5,000人 → 有効回収2,673人（回収率53.5%）</td>
+          <td class="survey-b">10,000人（令和2年国勢調査の男女×年代×地域分布に基づく割付）</td>
+        </tr>
+        <tr>
+          <td class="label-col">調査方法</td>
+          <td class="survey-a">郵送法（無作為抽出）</td>
+          <td class="survey-b">インターネット調査（民間モニターパネル）</td>
+        </tr>
+        <tr>
+          <td class="label-col">有識者関与</td>
+          <td class="survey-a">なし（政府広報室が設計・分析）</td>
+          <td class="survey-b">調査検討委員会（山田昌弘・小安美和・高見具広）が監修・総評</td>
+        </tr>
+        <tr>
+          <td class="label-col">公表時期</td>
+          <td class="survey-a">令和7年2月</td>
+          <td class="survey-b">令和7年3月</td>
+        </tr>
+        <tr>
+          <td class="label-col">実施頻度</td>
+          <td class="survey-a">概ね2年ごと（継続実施）</td>
+          <td class="survey-b">不定期（課題設定に応じた委託）</td>
+        </tr>
+        <tr>
+          <td class="label-col">報告書量</td>
+          <td class="survey-a">概要・詳細・データ集（PDF数十ページ）</td>
+          <td class="survey-b">200ページ超（分析視点別・地域ブロック別・有識者総評・個票分析を含む）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="stats">
+      <div class="stat"><div class="val">2,673</div><div class="lbl">世論調査の有効回収数<br>全年齢・郵送法</div></div>
+      <div class="stat"><div class="val">10,000</div><div class="lbl">地域調査の回収数<br>18〜39歳・ネット</div></div>
+      <div class="stat"><div class="val">200<span>P</span></div><div class="lbl">地域調査報告書のページ数<br>有識者総評含む</div></div>
+    </div>
+  </section>
+
+  <!-- 目的の違い -->
+  <section id="purpose">
+    <h2><span class="icon">🎯</span>調査目的の違い — 定点観測 vs 課題深掘り</h2>
+
+    <p>両調査の最大の違いは<strong>「何を知りたいか」</strong>という目的にある。</p>
+
+    <p><strong>世論調査</strong>は1970年代から継続される政府世論調査の一つとして、国民全体の意識の水準と変化を時系列で把握することが目的だ<sup class="cite-ref">※1</sup>。「平成7年（1995年）から続く調査なので、30年前と比べて意識はどう変わったか」を測れるのが最大の強みである。男女平等感・役割分担意識・育児分担希望・DV対策の必要性などを、全年齢の「国民意識の温度計」として測定し、政策全体の効果モニタリングに用いる。</p>
+
+    <p><strong>地域調査</strong>は第6次男女共同参画基本計画（令和8年3月閣議決定）が重点課題として掲げた「若い女性が選べる地域づくり」「東京一極集中の是正」に対応するために新たに発注された課題探索型の調査だ<sup class="cite-ref">※2</sup>。2014年以降、東京圏への若年転入者が男性より女性の方が多くなっており、地方では「女性に選ばれない地域」という課題が深刻化している。この「なぜ若い女性が地方を離れるのか」という因果関係の探索が目的であり、出身地×現住地のクロス分析、地域ブロック別の比較、有識者による解釈が盛り込まれている。</p>
+
+    <div class="highlight">
+      <strong>比喩で整理：</strong>世論調査＝患者（社会全体）の体温・血圧を定期測定する「健診」。地域調査＝「若年女性の地方流出」という症状の原因を診断するために専門医（有識者）が行う「精密検査」。健診では見えない病巣を内視鏡で見るのが地域調査の役割。
+    </div>
+  </section>
+
+  <!-- 設計の違い -->
+  <section id="design">
+    <h2><span class="icon">🔧</span>調査設計の違い — 全年齢・郵送 vs 若年・ネット</h2>
+
+    <p>目的の違いは設計の違いに直結している。</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th class="label-col">設計要素</th>
+          <th class="survey-a">世論調査（定点観測）</th>
+          <th class="survey-b">地域調査（課題深掘り）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-col">年齢設計</td>
+          <td class="survey-a">18歳以上全年齢対象。世代間の意識格差も測定できる。高齢者の保守的意識と若年層の変化を対比可能。</td>
+          <td class="survey-b">18〜39歳に限定。地方移住・居住選択の当事者年代を集中的に分析するため。</td>
+        </tr>
+        <tr>
+          <td class="label-col">サンプリング</td>
+          <td class="survey-a">無作為抽出→代表性が高い。ただし回収率53.5%の無回答バイアスリスクあり。</td>
+          <td class="survey-b">国勢調査の地域分布に沿った割付→都会・地方の比率を担保。ただしモニターパネルの自発参加バイアスあり。</td>
+        </tr>
+        <tr>
+          <td class="label-col">地域軸</td>
+          <td class="survey-a">地域差の分析なし。全国集計＋男女・年代別のみ。</td>
+          <td class="survey-b">「都会（東京都＋政令指定都市）vs地方」「出身地域×現住地域」「9地域ブロック別」という三層の地域分析。</td>
+        </tr>
+        <tr>
+          <td class="label-col">主な設問</td>
+          <td class="survey-a">平等感・役割分担意識・育児分担希望・夫婦の名字・DV相談窓口・行政への要望</td>
+          <td class="survey-b">現住地域の満足度・転居理由・進路選択時の周囲の影響・固定的役割分担の地域差・将来の居住希望・デジタルスキル</td>
+        </tr>
+        <tr>
+          <td class="label-col">特殊設問</td>
+          <td class="survey-a">「夫は外で働き、妻は家庭を守るべき」（定番設問として毎回実施）</td>
+          <td class="survey-b">「親や親戚から言われたこと」「跡継ぎ意識」「地方に住む不安」「出身地域vs現住地域の役割分担意識比較」</td>
+        </tr>
+        <tr>
+          <td class="label-col">分析手法</td>
+          <td class="survey-a">単純集計・クロス集計。前回調査との時系列比較。</td>
+          <td class="survey-b">カイ2乗検定・t検定による統計的有意差の確認。個票データ分析（JILPTによる）。有識者3名の解説コメント。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight">
+      <strong>国籍要件の違いが重要：</strong>世論調査は「日本国籍を持つ」が条件であり、在日外国人は除外される。地域調査はインターネットモニター（国籍不問）のため、外国籍の若年在住者も一定数含まれる可能性がある。この差は「日本人の意識」対「日本在住者の意識」という微妙な違いを生む。
+    </div>
+  </section>
+
+  <!-- 地域調査固有の知見 -->
+  <section id="chiiki">
+    <h2><span class="icon">🗺</span>地域調査でのみわかること — 固有の知見</h2>
+    <span class="policy-tag">世論調査では測れない課題</span>
+
+    <p>地域調査は世論調査には存在しない「地域差×世代」という分析軸を持ち、以下のような固有の知見を生み出している<sup class="cite-ref">※2</sup>。</p>
+
+    <ul class="finding-list">
+      <li>
+        <span class="finding-num">1</span>
+        <div class="finding-text">
+          <strong>固定的役割分担意識は地方出身女性で顕著に高い</strong>
+          「家事・育児・介護は女性の仕事」という意識が「あった」と回答した割合は、地方出身女性（31.6%）が都会出身女性（25.7%）より約6ポイント高く、30〜39歳では37.3%に達する。世論調査の全国集計では見えない地域差を定量化した。
+        </div>
+      </li>
+      <li>
+        <span class="finding-num">2</span>
+        <div class="finding-text">
+          <strong>東京圏に転出した女性ほど、出身地の役割分担意識を強く感じていた</strong>
+          東京圏以外出身で現在東京圏在住の女性の42.5%が「家事・育児・介護は女性の仕事」という意識が出身地域にあったと回答。一方で現在の東京圏では23.5%まで低下。固定的役割分担意識からの「逃げ」が転出動機の一つであることを定量的に示した。
+        </div>
+      </li>
+      <li>
+        <span class="finding-num">3</span>
+        <div class="finding-text">
+          <strong>「地元を離れたかったから」転出した女性の特徴</strong>
+          「地元から離れたかったから」を転出理由に選んだ女性は、同時に「親や周囲の人の干渉から逃れたかった」「多様な価値観が受け入れられなそうだった」を挙げる割合が特に高い。数字の背景にある「閉塞感」が可視化された。
+        </div>
+      </li>
+      <li>
+        <span class="finding-num">4</span>
+        <div class="finding-text">
+          <strong>周囲の声かけが進路選択に与える影響力</strong>
+          「女性は偏差値の高い学校を目指す必要はない」と周囲から言われた女性と言われなかった女性を比較すると、自分でも「そう思う」割合に約50ポイントもの差がある。家族・学校からのメッセージが意識形成に決定的な影響を与えることを実証的に示した。
+        </div>
+      </li>
+      <li>
+        <span class="finding-num">5</span>
+        <div class="finding-text">
+          <strong>地方出身・地方居住の女性で結婚意向が最も低い</strong>
+          独身者の結婚希望率は地方出身・地方居住の女性で45.6%と、地方出身・都会居住（57.4%）より約12ポイント低い。「地方にとどまる女性ほど結婚意向も低い」という事実は、単純な「地方＝結婚しやすい」論を否定する。
+        </div>
+      </li>
+      <li>
+        <span class="finding-num">6</span>
+        <div class="finding-text">
+          <strong>現住地域満足度の地域ブロック差</strong>
+          総合満足度が最も高い地域は女性・男性ともに「南関東（東京圏）」（女性75.5%・男性68.9%）、最も低いのは女性「四国」（44.3%）・男性「東北」（43.2%）。仕事の選択肢・収入・多様な価値観の尊重で東京圏と地方ブロックに30ポイント以上の差が生じる項目がある。
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- なぜ2つあるか -->
+  <section id="why2">
+    <h2><span class="icon">🤔</span>なぜ内閣府は2つの調査を行うのか</h2>
+
+    <p>両調査が並存する理由は、<strong>政策の異なるニーズに対応する異なる調査設計</strong>が必要なためだ。具体的には4つの理由が挙げられる。</p>
+
+    <div class="highlight">
+      <strong>理由①　根拠法と所管部署の違い</strong><br>
+      世論調査は「政府が行う世論調査」として内閣府大臣官房政府広報室が担う。これは内閣法第16条等に基づく定型業務であり、各省庁の政策テーマについて概ね2年ごとに実施される「常設型」の調査群の一つだ<sup class="cite-ref">※3</sup>。一方、地域調査は内閣府男女共同参画局が第6次基本計画の具体的施策の検討材料として特別に発注した「課題対応型」の委託調査であり、両者は組織・予算・根拠とも別系統に属する。
+    </div>
+
+    <div class="highlight">
+      <strong>理由②　全国代表性と特定課題分析のトレードオフ</strong><br>
+      世論調査の無作為抽出・郵送法は国民全体の代表性が高いが、サンプル数は約2,600人にとどまり、「若年女性×地方出身×都会居住」などのクロス分析をすると各セルの回答者数が数十人以下になって統計的に不安定になる。地域調査は10,000人を地域・性別・年代で割付することで、このような精細な分析を可能にしている<sup class="cite-ref">※2</sup>。
+    </div>
+
+    <div class="highlight">
+      <strong>理由③　測りたい変数が異なる</strong><br>
+      世論調査は「意識水準の変化」（例：役割分担賛成率が2022年から2024年でどう変わったか）を追跡するために毎回同じ設問を繰り返す。地域調査は「地方流出の因果構造」（出身地の役割分担意識→転出意向→実際の転出）を一時点で測るため、時系列比較より深い因果分析を優先した設計になっている。同じ調査に両方の目的を詰め込むと、設問数が膨大になりいずれも中途半端になる。
+    </div>
+
+    <div class="highlight">
+      <strong>理由④　第6次基本計画が生んだ新たな需要</strong><br>
+      令和8年3月策定の第6次男女共同参画基本計画は「女性が選べる地域づくり」「地方における固定的役割分担意識の解消」を重点課題に格上げした<sup class="cite-ref">※4</sup>。これに伴い、従来の全国一律の意識調査では捉えきれない「地域格差の実態」を明らかにするための調査が追加で必要になった。2014年以降に若年女性の東京圏転入超過が顕著になったという客観データへの政策的な対応として、地域調査が位置づけられている。
+    </div>
+
+    <p>ただし、2つの調査が完全に独立しているわけではなく、共通する設問（「夫は外で働き、妻は家庭を守るべき」「固定的な性別役割分担意識」）もある。この重複は、全国値と若年層・地域別の値を対照できるという利点をもたらしている。</p>
+  </section>
+
+  <!-- 総括 -->
+  <div class="conclusion" id="conclusion">
+    <h2>総括：2調査を「重複」でなく「補完」と読む</h2>
+    <div class="point">
+      <div class="pt-title">世論調査が答える問い：意識は変わったか</div>
+      <p>30年近い時系列データを持つ世論調査は「役割分担賛成率が長期的に低下している」「DV対策への需要が高まっている」という意識変化のトレンドを示す。政策全体の方向性が正しいかを確認する「評価ツール」として機能する。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">地域調査が答える問い：なぜそうなのか・どこが問題か</div>
+      <p>地域調査は「地方出身女性が都会に転出する理由は進学・就職だけでなく、地域の役割分担意識への生きづらさも一因」「周囲からの声かけが女性の進路意識に50ポイントの差を生む」という因果構造を明らかにする。政策の「矢を当てる場所」を特定する「診断ツール」として機能する。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">2調査の数値は慎重に比較を</div>
+      <p>例えば「固定的役割分担意識がある」という数値は世論調査では全年齢での比率、地域調査では18〜39歳限定の比率と設問文も異なるため、単純比較できない。両調査を引用する際は、対象・方法・設問文の違いを明示することが誠実な活用の条件だ。</p>
+    </div>
+    <p>内閣府が2つの似た調査を行う理由は「重複・非効率」ではなく「異なる政策ニーズへの対応」であり、むしろ1つの調査で両方の目的を兼ねようとすると、どちらも中途半端になるリスクがある。課題は「2つあること」ではなく、両調査の知見が政策立案の現場で適切に使い分けられているかどうかにある。</p>
+  </div>
+
+  <!-- 参考文献 -->
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-num">1</span>
+        <span>内閣府政府広報室「男女共同参画社会に関する世論調査」（令和6年9月実施、令和7年2月公表）<span class="ref-tag">世論調査</span><br>
+        <a href="https://survey.gov-online.go.jp/women_empowerment/202502/r06/r06-danjo/" target="_blank" rel="noopener">https://survey.gov-online.go.jp/women_empowerment/202502/r06/r06-danjo/</a></span>
+      </li>
+      <li>
+        <span class="ref-num">2</span>
+        <span>内閣府委託（株式会社マーケティング・コミュニケーションズ）「令和6年度 地域における女性活躍・男女共同参画に関する調査報告書」（令和7年3月）<span class="ref-tag">調査報告</span><br>
+        <a href="https://www.gender.go.jp/research/kenkyu/kenkou_r06.html" target="_blank" rel="noopener">https://www.gender.go.jp/research/kenkyu/kenkou_r06.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">3</span>
+        <span>内閣府「世論調査に関する概要・実施基準」（内閣府設置法・政府広報室所管）<span class="ref-tag">政策文書</span><br>
+        <a href="https://survey.gov-online.go.jp/" target="_blank" rel="noopener">https://survey.gov-online.go.jp/</a></span>
+      </li>
+      <li>
+        <span class="ref-num">4</span>
+        <span>内閣府男女共同参画局「第6次男女共同参画基本計画」（令和8年3月13日閣議決定）<span class="ref-tag">政策文書</span><br>
+        <a href="https://www.gender.go.jp/about_danjo/basic_plans/6th/index.html" target="_blank" rel="noopener">https://www.gender.go.jp/about_danjo/basic_plans/6th/index.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">5</span>
+        <span>内閣府政策統括官（経済財政分析担当）「地域の経済2023」（東京圏への若年転入超過データ）<span class="ref-tag">統計</span><br>
+        <a href="https://www5.cao.go.jp/j-j/cr/cr23/index.html" target="_blank" rel="noopener">https://www5.cao.go.jp/j-j/cr/cr23/index.html</a></span>
+      </li>
+    </ul>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <p>素材：内閣府「男女共同参画社会に関する世論調査」（令和6年9月）および「令和6年度 地域における女性活躍・男女共同参画に関する調査」（令和7年3月）</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+  function cleanText(t) { return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim(); }
+  function splitChunks(text) { return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0); }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause(); setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) { resumeIdx = index + 1; speakFrom(index + 1); }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開'; label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else { btn.textContent = '▶ 読み上げ'; label.textContent = ''; }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => { if (done || intentionalStop) return; done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1); });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') { setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250); return; }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt); armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false; chunks = splitChunks(rawText); window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') { window.speechSynthesis.pause(); btn.textContent = '▶ 再開'; btn.classList.remove('playing'); btn.dataset.state = 'paused'; }
+    else { window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止'; btn.classList.add('playing'); btn.dataset.state = 'playing'; }
+  });
+  stopBtn.addEventListener('click', () => { intentionalStop = true; resumeIdx = 0; stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle(); });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, { position:'fixed', zIndex:'9999', background:'#1a56a0', color:'#fff', border:'none', borderRadius:'6px', padding:'6px 14px', fontSize:'13px', cursor:'pointer', display:'none', boxShadow:'0 2px 10px rgba(0,0,0,0.35)', whiteSpace:'nowrap' });
+    document.body.appendChild(selTip); return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0); let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) { if (node.nodeType === 1 && BLOCK.has(node.tagName)) break; node = node.parentNode; }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) { if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i; }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } } catch { hideTip(); return; }
+    chunks = splitChunks(rawText); const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip(); const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px'; tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+
+</body>
+</html>
