@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>担い手・人材部会の議論｜二拠点居住</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-rate { padding: 0.28rem 0.5rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; width: 68px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Member grid ── */
+.member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin: 20px 0; }
+.member-card { background: var(--tag-bg); border-radius: 8px; padding: 16px 18px; border: 1px solid #c5d9ee; }
+.member-card .member-type { font-size: 10px; font-weight: 700; color: var(--blue-lt); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+.member-card .member-name { font-size: 13px; font-weight: 700; color: var(--blue); line-height: 1.4; }
+.member-card .member-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+/* ── Issue list ── */
+.issue-list { list-style: none; margin: 16px 0; }
+.issue-list li { display: flex; gap: 14px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.7; }
+.issue-list li:last-child { border-bottom: none; }
+.issue-num { flex-shrink: 0; width: 24px; height: 24px; background: var(--blue); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+
+/* ── Case cards ── */
+.case-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin: 20px 0; }
+.case-card { border: 1px solid var(--border); border-radius: 8px; padding: 20px; background: #fafbfd; }
+.case-card .case-loc { font-size: 11px; font-weight: 700; color: var(--blue-lt); margin-bottom: 6px; }
+.case-card .case-title { font-size: 14px; font-weight: 700; color: var(--blue); margin-bottom: 8px; line-height: 1.4; }
+.case-card .case-body { font-size: 13px; color: var(--text); line-height: 1.65; }
+
+/* ── Timeline (vertical) ── */
+.timeline { position: relative; padding-left: 28px; margin: 24px 0; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 4px; bottom: 4px; width: 2px; background: var(--border); }
+.tl-item { position: relative; margin-bottom: 22px; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot { position: absolute; left: -24px; top: 4px; width: 12px; height: 12px; background: var(--blue-lt); border-radius: 50%; border: 2px solid var(--white); box-shadow: 0 0 0 2px var(--blue-lt); }
+.tl-date { font-size: 11px; font-weight: 700; color: var(--blue-lt); margin-bottom: 4px; }
+.tl-text { font-size: 14px; color: var(--text); line-height: 1.65; }
+
+/* ── Proposal items ── */
+.proposal-list { list-style: none; margin: 16px 0; }
+.proposal-list li { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; border-left: 3px solid var(--accent); }
+.proposal-list li .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.proposal-list li p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── cite-ref ── */
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+
+/* ── references ── */
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+  .member-grid { grid-template-columns: 1fr 1fr; }
+  .case-grid { grid-template-columns: 1fr; }
+  .references { padding: 28px 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="site-title">二拠点居住</span>
+  <div class="tts-bar">
+    <select id="tts-voice" class="tts-select" title="読み上げ音声を選択"></select>
+    <select id="tts-rate" class="tts-rate" title="読み上げ速度">
+      <option value="0.8">0.8×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.2">1.2×</option>
+      <option value="1.5">1.5×</option>
+    </select>
+    <button id="tts-btn" class="tts-btn" data-state="idle">▶ 読み上げ</button>
+    <button id="tts-stop" class="tts-stop">■ 停止</button>
+    <span id="tts-label" class="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>担い手・人材部会の議論<br>―「仕事」で二地域居住を根づかせる―</h1>
+  <p class="sub">全国二地域居住等促進官民連携プラットフォーム ／ 2025年1月〜2025年6月</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview-sec">全体像</a></li>
+    <li><a href="#sec-members">部会構成</a></li>
+    <li><a href="#sec-themes">議論テーマ</a></li>
+    <li><a href="#sec-cases">先導的PJ事例</a></li>
+    <li><a href="#sec-proposal">政府への提言</a></li>
+    <li><a href="#sec-latest">最新動向</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview-sec">
+    <h2>担い手・人材部会とは</h2>
+    <p>全国二地域居住等促進官民連携プラットフォームは、2024年10月に1,200超の自治体・民間事業者が参画して設立されました<sup class="cite-ref">※1</sup>。2025年年初、二地域居住の中長期的課題を議論するため5つの専門部会が設置され、そのうちの一つが<strong>③担い手・人材部会</strong>です<sup class="cite-ref">※2</sup>。</p>
+    <p>部会のミッションは「<strong>仕事を通じた二地域居住の促進と仕組みづくり</strong>」。転職せずに都市部の仕事を続けながら地方でも活動できる環境をいかに整えるかを、民間事業者・自治体・省庁が協働で検討しています<sup class="cite-ref">※3</sup>。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="val">5<span>部会</span></div>
+        <div class="lbl">2025年初に設置された<br>専門部会の総数</div>
+      </div>
+      <div class="stat">
+        <div class="val">4<span>省庁</span></div>
+        <div class="lbl">協力省庁<br>（国交・厚労・経産・総務）</div>
+      </div>
+      <div class="stat">
+        <div class="val">210<span>+自治体</span></div>
+        <div class="lbl">副業・複業マッチング<br>実績（参画民間企業）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 1: 部会構成 -->
+  <section id="sec-members">
+    <h2><span class="icon">👥</span>部会の構成メンバー</h2>
+    <span class="policy-tag">体制</span>
+
+    <p>部会長にはAnother works 共創事業責任者の<strong>犛山創一氏</strong>が就任（2025年2月21日）<sup class="cite-ref">※4</sup>。副業・複業による地域人材確保の最前線で実績を持つ専門家が議論をリードしています。</p>
+
+    <div class="member-grid">
+      <div class="member-card">
+        <div class="member-type">部会長（民間）</div>
+        <div class="member-name">Another works</div>
+        <div class="member-sub">共創事業責任者・犛山創一</div>
+      </div>
+      <div class="member-card">
+        <div class="member-type">民間</div>
+        <div class="member-name">パソナJOBHUB</div>
+        <div class="member-sub">副業・地方人材マッチング</div>
+      </div>
+      <div class="member-card">
+        <div class="member-type">民間</div>
+        <div class="member-name">東京海上日動火災保険</div>
+        <div class="member-sub">担い手活動の安心面を支援</div>
+      </div>
+      <div class="member-card">
+        <div class="member-type">自治体</div>
+        <div class="member-name">北海道厚真町</div>
+        <div class="member-sub">副業マッチング先進自治体</div>
+      </div>
+      <div class="member-card">
+        <div class="member-type">自治体</div>
+        <div class="member-name">新潟県佐渡市</div>
+        <div class="member-sub">島嶼部の二地域居住促進</div>
+      </div>
+      <div class="member-card">
+        <div class="member-type">自治体</div>
+        <div class="member-name">長野県塩尻市</div>
+        <div class="member-sub">担い手効果の定量化に挑戦</div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>協力省庁の広がり</strong>：国土交通省を中心に、厚生労働省（雇用・副業ガイドライン）・経済産業省（スタートアップ・複業エコシステム）・総務省（地域おこし協力隊・関係人口）の4省庁が連携<sup class="cite-ref">※5</sup>。「仕事」という切り口から複数省庁をまたぐ政策横断が実現しています。
+    </div>
+  </section>
+
+  <!-- Section 2: 議論テーマ -->
+  <section id="sec-themes">
+    <h2><span class="icon">💬</span>部会で議論されたテーマ</h2>
+    <span class="policy-tag">検討内容</span>
+
+    <p>部会は2025年1月から6月にかけて複数回の会合を重ね、以下の課題を軸に議論を進めました<sup class="cite-ref">※3</sup>。</p>
+
+    <ul class="issue-list">
+      <li>
+        <span class="issue-num">1</span>
+        <span><strong>「転職なき移住」の仕組みづくり</strong>：現職を維持したまま地方でも活動できる「副業・複業型」の二地域居住をいかに制度化・普及させるか。企業の副業解禁が進む一方、実際に地方で副業マッチングするまでの手間・リスクが障壁として残る。</span>
+      </li>
+      <li>
+        <span class="issue-num">2</span>
+        <span><strong>地域の「なりわい」確保と担い手の仕事設計</strong>：二地域居住者が地方で従事できる仕事（農業補助・観光・地域事業支援等）のメニュー整理。地域ニーズと都市居住者のスキルをどうマッチングするかがカギ<sup class="cite-ref">※6</sup>。</span>
+      </li>
+      <li>
+        <span class="issue-num">3</span>
+        <span><strong>コーディネーター人材の育成・確保</strong>：担い手と地域・企業をつなぐ中間支援人材が不足。自治体職員やNPOがコーディネーターを担う場合の研修・評価の仕組みが必要。</span>
+      </li>
+      <li>
+        <span class="issue-num">4</span>
+        <span><strong>マッチング支援の強化と効果測定</strong>：既存のマッチングサービスを横断的に活用できるプラットフォーム連携。また、地域への経済・社会的インパクトを定量的に示す指標づくりが、政策継続のための説得材料として重要視された。</span>
+      </li>
+      <li>
+        <span class="issue-num">5</span>
+        <span><strong>ワーケーション等との連携</strong>：試し滞在・ワーケーションから副業、さらに二地域居住へとフェーズを踏んだ移行経路の設計。一過性の来訪者を「担い手」として定着させるステップアップ型の支援体制。</span>
+      </li>
+    </ul>
+
+    <div class="highlight">
+      <strong>背景にある数字</strong>：部会長を務めるAnother worksが運営する複業クラウドfor Publicには累計<strong>210超の自治体</strong>が参画し、<strong>568件</strong>のプロジェクト（2025年2月時点）が動いています<sup class="cite-ref">※4</sup>。こうした民間の実績データが議論の根拠として活用されました。
+    </div>
+  </section>
+
+  <!-- Section 3: 先導的PJ事例 -->
+  <section id="sec-cases">
+    <h2><span class="icon">📍</span>担い手・人材に関わる先導的PJ事例</h2>
+    <span class="policy-tag">実証事例（令和6〜8年度）</span>
+
+    <p>官民連携プラットフォームと並行して推進される二地域居住先導的プロジェクト（令和6年度採択44件）の中にも、担い手・人材テーマに直結する事例があります<sup class="cite-ref">※7</sup>。</p>
+
+    <div class="case-grid">
+      <div class="case-card">
+        <div class="case-loc">宮城県気仙沼市</div>
+        <div class="case-title">なりわいマッチング型二地域居住</div>
+        <div class="case-body">漁業・水産加工・観光といった地域の「なりわい」を体験しながら移住検討できる仕組み。副業・複業人材と地元事業者をつなぐコーディネーターを配置。</div>
+      </div>
+      <div class="case-card">
+        <div class="case-loc">長野県白馬村</div>
+        <div class="case-title">遊休施設活用×担い手マッチング</div>
+        <div class="case-body">スキーリゾートの閑散期に遊休となる宿泊施設を二地域居住拠点として開放。入居者に地域事業の副業機会を提供し、オフシーズンの担い手不足を解消。</div>
+      </div>
+      <div class="case-card">
+        <div class="case-loc">長野県塩尻市</div>
+        <div class="case-title">担い手貢献の定量化モデル</div>
+        <div class="case-body">副業・複業で参画した二地域居住者の地域への経済・社会インパクトを数値化する指標を開発。全国普及を見据えた効果測定モデルを構築。</div>
+      </div>
+      <div class="case-card">
+        <div class="case-loc">北海道厚真町</div>
+        <div class="case-title">副業マッチング＋関係人口アプリ</div>
+        <div class="case-body">能登半島地震後の復旧・復興を機に整備した副業人材受け入れ体制を応用。スマートフォンアプリで都市部人材と農業・地域業務をマッチング。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: 政府への提言 -->
+  <section id="sec-proposal">
+    <h2><span class="icon">📄</span>政府への政策提言（令和7年6月）</h2>
+    <span class="policy-tag">政策提言</span>
+
+    <p>2025年6月10日、全国二地域居住等促進官民連携プラットフォームは古川康 国土交通副大臣に政策提言書を手交しました<sup class="cite-ref">※2</sup>。共同代表の新田恭士 長野県副知事と石山アンジュ氏が提言書を届けました。担い手・人材部会の議論の中間取りまとめが、以下の項目として反映されています<sup class="cite-ref">※8</sup>。</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2025年1月〜</div>
+        <div class="tl-text">担い手・人材部会 発足・定期的な会合開始。各メンバーの実績・課題を持ち寄り。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2025年2月21日</div>
+        <div class="tl-text">部会長にAnother works 犛山創一氏が正式就任。副業・複業マッチングのデータ活用方針を決定。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2025年6月3日</div>
+        <div class="tl-text">提言書（中間取りまとめ）を国交省ウェブサイトで公開。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2025年6月10日</div>
+        <div class="tl-text">古川副大臣に提言書を手交。首都圏自治体のメリット・ふるさと住民制度との連携についても意見交換。</div>
+      </div>
+    </div>
+
+    <p style="margin-top:20px;">担い手・人材部会から提言に盛り込まれた主な施策方向は以下の通りです。</p>
+
+    <ul class="issue-list">
+      <li>
+        <span class="issue-num">①</span>
+        <span><strong>コーディネーター人材の育成・確保支援</strong>：二地域居住者と地域・企業をつなぐ中間支援人材を全国的に育成するための研修プログラム・資格化の検討。</span>
+      </li>
+      <li>
+        <span class="issue-num">②</span>
+        <span><strong>マッチング支援の強化</strong>：副業・複業マッチングサービスが地域課題解決と連動するよう、官民のマッチングプラットフォームを連携・統合する仕組みの整備。</span>
+      </li>
+      <li>
+        <span class="issue-num">③</span>
+        <span><strong>企業側の副業解禁促進</strong>：「転職なき移住・複業」を実現するため、企業が社員の地方副業を認める際の指針整備（厚労省と連携）。</span>
+      </li>
+      <li>
+        <span class="issue-num">④</span>
+        <span><strong>効果測定・情報共有の仕組み</strong>：担い手が地域にもたらす経済・社会的インパクトを可視化する共通指標の策定と、自治体間でのベストプラクティス共有。</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Section 5: 最新動向 -->
+  <section id="sec-latest">
+    <h2><span class="icon">🆕</span>最新動向（2026年5月）</h2>
+    <span class="policy-tag">2026年度</span>
+
+    <p>2026年5月、官民連携プラットフォームの公式サイトにて<strong>「ワーケーション実施支援事業【担い手活動参画型】」</strong>が告知されました<sup class="cite-ref">※9</sup>。</p>
+
+    <p>これは担い手・人材部会が提言した「試し滞在→副業→二地域居住」のステップアップ型支援の具体化です。ワーケーションで地域を訪問した都市部在住者が、地域の課題解決プロジェクトに担い手として参加できる機会を提供します。</p>
+
+    <div class="highlight">
+      <strong>部会の提言が政策に結実</strong>：2025年6月の提言から約1年で、ワーケーション×担い手活動という新たな切り口の事業が立ち上がりました。担い手・人材部会の「試し→副業→定着」という考え方が、実際の予算事業として具体化されています。
+    </div>
+
+    <p>令和7年度補正予算では二地域居住促進に<strong>32.1億円</strong>が計上されており、先導的プロジェクトの第4次公募（令和8年度分）も進行中です<sup class="cite-ref">※7</sup>。担い手・人材テーマのプロジェクトはさらに拡充される見込みです。</p>
+  </section>
+
+  <!-- Conclusion -->
+  <div class="conclusion">
+    <h2>まとめ：「仕事」を起点に二地域居住を根づかせる</h2>
+
+    <div class="point">
+      <div class="pt-title">①「転職なき移住・複業」という新しい経路</div>
+      <p>都市部の本業を維持しながら地方で副業・複業するモデルは、完全移住のハードルなしに地域の担い手を確保できる。担い手・人材部会はこの経路を政策の主流に位置づけることを目指している。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">②民間実績と自治体の課題を接合する場</div>
+      <p>210超の自治体・568件の実績を持つ民間企業が部会長を務め、厚真町・佐渡市・塩尻市といった先進自治体とともに「現場で機能する政策」を設計しているのが、この部会の強みである。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">③コーディネーター育成と効果測定が次の焦点</div>
+      <p>マッチングの仕組みだけでなく、地域と担い手をつなぐ中間支援人材の確保と、投資対効果を示す共通指標の整備が、今後の政策継続・予算確保のカギとなる。</p>
+    </div>
+
+    <p>担い手・人材部会の議論は、二地域居住を「住む場所の移動」から「仕事・なりわいを通じた地域との関係構築」へと再定義する試みでもある。2026年度のワーケーション×担い手事業を皮切りに、この考え方がどこまで具体的な政策として広がるか注目される。</p>
+  </div>
+
+  <!-- References -->
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-num">1</span>
+        <span>国土交通省「全国二地域居住等促進官民連携プラットフォームの設立」（2024年10月）<span class="ref-tag">政策文書</span><br>
+        <a href="https://www.mlit.go.jp/kokudoseisaku/chisei/kokudoseisaku_chisei_tk_000073.html" target="_blank" rel="noopener">https://www.mlit.go.jp/kokudoseisaku/chisei/kokudoseisaku_chisei_tk_000073.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">2</span>
+        <span>一般社団法人シェアリングエコノミー協会「二地域居住官民連携プラットフォームより、古川国交副大臣に提言を申し入れました」（2025年6月10日）<span class="ref-tag">活動報告</span><br>
+        <a href="https://sharing-economy.jp/ja/20250610/" target="_blank" rel="noopener">https://sharing-economy.jp/ja/20250610/</a></span>
+      </li>
+      <li>
+        <span class="ref-num">3</span>
+        <span>国土交通省「二地域居住等の促進について」令和8年2月資料<span class="ref-tag">調査報告</span><br>
+        <a href="https://www.mlit.go.jp/sogoseisaku/kanminrenkei/content/001979821.pdf" target="_blank" rel="noopener">https://www.mlit.go.jp/sogoseisaku/kanminrenkei/content/001979821.pdf</a></span>
+      </li>
+      <li>
+        <span class="ref-num">4</span>
+        <span>PR TIMES「Another works、全国二地域居住等促進官民連携プラットフォームの担い手・人材部会長に就任」（2025年2月21日）<span class="ref-tag">プレスリリース</span><br>
+        <a href="https://prtimes.jp/main/html/rd/p/000000267.000037083.html" target="_blank" rel="noopener">https://prtimes.jp/main/html/rd/p/000000267.000037083.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">5</span>
+        <span>国土交通省ほか「全国二地域居住等促進官民連携プラットフォーム専門部会の設置について」（2025年1月）<span class="ref-tag">政策文書</span><br>
+        <a href="https://www.mlit.go.jp/kokudoseisaku/chisei/kokudoseisaku_chisei_tk_000073.html" target="_blank" rel="noopener">https://www.mlit.go.jp/kokudoseisaku/chisei/kokudoseisaku_chisei_tk_000073.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">6</span>
+        <span>ミテモ株式会社「二地域居住を地域に根づかせるには―事例から読み解く制度と並走する取り組みのヒント」（2025年6月18日）<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://www.mitemo.co.jp/column/250618_dual-living/" target="_blank" rel="noopener">https://www.mitemo.co.jp/column/250618_dual-living/</a></span>
+      </li>
+      <li>
+        <span class="ref-num">7</span>
+        <span>国土交通省「二地域居住先導的プロジェクト（令和6年度採択・令和7年度補正）」<span class="ref-tag">事業</span><br>
+        <a href="https://www.mlit.go.jp/kokudoseisaku/chisei/kokudoseisaku_chisei_tk_000073.html" target="_blank" rel="noopener">https://www.mlit.go.jp/kokudoseisaku/chisei/kokudoseisaku_chisei_tk_000073.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">8</span>
+        <span>国土交通省「全国二地域居住等促進官民連携プラットフォーム 提言」（令和7年6月3日公開）<span class="ref-tag">政策文書</span><br>
+        <a href="https://www.mlit.go.jp/2chiiki_pf/files/250603_nichiiki_teigen.pdf" target="_blank" rel="noopener">https://www.mlit.go.jp/2chiiki_pf/files/250603_nichiiki_teigen.pdf</a></span>
+      </li>
+      <li>
+        <span class="ref-num">9</span>
+        <span>全国二地域居住等促進官民連携プラットフォーム「ワーケーション実施支援事業【担い手活動参画型】」（2026年5月告知）<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://2chiiki.org" target="_blank" rel="noopener">https://2chiiki.org</a></span>
+      </li>
+    </ul>
+  </div>
+
+</div><!-- /.container -->
+
+<footer>
+  <p>出典：国土交通省・官民連携プラットフォーム公開資料をもとに作成 ／ 2026年6月</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  /* ── テキスト選択 → ここから読み上げ ── */
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+
+</body>
+</html>

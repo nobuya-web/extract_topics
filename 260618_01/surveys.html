@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>国交省 二地域居住 調査・事業一覧（H19〜R8）</title>
+  <style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 140px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Survey table ── */
+.survey-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13.5px; }
+.survey-table th { background: var(--blue); color: #fff; padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 700; }
+.survey-table th:first-child { width: 90px; }
+.survey-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.65; }
+.survey-table tr:last-child td { border-bottom: none; }
+.survey-table tr:hover td { background: #f8fafc; }
+.survey-table .yr { font-weight: 700; color: var(--blue-lt); white-space: nowrap; }
+.survey-table .title-cell { font-weight: 600; color: var(--text); }
+.survey-table .title-cell a { color: var(--blue-lt); text-decoration: none; }
+.survey-table .title-cell a:hover { text-decoration: underline; }
+.survey-table .desc-cell { color: var(--muted); font-size: 12.5px; }
+.type-badge { display: inline-block; font-size: 10px; font-weight: 700; border-radius: 3px; padding: 1px 6px; margin-right: 4px; white-space: nowrap; }
+.type-chosa  { background: #e8f0f9; color: #1a4f7a; border: 1px solid #b8d0eb; }
+.type-jisso  { background: #fff0e0; color: #8a4000; border: 1px solid #f0c080; }
+.type-guide  { background: #eaf7ea; color: #1a5a1a; border: 1px solid #90c890; }
+.type-jigyou { background: #f5eaff; color: #5a1a7a; border: 1px solid #c090e0; }
+.type-sympo  { background: #fff5ea; color: #7a4000; border: 1px solid #e0b870; }
+.type-other  { background: #f0f0f0; color: #5a5a5a; border: 1px solid #c0c0c0; }
+
+/* ── Project cards grid ── */
+.proj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+.proj-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.proj-card .proj-yr { font-size: 10px; font-weight: 700; color: var(--blue-lt); margin-bottom: 4px; }
+.proj-card .proj-place { font-size: 12px; font-weight: 700; color: var(--blue); margin-bottom: 4px; }
+.proj-card .proj-title { font-size: 12px; color: var(--text); line-height: 1.55; }
+.proj-card .proj-org { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── cite-ref ── */
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+
+/* ── references ── */
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 120px; }
+  .references { padding: 28px 20px; }
+  .proj-grid { grid-template-columns: 1fr; }
+  .survey-table { font-size: 12px; }
+  .survey-table th:first-child { width: 72px; }
+  .survey-table td, .survey-table th { padding: 8px 10px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">二拠点居住</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>国交省 二地域居住<br>調査・事業一覧（H19〜R8）</h1>
+  <p class="sub">国土交通省「地方振興：二地域居住の推進」ページ掲載の全調査・事業を種別・年度別に整理</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#kiso">基礎調査（H19〜H25）</a></li>
+    <li><a href="#monitor">モニター調査（H28〜H29）</a></li>
+    <li><a href="#suishin">推進・実証調査（R3〜R6）</a></li>
+    <li><a href="#jisso">先導的PJ実装（R6〜R8）</a></li>
+    <li><a href="#otameshi">お試し居住調査</a></li>
+    <li><a href="#conclusion">総括</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- 全体像 -->
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>国土交通省は平成19年度（2007年）以来、二地域居住に関する調査・事業を継続的に実施してきた。その蓄積は大きく五つのフェーズに分類できる。①実態把握のための基礎調査（H19〜H25）、②地方公共団体を巻き込んだモニター調査（H28〜H29）、③コロナ禍後の「新しい生活様式」に沿った推進・実証調査（R3〜R6）、④法制化後の先導的プロジェクト実装事業（R6〜R8）、⑤自治体の「お試し居住・体験暮らし」取組状況調査（R4）、である<sup class="cite-ref">※1</sup>。</p>
+    <p>調査の性格も年代とともに変化してきた。初期は市場規模推計・政策課題整理・制度設計が中心だったが、令和以降は官民連携による実証モデルの構築・成果検証・全国展開へとシフトしている。令和6年の法制化（改正広域的地域活性化基盤整備法）はこうした約20年の調査の成果を制度化したものといえる<sup class="cite-ref">※2</sup>。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">約20<span>年</span></div><div class="lbl">調査の蓄積<br>（H19〜現在）</div></div>
+      <div class="stat"><div class="val">10<span>件超</span></div><div class="lbl">基礎調査報告書<br>（H19〜H25）</div></div>
+      <div class="stat"><div class="val">44<span>件</span></div><div class="lbl">先導的PJ採択<br>（R6〜7年度）</div></div>
+      <div class="stat"><div class="val">5<span>種別</span></div><div class="lbl">調査カテゴリ<br>（基礎/実証/PJ等）</div></div>
+    </div>
+  </div>
+
+  <!-- フェーズ① 基礎調査 -->
+  <section id="kiso">
+    <h2><span class="icon">📋</span>基礎調査報告書（H19〜H25）</h2>
+    <div class="policy-tag">実態把握・政策課題整理・制度設計 ／ 調査報告書フェーズ</div>
+    <p>平成19年度から25年度にかけて、国交省は毎年度テーマを設定して基礎調査を委託・実施した。市場創出可能性の探索から始まり、情報プラットフォームの検討、制度設計の基礎固め、そして都市と地方の連携モデル構築へと調査テーマが深化していった<sup class="cite-ref">※1</sup>。</p>
+
+    <table class="survey-table">
+      <thead>
+        <tr>
+          <th>年度</th>
+          <th>調査名称</th>
+          <th>主なテーマ・特徴</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="yr">H19<br>（2007）</td>
+          <td class="title-cell">
+            <span class="type-badge type-chosa">調査</span>
+            <a href="https://www.mlit.go.jp/common/001030817.pdf" target="_blank" rel="noopener">地域への人の誘致・移動による市場創出の可能性及び方策に関する調査</a>
+          </td>
+          <td class="desc-cell">二地域居住の市場規模・需要推計と促進方策の基礎的整理。調査の出発点。</td>
+        </tr>
+        <tr>
+          <td class="yr">H20<br>（2008）</td>
+          <td class="title-cell">
+            <span class="type-badge type-chosa">調査</span>
+            <a href="https://www.mlit.go.jp/common/001030815.pdf" target="_blank" rel="noopener">二地域居住等支援のための総合情報プラットフォーム整備等検討調査</a>
+          </td>
+          <td class="desc-cell">居住希望者・受入自治体・民間事業者を繋ぐ情報基盤の設計を検討。</td>
+        </tr>
+        <tr>
+          <td class="yr">H21<br>（2009）</td>
+          <td class="title-cell">
+            <span class="type-badge type-chosa">調査</span>
+            <a href="https://www.mlit.go.jp/common/001030813.pdf" target="_blank" rel="noopener">二地域居住推進施策のための基礎的調査</a>
+          </td>
+          <td class="desc-cell">実態ニーズと阻害要因の把握、促進施策の方向性整理。</td>
+        </tr>
+        <tr>
+          <td class="yr">H22<br>（2010）</td>
+          <td class="title-cell">
+            <span class="type-badge type-chosa">調査</span>
+            <a href="https://www.mlit.go.jp/common/001030812.pdf" target="_blank" rel="noopener">二地域居住推進のための制度設計に関する基礎的調査</a>
+          </td>
+          <td class="desc-cell">住まい・就業・地域参加に関わる制度的課題と対応策の設計検討。</td>
+        </tr>
+        <tr>
+          <td class="yr">H23<br>（2011）</td>
+          <td class="title-cell">
+            <span class="type-badge type-chosa">調査</span>
+            <a href="https://www.mlit.go.jp/common/001030809.pdf" target="_blank" rel="noopener">都市と地方の連携による多様なライフスタイルの実現支援に関する調査検討</a>
+          </td>
+          <td class="desc-cell">東日本大震災後のライフスタイル変化を踏まえ、都市と地方の連携モデルを検討。</td>
+        </tr>
+        <tr>
+          <td class="yr">H24<br>（2012）</td>
+          <td class="title-cell">
+            <span class="type-badge type-chosa">調査</span>
+            <a href="https://www.mlit.go.jp/common/001030806.pdf" target="_blank" rel="noopener">社会情勢の変化に応じた二地域居住推進施策に関する調査検討</a>
+          </td>
+          <td class="desc-cell">震災後・高齢化進展等の社会変化に対応した施策の再設計。</td>
+        </tr>
+        <tr>
+          <td class="yr">H25<br>（2013）</td>
+          <td class="title-cell">
+            <span class="type-badge type-chosa">調査</span>
+            <a href="https://www.mlit.go.jp/common/001048790.pdf" target="_blank" rel="noopener">地方部における新たなライフスタイルの実現に関する調査（二地域居住部分）</a>
+          </td>
+          <td class="desc-cell">農山漁村定住促進と二地域居住を統合的に論じた調査。地方でのライフスタイル多様化を整理。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight">
+      <strong>この期間の意義：</strong>H19〜H25の基礎調査が「住まい・なりわい・コミュニティ」という三課題の枠組みを確立し、その後の実証・法制化の設計図となった。特にH22の制度設計調査は現行の支援法人制度・協議会制度の原型を示していた。
+    </div>
+  </section>
+
+  <!-- フェーズ② モニター調査 -->
+  <section id="monitor">
+    <h2><span class="icon">🗺️</span>モニター調査・先進事例構築（H28〜H29）</h2>
+    <div class="policy-tag">地方公共団体との連携強化 ／ 先進モデル形成フェーズ</div>
+    <p>平成28・29年度は、全国の地方公共団体を対象に「推進モニター調査対象団体」を公募・選定し、二地域居住の推進に取り組む自治体への伴走支援を開始した。この取組が後の実証調査・先導的プロジェクトの原型となる<sup class="cite-ref">※1</sup>。</p>
+
+    <table class="survey-table">
+      <thead>
+        <tr>
+          <th>年度</th>
+          <th>調査・事業名称</th>
+          <th>主なテーマ・特徴</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="yr">H28<br>（2016）</td>
+          <td class="title-cell">
+            <span class="type-badge type-jisso">実証</span>
+            <a href="https://www.mlit.go.jp/common/001196016.pdf" target="_blank" rel="noopener">二地域居住等推進に向けた先進事例構築推進調査</a>
+          </td>
+          <td class="desc-cell">全国の先進自治体・民間事業者の取組を調査し、モデル事例を構築・整理。</td>
+        </tr>
+        <tr>
+          <td class="yr">H28<br>（2016）</td>
+          <td class="title-cell">
+            <span class="type-badge type-other">公募</span>
+            二地域居住等推進モニター調査対象団体選定
+          </td>
+          <td class="desc-cell">推進モニター調査の対象プロジェクトを全国から公募・選定。自治体との協働体制を整備。</td>
+        </tr>
+        <tr>
+          <td class="yr">H29<br>（2017）</td>
+          <td class="title-cell">
+            <span class="type-badge type-other">事例集</span>
+            <a href="https://www.mlit.go.jp/common/001229920.pdf" target="_blank" rel="noopener">二地域居住推進の取組 事例集</a>
+          </td>
+          <td class="desc-cell">モニター調査の成果をまとめた全国事例集。横展開のための情報共有ツール。</td>
+        </tr>
+        <tr>
+          <td class="yr">H29<br>（2017）</td>
+          <td class="title-cell">
+            <span class="type-badge type-other">公募</span>
+            二地域居住等推進モニター調査（H29年度）対象団体選定
+          </td>
+          <td class="desc-cell">H28に続く2年目のモニター対象団体を選定・公表。</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- フェーズ③ 推進・実証調査 -->
+  <section id="suishin">
+    <h2><span class="icon">🔬</span>推進・実証調査（R2〜R6）</h2>
+    <div class="policy-tag">新しい生活様式対応 ／ 法制化への橋渡し</div>
+    <p>令和2年度の「全国二地域居住等促進協議会」設立を機に、実証調査が本格化した。コロナ禍がリモートワーク定着を後押しし、「新しい生活様式に沿った二地域居住の推進調査」として官民連携の実証プロジェクトが展開された。並行して地方公共団体向けガイドラインが毎年度改訂・整備された<sup class="cite-ref">※1</sup>。</p>
+
+    <table class="survey-table">
+      <thead>
+        <tr>
+          <th>年度</th>
+          <th>調査・事業名称</th>
+          <th>主な内容・対象地域</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="yr">R3<br>（2021）</td>
+          <td class="title-cell">
+            <span class="type-badge type-guide">ガイドライン</span>
+            <a href="https://www.mlit.go.jp/kokudoseisaku/chisei/content/001475115.pdf" target="_blank" rel="noopener">地方公共団体向け二地域居住等施策推進ガイドライン（初版）</a>
+          </td>
+          <td class="desc-cell">自治体が二地域居住施策を実施するための最初の体系的ガイドライン。個人向けハンドブックも同時公表。</td>
+        </tr>
+        <tr>
+          <td class="yr">R3<br>（2021）</td>
+          <td class="title-cell">
+            <span class="type-badge type-jisso">実証</span>
+            新しい生活様式に沿った二地域居住の推進調査（初年度）
+          </td>
+          <td class="desc-cell">コロナ禍でのリモートワーク定着を踏まえた二地域居住のニーズ・障壁を整理。</td>
+        </tr>
+        <tr>
+          <td class="yr">R4<br>（2022）</td>
+          <td class="title-cell">
+            <span class="type-badge type-guide">ガイドライン</span>
+            <a href="https://www.mlit.go.jp/kokudoseisaku/chisei/content/001491148.pdf" target="_blank" rel="noopener">地方公共団体向けガイドライン 第2版</a>
+          </td>
+          <td class="desc-cell">定額制居住サービス（サブスクリプション住居）が簡易宿所として取り扱われる場合の扱いを追記。</td>
+        </tr>
+        <tr>
+          <td class="yr">R4<br>（2022）</td>
+          <td class="title-cell">
+            <span class="type-badge type-guide">ガイドライン</span>
+            <a href="https://www.mlit.go.jp/kokudoseisaku/chisei/content/001598010.pdf" target="_blank" rel="noopener">地方公共団体向けガイドライン 第3版</a>
+          </td>
+          <td class="desc-cell">二地域居住等を取り巻く近年動向とSTEP4（具体的な取組支援展開）を更新。</td>
+        </tr>
+        <tr>
+          <td class="yr">R5<br>（2023）</td>
+          <td class="title-cell">
+            <span class="type-badge type-jisso">実証</span>
+            新しい生活様式に沿った二地域居住の推進実証調査（R5年度 3件）
+          </td>
+          <td class="desc-cell">
+            ①栃木県那須町：二地域居住デジタル会員証による地域担い手促進<br>
+            ②山梨県早川町：まんのうがんクエスト・豊かな暮らしの探求<br>
+            ③福岡県北九州市：二地域居住市場開発プロジェクト
+          </td>
+        </tr>
+        <tr>
+          <td class="yr">R5<br>（2023）</td>
+          <td class="title-cell">
+            <span class="type-badge type-sympo">シンポジウム</span>
+            二地域居住等促進シンポジウム（R5.11.28）
+          </td>
+          <td class="desc-cell">オンライン形式で開催（14:00〜16:50）。学識者講演・先進事例紹介・パネルディスカッション。普及促進と機運向上を目的。</td>
+        </tr>
+        <tr>
+          <td class="yr">R6<br>（2024）</td>
+          <td class="title-cell">
+            <span class="type-badge type-guide">ガイドライン</span>
+            <a href="https://www.mlit.go.jp/kokudoseisaku/chisei/content/001752009.pdf" target="_blank" rel="noopener">地方公共団体向け施策推進ブック 第4版</a>
+          </td>
+          <td class="desc-cell">名称を「ガイドライン」から「施策推進ブック」に変更。改正広活法施行を踏まえ全面更新。広活法運用ガイドライン・支援法人指定手引きも同時公表。</td>
+        </tr>
+        <tr>
+          <td class="yr">R6<br>（2024）</td>
+          <td class="title-cell">
+            <span class="type-badge type-jisso">実証</span>
+            移住等の促進に向けた実証調査（R5補正・R6当初 計9件）
+          </td>
+          <td class="desc-cell">
+            R5補正（6件）：北見市・陸前高田市・佐渡市・塩尻市・三島市×長泉町・奄美市<br>
+            R6当初（3件）：厚沢部町・三重松阪・和歌山すさみ町
+          </td>
+        </tr>
+        <tr>
+          <td class="yr">R6<br>（2024）</td>
+          <td class="title-cell">
+            <span class="type-badge type-jisso">実証</span>
+            新しい生活様式に沿った二地域居住の推進実証調査（R6年度 3件）
+          </td>
+          <td class="desc-cell">
+            ①厚沢部町二地域居住コンソーシアム<br>
+            ②三重・松阪・香肌二地域居住推進プロジェクト（三重県）<br>
+            ③海と生きるすさみ町 親子二地域居住推進コンソーシアム（和歌山）
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- フェーズ④ 先導的プロジェクト実装 -->
+  <section id="jisso">
+    <h2><span class="icon">🚀</span>先導的プロジェクト実装事業（R6〜R8）</h2>
+    <div class="policy-tag">改正広活法施行後 ／ 官民連携コンソーシアムによる課題解決</div>
+    <p>令和6年の法制化後、「二地域居住先導的プロジェクト実装事業」が開始された。これは交通事業者・不動産会社・NPO・自治体等による官民連携コンソーシアムが、移動費負担軽減・居住者登録・担い手確保・空き家活用など中長期的な課題解決に取り組む実証モデル事業を支援するものである<sup class="cite-ref">※3</sup>。</p>
+    <p>令和7年度は1〜3次公募で計44件が採択（交付額合計約3.1億円）。北海道から鹿児島まで全国的に展開されており、二地域居住の普及における構造的障壁への多様なアプローチが試されている。令和8年度補正予算でも1次公募が開始されている。</p>
+
+    <div class="highlight">
+      <strong>令和7年度 採択テーマ分類（計44件）：</strong>移動費・交通負担の軽減（JAL・ANA・JR連携等）／デジタル住民票・居住者登録制度の実証／担い手・人材確保マッチング／子育て・デュアルスクール環境整備／空き家活用・農村資源の二地域居住向け整備／広域・複数地域連携モデル
+    </div>
+
+    <p>以下は1次公募採択26件のうち代表的な取組である。</p>
+
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-yr">R6補正・1次公募</div>
+        <div class="proj-place">北海道北見市</div>
+        <div class="proj-title">テレワークを軸とした二地域居住生活・就業環境整備</div>
+        <div class="proj-org">（株）ワイズスタッフ 等</div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-yr">R6補正・1次公募</div>
+        <div class="proj-place">宮城県気仙沼市</div>
+        <div class="proj-title">地域コミュニティとの接続によるなりわい等のマッチング</div>
+        <div class="proj-org">JOINS（株） 等</div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-yr">R6補正・1次公募</div>
+        <div class="proj-place">福島県磐梯町</div>
+        <div class="proj-title">階層化された第二住民登録の整備と地域交通等への活用</div>
+        <div class="proj-org">（一社）ばんだい振興公社、（株）雨風太陽 等</div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-yr">R6補正・1次公募</div>
+        <div class="proj-place">新潟県佐渡市</div>
+        <div class="proj-title">人材マッチング・空家活用と連携した離島航路負担軽減</div>
+        <div class="proj-org">佐渡汽船（株）、（一社）佐渡共生推進機構 等</div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-yr">R6補正・1次公募</div>
+        <div class="proj-place">和歌山県・三豊市ほか</div>
+        <div class="proj-title">マイレージ活用による航空移動費負担軽減（広域・複数地域連携）</div>
+        <div class="proj-org">日本航空（株） 等</div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-yr">R6補正・1次公募</div>
+        <div class="proj-place">鳥取県北栄町</div>
+        <div class="proj-title">観光コンテンツから地域ニーズへの誘導</div>
+        <div class="proj-org">北栄町商工会 等</div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-yr">R6補正・1次公募</div>
+        <div class="proj-place">高知県・鳥取県ほか</div>
+        <div class="proj-title">自治体の二地域居住者認定と連携した低廉な航空運賃設定</div>
+        <div class="proj-org">ANA HD 等</div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-yr">R7年度・2次公募</div>
+        <div class="proj-place">長野県小布施町</div>
+        <div class="proj-title">若者就労支援と地域事業者の職業マッチング体制整備・情報発信</div>
+        <div class="proj-org">（株）ローカルファースト研究所 等</div>
+      </div>
+    </div>
+
+    <table class="survey-table" style="margin-top:24px">
+      <thead>
+        <tr>
+          <th>公募</th>
+          <th>採択件数</th>
+          <th>交付額概算</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="yr">R6補正<br>1次</td>
+          <td class="title-cell">26件</td>
+          <td class="desc-cell">約2億円</td>
+        </tr>
+        <tr>
+          <td class="yr">R7年度<br>2次</td>
+          <td class="title-cell">14件</td>
+          <td class="desc-cell">約1億円</td>
+        </tr>
+        <tr>
+          <td class="yr">R7年度<br>3次</td>
+          <td class="title-cell">4件</td>
+          <td class="desc-cell">約0.1億円</td>
+        </tr>
+        <tr>
+          <td class="yr">R7補正<br>1次（募集中）</td>
+          <td class="title-cell">—</td>
+          <td class="desc-cell">R7補正予算：計600百万円</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>また令和7年度には「二地域居住者の経済活動における試験調査」として、金融機関のビッグデータを活用して二地域居住者が地域に創出する社会的・経済的価値を定量的に測定する試みも実施された。この調査報告書は令和7年度中に公表されている<sup class="cite-ref">※3</sup>。</p>
+  </section>
+
+  <!-- お試し居住調査 -->
+  <section id="otameshi">
+    <h2><span class="icon">🏠</span>「お試し居住・体験暮らし」取組状況調査</h2>
+    <div class="policy-tag">移住・二地域居住の入口づくり ／ 需要喚起調査</div>
+    <p>移住や二地域居住に対する潜在的な需要を喚起し、本格的な移住等を推進することを目的に、全国の自治体が実施する「お試し居住・体験暮らし」関連取組の状況を国交省が調査している。情報提供・周知イベント・宿泊体験プログラム・体験用宿泊施設の提供等が調査対象である<sup class="cite-ref">※1</sup>。</p>
+
+    <table class="survey-table">
+      <thead>
+        <tr>
+          <th>年度</th>
+          <th>調査対象</th>
+          <th>特徴</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="yr">R4<br>（2022）<br>10/1現在</td>
+          <td class="title-cell">
+            <a href="https://www.mlit.go.jp/kokudoseisaku/chisei/content/001618748.pdf" target="_blank" rel="noopener">都道府県調査結果</a>・
+            <a href="https://www.mlit.go.jp/kokudoseisaku/chisei/content/001618749.pdf" target="_blank" rel="noopener">市区町村調査結果</a>
+          </td>
+          <td class="desc-cell">令和4年10月1日現在の全国47都道府県・市区町村の取組状況を調査・公表。体験居住施設・情報提供・イベント開催状況等を網羅。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight">
+      <strong>位置づけ：</strong>「お試し居住」は本格移住・二地域居住の入口となる重要なステップであり、二地域居住促進のステップ1（きっかけづくり）に相当する。特別交付税措置においても「二地域居住体験に要する経費」が財政措置の対象とされている。
+    </div>
+  </section>
+
+  <!-- 総括 -->
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>国交省の二地域居住に関する調査・事業は、平成19年度の「市場創出の可能性調査」を出発点とし、約20年間で制度設計・実証・法制化・官民連携プラットフォーム構築という一連の政策サイクルを完成させた。</p>
+    <div class="point">
+      <div class="pt-title">H19〜H25：基礎調査で課題の骨格を確立</div>
+      <p>毎年テーマを変えながら7本の調査報告書を蓄積。「住まい・なりわい・コミュニティ」という三課題の枠組みと制度設計の方向性が確立された。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">H28〜H29：自治体モニター調査で現場知見を獲得</div>
+      <p>全国の地方公共団体を対象としたモニター調査・先進事例集の公表により、政策の実効性を検証する現場データが蓄積された。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">R3〜R6：コロナ禍を機に推進・実証調査を加速</div>
+      <p>協議会設立・ガイドライン初版〜第4版への継続改訂と並行して、那須町・早川町・北九州市等での実証調査が全国展開のモデルを形成。9件の移住等促進実証調査も実施。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">R6〜現在：法制化後の実装・データ収集フェーズへ</div>
+      <p>先導的プロジェクト実装事業44件（R7年度）・経済活動の定量調査・お試し居住取組調査など、効果測定・エビデンス収集が本格化。調査の役割が「政策設計」から「政策評価・改善」へとシフトしている。</p>
+    </div>
+    <p>今後の調査課題は、移動費負担軽減施策の効果測定・ふるさと住民登録制度との連動・地域生活圏形成との統合評価の三点に集約される。約20年の調査資産を基盤に、日本の地方創生政策における二地域居住の役割はさらに拡大していくと見られる。</p>
+  </div>
+
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-num">1</span>
+        <span>国土交通省「地方振興：二地域居住の推進」（掲載調査・事業一覧）<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://www.mlit.go.jp/kokudoseisaku/chisei/kokudoseisaku_chisei_tk_000073.html" target="_blank" rel="noopener">https://www.mlit.go.jp/kokudoseisaku/chisei/kokudoseisaku_chisei_tk_000073.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">2</span>
+        <span>国土交通省国土政策局「二地域居住等の促進について」令和8年2月<span class="ref-tag">政策文書</span><br>
+        <a href="https://www.mlit.go.jp/sogoseisaku/kanminrenkei/content/001979821.pdf" target="_blank" rel="noopener">https://www.mlit.go.jp/sogoseisaku/kanminrenkei/content/001979821.pdf</a></span>
+      </li>
+      <li>
+        <span class="ref-num">3</span>
+        <span>国土交通省「令和7年度 二地域居住先導的プロジェクト実装事業」採択一覧<span class="ref-tag">事業資料</span><br>
+        <a href="https://www.mlit.go.jp/kokudoseisaku/kokudoseisaku_tk9_000058.html" target="_blank" rel="noopener">https://www.mlit.go.jp/kokudoseisaku/kokudoseisaku_tk9_000058.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">4</span>
+        <span>国土交通省「地方公共団体向け二地域居住等施策推進ブック（第4版）」令和6年7月<span class="ref-tag">ガイドライン</span><br>
+        <a href="https://www.mlit.go.jp/kokudoseisaku/chisei/content/001752009.pdf" target="_blank" rel="noopener">https://www.mlit.go.jp/kokudoseisaku/chisei/content/001752009.pdf</a></span>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>素材：国土交通省「地方振興：二地域居住の推進」ページおよび関連資料 ／ 作成：2026年6月18日</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>
