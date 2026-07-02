@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>経済財政運営と改革の基本方針2026（骨太方針）ポイント整理</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; overflow-x: auto; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview, .references { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">2026骨太案</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>経済財政運営と改革の基本方針2026（骨太方針）ポイント整理</h1>
+  <p class="sub">内閣府「経済財政運営と改革の基本方針2026（原案）」（令和8年6月30日・資料1・全38頁）を横断的に整理</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#s1">総論</a></li>
+    <li><a href="#s2">成長戦略</a></li>
+    <li><a href="#s3">地域経済・賃上げ</a></li>
+    <li><a href="#s4">人材力強化</a></li>
+    <li><a href="#s5">外交・安全保障</a></li>
+    <li><a href="#s6">安全・安心</a></li>
+    <li><a href="#s7">中長期財政計画</a></li>
+    <li><a href="#s8">社会保障・少子化</a></li>
+    <li><a href="#s9">教育・地方・予算編成</a></li>
+    <li><a href="#conclusion">総括</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>高市内閣が令和8年6月30日に経済財政諮問会議へ提示した「経済財政運営と改革の基本方針2026」原案（資料1・全38頁）は、「強い経済」の実現を中核に据え、従来の延長線上ではない経済財政運営への転換を掲げる<sup class="cite-ref">※1</sup>。構成は、第1章「マクロ経済運営の基本的考え方」、第2章「日本の成長力強化と安全・安心の確保」、第3章「責任ある積極財政に基づく『中長期経済財政計画』」、第4章「当面の経済財政運営と令和9年度予算編成に向けた考え方」の4章立てである。</p>
+    <p>方針全体を貫く鍵概念は「責任ある積極財政」であり、政府が一歩前に出て官民連携で「危機管理投資」と「成長投資」を進めるという発想である。令和9年度（2027年度）を「責任ある積極財政元年」と位置付け、2027～2040年度を計画期間とする「中長期経済財政計画」を第3章として新設した点が、2026年版の最大の特徴である。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">4<span>章</span></div><div class="lbl">本文構成</div></div>
+      <div class="stat"><div class="val">17<span>分野</span></div><div class="lbl">成長戦略の戦略分野</div></div>
+      <div class="stat"><div class="val">2027<span>-2040</span></div><div class="lbl">中長期経済財政計画の期間</div></div>
+      <div class="stat"><div class="val">370<span>兆円超</span></div><div class="lbl">2040年度までの想定官民投資</div></div>
+    </div>
+  </div>
+
+  <section id="s1">
+    <h2><span class="icon">①</span>総論 ― 「強い経済」への転換と責任ある積極財政</h2>
+    <div class="policy-tag">出典：原案 p.4-6</div>
+    <p>日本は人口減少、安全保障環境の変化、AIによる技術革新など歴史的な構造変化のただ中にあるとし、長年の「未来への投資不足」が潜在成長率低迷の根本原因だと分析する。政府は財政単年度主義の弊害是正と『「強く豊かな日本」投資枠』の創設を通じて民間投資を引き出す方針を示す<sup class="cite-ref">※1</sup>。</p>
+    <p>財政運営目標は債務残高対GDP比の安定的低下を中核に位置付け、2027～2040年度の「中長期経済財政計画」（第3章）で具体化する。あわせて、現役世代の保険料率上昇を止め引き下げる社会保障改革、地域のレジリエンスと「稼ぐ力」を高める投資、「AIを前提」とした社会・産業・教育の再構築を同時に進める。人口減少への対応では、2026年末を目途に「人口総合戦略（仮称）」を策定する。</p>
+  </section>
+
+  <section id="s2">
+    <h2><span class="icon">②</span>「日本成長戦略」の推進 ― 17分野・62技術への官民投資</h2>
+    <div class="policy-tag">出典：原案 p.4-10</div>
+    <p>成長戦略は、AI・半導体、量子、防衛産業、航空宇宙、海洋、造船、マテリアル、創薬・先端医療、資源エネルギー・GX、防災・国土強靱化、フードテック、コンテンツなど17の戦略分野を中心に据える<sup class="cite-ref">※1</sup>。この17分野に含まれる62の主要な製品・技術等について官民投資ロードマップを策定し、着実に実行する。危機管理投資と成長投資を貫く加速装置として、フィジカルAIを軸とする「AIトランスフォーメーション（AX）」を全産業で加速するとした。</p>
+    <p>分野横断的な課題としては、新技術立国・競争力強化、スタートアップ、金融、人材育成、労働市場改革、家事等の負担軽減、賃上げ環境整備、サイバーセキュリティの8つを設定し、対応する施策パッケージを実行する。政府調達におけるスタートアップ比率3%目標の早期達成や、SBIR制度の抜本強化なども盛り込まれた。エネルギー分野では、原子炉再稼働の加速や次世代革新炉の開発、アジア・ゼロエミッション共同体（AZEC）を通じた脱炭素協力を進める。</p>
+    <div class="highlight"><strong>ポイント：</strong>投資枠にシーリング（要求上限）を設けず、複数年度計画に基づく投資を可能にする仕組みが、成長戦略実行の予算的な裏付けとなる。</div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="icon">③</span>強い地域経済の構築と賃上げの好循環</h2>
+    <div class="policy-tag">出典：原案 p.13-16</div>
+    <p>「地域未来戦略」を強力に推進し、『「強く豊かな日本」投資枠』も活用しながら、都道府県を超えた地域ブロック単位の「戦略産業クラスター計画」と、地域発の「地域産業クラスター計画」「地場産業成長プラン」を「地域未来交付金」の拡充によって支える<sup class="cite-ref">※1</sup>。投資の進捗は「国内投資マップ」で定期的に可視化する。</p>
+    <p>賃上げでは、2029年度までに実質賃金で年1%程度の上昇を賃上げのノルムとして定着させ、最低賃金は全国平均1,500円という骨太方針2025の目標達成に向け、遅くとも2030年代前半のできる限り早期の達成を目指す。官公需では「価格転嫁・取引適正化加速化プラン」により、2027年度末までに実勢価格を踏まえた予定価格作成等を100%実施する。地域振興では沖縄振興（OIST、「GW2050 PROJECTS」）や北海道開発、2030年訪日客数6,000万人・消費額15兆円を掲げる観光立国を推進する。</p>
+  </section>
+
+  <section id="s4">
+    <h2><span class="icon">④</span>人材力の強化・人材総活躍</h2>
+    <div class="policy-tag">出典：原案 p.15-16</div>
+    <p>17の戦略分野やエッセンシャル分野の人材育成のため、教育政策・産業政策・雇用政策を連携させ、リ・スキリング機会を拡充する<sup class="cite-ref">※1</sup>。労働時間法制については、裁量労働制や変形労働時間制の在り方を含め、2026年夏以降の労働政策審議会で議論を行う。</p>
+    <p>人材総活躍では、男女間賃金差異の是正や女性の活躍を阻む固定的な性別役割分担意識の解消、就職氷河期世代等の「新たな支援プログラム」の実施、孤独・孤立対策、旧優生保護法補償金等の支給を着実に進めるとした。</p>
+  </section>
+
+  <section id="s5">
+    <h2><span class="icon">⑤</span>強い外交・安全保障の確立と経済安全保障の強化</h2>
+    <div class="policy-tag">出典：原案 p.16-18</div>
+    <p>外交面では日米同盟を基軸に、G7、ASEAN、豪、印、韓、EU、NATOなど同志国・機関やグローバル・サウスとの連携を強化し、「自由で開かれたインド太平洋（FOIP）」を推進する<sup class="cite-ref">※1</sup>。安全保障面では、5年以内に装備・体制の両面で防衛力を変革し、データ・AI活用や無人アセット導入による「新しい戦い方」への適応を掲げる。国家情報会議・国家情報局の設置により対外情報収集機能を強化する方針も明記された。</p>
+    <p>経済安全保障は危機管理投資・成長投資と表裏一体と位置付けられ、国家安全保障局を司令塔にサプライチェーン・製造基盤の強靱化、対日外国投資委員会を通じた投資審査の高度化などを進める。</p>
+  </section>
+
+  <section id="s6">
+    <h2><span class="icon">⑥</span>国民の安全・安心の確保 ― 防災・国土強靱化・震災復興・治安</h2>
+    <div class="policy-tag">出典：原案 p.18-21</div>
+    <p>防災庁を設置し、事前防災から復旧・復興までの司令塔機能を強化するとともに、地方機関の防災局で地域の防災力向上を支援する<sup class="cite-ref">※1</sup>。首都直下地震・南海トラフ地震などの対策に加え、国家社会機能の継続性確保の観点から副首都の整備を進める方針も示された。</p>
+    <p>東日本大震災からは「第3期復興・創生期間」（令和8～12年度）として今後5年間の課題解決に取り組み、能登半島地震からは創造的復興を進める。治安面では匿名・流動型犯罪グループ（トクリュウ）撲滅に向けた対策や、外国人政策として電子渡航認証制度（JESTA）の2028年度中導入、「不法滞在者ゼロプラン」の推進を掲げる。</p>
+  </section>
+
+  <section id="s7">
+    <h2><span class="icon">⑦</span>責任ある積極財政に基づく「中長期経済財政計画」（2027～2040年度）</h2>
+    <div class="policy-tag">出典：原案 p.22-25</div>
+    <p>内閣府の試算では、官民投資ロードマップに基づき、62の主要製品・技術等で2040年度までの累計370兆円を超える官民投資が想定され、成長戦略の効果が十分発現すれば2040年度に国内民間設備投資は年間230兆円、GDPは1,100兆円に迫るとされる<sup class="cite-ref">※2</sup>。これにより実質1%超・名目3%超の経済成長を定着させ、債務残高対GDP比の安定的低下と両立させる姿を目指す。</p>
+    <p>予算編成では、『「強く豊かな日本」投資枠』についてシーリング（要求上限）を設けず、複数年度の計画に基づく投資を可能にし、経済安全保障上重要な分野は「つなぎ国債」により特別会計で別枠管理する<sup class="cite-ref">※1</sup>。あわせて補正予算依存から脱却し、恒常的な施策は当初予算で措置する方針への転換を2026年内に予算編成の基本方針へ反映する。基金についても「予算措置は原則3年以内」とする現行ルールの不適用を含め、令和9年度予算編成に向けて抜本的な見直しを具体化する。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">370<span>兆円超</span></div><div class="lbl">2040年度までの官民投資累計（試算）</div></div>
+      <div class="stat"><div class="val">1,100<span>兆円</span></div><div class="lbl">2040年度GDP（試算・目標水準）</div></div>
+      <div class="stat"><div class="val">230<span>兆円</span></div><div class="lbl">2040年度・年間国内民間設備投資額（試算）</div></div>
+    </div>
+  </section>
+
+  <section id="s8">
+    <h2><span class="icon">⑧</span>全世代型社会保障の構築と少子化対策・こども政策</h2>
+    <div class="policy-tag">出典：原案 p.28-32</div>
+    <p>現役世代の保険料率上昇を止め引き下げる方針の下、2026年度中に社会保障改革の具体化と工程を明確化する<sup class="cite-ref">※1</sup>。医療・介護分野ではDX/AXによる生産性向上、2027年度以降の地域医療構想を踏まえた医療機関の再編・集約化、2028年度以降の医学部定員削減、介護保険の2割負担判断基準の見直し（2026年度中に結論）などが盛り込まれた。創薬・先端医療分野では国際共同治験の倍増を目指し、2027年度薬価改定を実施する。</p>
+    <p>少子化対策・こども政策は「こども未来戦略」等に基づき、こども家庭センターでの相談支援一元化や「こどもとともに成長する企業構想」の推進、こどもの自殺対策の強化などを一体的に進める。</p>
+  </section>
+
+  <section id="s9">
+    <h2><span class="icon">⑨</span>公教育の再生・戦略的社会資本整備・地方行財政、そして令和9年度予算編成</h2>
+    <div class="policy-tag">出典：原案 p.32-38</div>
+    <p>教育分野では学校向けAI指針の改定、高等教育について2030年までを第1期とする大学の機能強化と規模適正化、教職調整額の2030年度までの10%への引き上げ、時間外在校等時間の2029年度までの月30時間程度への縮減を掲げる<sup class="cite-ref">※1</sup>。科研費の全面基金化や「AI for Science」の推進など研究基盤強化にも触れる。</p>
+    <p>地方行財政では、地方の一般財源総額を確保しつつ、偏在性の小さい地方税体系の構築に向けた具体的な取組を進める。第4章では、2025年度の名目GDPが4%超増加、実質GDPが0.8%増加したとする現状認識を示した上で、令和9年度予算編成は一律抑制型からの転換とシーリングのない投資枠の運用、基金ルールの抜本見直しを軸に進めるとした。</p>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>骨太方針2026は、単年度主義からの脱却と2027～2040年度の「中長期経済財政計画」の新設という制度設計の転換を軸に、17分野・62技術への官民投資、地域未来戦略による地域経済の強化、賃上げの定着、防衛力の5年以内の変革、全世代型社会保障改革を、すべて「責任ある積極財政」という一つの財政運営思想の下に束ねている点に特徴がある。</p>
+    <div class="point">
+      <div class="pt-title">試算に基づく将来像であること</div>
+      <p>370兆円規模の官民投資や名目GDP1,100兆円といった2040年度の見通しは内閣府による試算であり、達成の確度は今後の経済情勢や政策効果の発現に左右される<sup class="cite-ref">※2</sup>。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">賃上げ目標の具体性への指摘</div>
+      <p>最低賃金1,500円の達成時期が「2030年代前半」という幅を持った表現にとどまっている点や、実質賃金1%上昇という目標に対して具体策が乏しいとの指摘も報道でなされている<sup class="cite-ref">※4</sup>。</p>
+    </div>
+    <p>シーリングを設けない投資枠の運用が財政規律とどう両立するかは、今後の予算編成過程での検証が焦点となる。</p>
+  </div>
+
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-num">1</span>
+        <span>内閣府「経済財政運営と改革の基本方針2026（原案）」（令和8年6月30日、資料1）<span class="ref-tag">政策文書</span><br>
+        <a href="https://www5.cao.go.jp/keizai-shimon/kaigi/minutes/2026/0630_shiryo01.pdf" target="_blank" rel="noopener">https://www5.cao.go.jp/keizai-shimon/kaigi/minutes/2026/0630_shiryo01.pdf</a></span>
+      </li>
+      <li>
+        <span class="ref-num">2</span>
+        <span>内閣府「日本成長戦略の下での中長期的な経済・財政の姿に関する試算」（令和8年6月、資料5）<span class="ref-tag">調査報告</span><br>
+        <a href="https://www5.cao.go.jp/keizai-shimon/kaigi/minutes/2026/0624_shiryo05.pdf" target="_blank" rel="noopener">https://www5.cao.go.jp/keizai-shimon/kaigi/minutes/2026/0624_shiryo05.pdf</a></span>
+      </li>
+      <li>
+        <span class="ref-num">3</span>
+        <span>内閣府「経済財政運営と改革の基本方針」歴代方針一覧<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://www5.cao.go.jp/keizai-shimon/kaigi/cabinet/honebuto/honebuto-index.html" target="_blank" rel="noopener">https://www5.cao.go.jp/keizai-shimon/kaigi/cabinet/honebuto/honebuto-index.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">4</span>
+        <span>日本経済新聞「骨太方針決定、賃上げに力点『実質1%目標』具体策乏しく」<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://www.nikkei.com/article/DGXZQOUA12B6N0S5A610C2000000/" target="_blank" rel="noopener">https://www.nikkei.com/article/DGXZQOUA12B6N0S5A610C2000000/</a></span>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>素材：骨太原案_経済財政運営と改革の基本方針2026_0630_shiryo01.pdf（内閣府、令和8年6月30日、資料1・全38頁）</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>
