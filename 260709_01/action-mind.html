@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>「行動が意識を変える」理論 ― 先行研究まとめ</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── cite-ref ── */
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+
+/* ── references ── */
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+@media (max-width: 640px) { .references { padding: 28px 20px; } }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .layer-grid { grid-template-columns: 1fr; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">行動が意識を変える</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>「行動が意識を変える」理論<br>先行研究まとめ</h1>
+  <p class="sub">ジェームズ=ランゲ説から認知的不協和理論・自己知覚理論、神経科学、行動活性化療法、そして再現性の危機まで（ウェブ調査ベース）</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#origin">起源</a></li>
+    <li><a href="#dissonance">認知的不協和理論</a></li>
+    <li><a href="#self-perception">自己知覚理論</a></li>
+    <li><a href="#persuasion">行動が説得力を持つ理由</a></li>
+    <li><a href="#neuroscience">神経科学からの裏づけ</a></li>
+    <li><a href="#clinical">臨床応用</a></li>
+    <li><a href="#replication">反証・再現性の壁</a></li>
+    <li><a href="#conclusion">総括</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>「意識が行動を決める」という常識的な理解に対し、心理学・哲学・神経科学の各分野には、逆方向――<strong>行動が先にあり、意識（感情・態度・自己認識）はそれに後から追いつく</strong>――という考え方を裏づける、100年以上にわたる研究の系譜がある。</p>
+    <p>その起点は19世紀末のウィリアム・ジェームズの情動理論にまで遡り、20世紀半ばには社会心理学の二大理論（認知的不協和理論・自己知覚理論）として結実した<sup class="cite-ref">※1</sup><sup class="cite-ref">※9</sup><sup class="cite-ref">※16</sup>。さらに2000年代以降は神経科学が行動と情動の結びつきを脳内メカニズムのレベルで裏づけ、臨床心理学（行動活性化療法）やポピュラー心理学（アイデンティティ・ベースの習慣形成）へと応用が広がっている。</p>
+    <p>一方で、この系譜には再現性の危機（replication crisis）という重大な試練も存在する。表情フィードバック仮説やパワーポージングといった代表的な応用例は、大規模な追試によって効果が確認できないという結果が相次いだ<sup class="cite-ref">※4</sup><sup class="cite-ref">※12</sup><sup class="cite-ref">※13</sup>。「行動が意識を変える」という命題は、条件次第で頑健にも脆弱にもなる――この明暗の両方を押さえることが、先行研究を正しく理解する鍵となる。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">1884</div><div class="lbl">ジェームズ=ランゲ説の提唱年</div></div>
+      <div class="stat"><div class="val">1957</div><div class="lbl">フェスティンガー認知的不協和理論</div></div>
+      <div class="stat"><div class="val">1972</div><div class="lbl">ベム自己知覚理論</div></div>
+      <div class="stat"><div class="val">17<span>研究室</span></div><div class="lbl">表情フィードバック追試の参加研究室数</div></div>
+    </div>
+    <p>以下では、①身体・行動が意識に先行するという発想の起源、②社会心理学における2大理論、③行動が説得力を持つメカニズム、④神経科学的裏づけ、⑤臨床応用、⑥再現性の壁という6つの切り口で先行研究を横断的に整理する。</p>
+  </div>
+
+  <section id="origin">
+    <h2><span class="icon">🏛️</span>起源：身体が先か、心が先か</h2>
+    <div class="policy-tag">ジェームズ=ランゲ説／アリストテレス倫理学／身体化認知</div>
+    <p>「行動が意識を変える」という発想の最も古い学術的な源流は、心理学の父とされるウィリアム・ジェームズと、デンマークの生理学者カール・ランゲが独立に唱えた<strong>ジェームズ=ランゲ説</strong>（1884年）である。この理論は、感情についての常識的な因果順序――「クマを見て怖いと感じるから震える」――を逆転させ、「クマを見て体が震え、その身体反応を脳が解釈した結果として恐怖を感じる」と説明した。ジェームズ自身の言葉を借りれば「泣くから悲しい、殴るから怒っている、震えるから怖い」のである<sup class="cite-ref">※9</sup>。</p>
+    <p>この着想はさらに古く、古代ギリシャのアリストテレスの倫理学にも通じる。アリストテレスは徳（アレテー）について、「人は正しい行為を行うことによって正しくなり、節制ある行為によって節制的になり、勇敢な行為によって勇敢になる」と述べ、性格や人格は生得的なものではなく、行動の反復（ヘクシス＝習慣化）によって形成されると論じた<sup class="cite-ref">※21</sup>。「we are what we repeatedly do（我々は繰り返し行うことそのものである）」という言葉は歴史家ウィル・デュラントが1926年にアリストテレスの思想を要約したフレーズだが、行動の反復が内面の性質を作るという発想そのものはアリストテレス倫理学の核心に位置づけられる<sup class="cite-ref">※21</sup>。</p>
+    <p>20世紀後半になると、この直観は<strong>身体化認知（embodied cognition）</strong>という認知科学の一分野として再定式化された。身体化認知理論は、身体の運動系・知覚系と環境との相互作用そのものが認知プロセスを「共同で生成」しており、身体は単なる思考の道具ではなく認知の構成要素であると主張する。これはデカルト以来の心身二元論への反動として登場し、心を「身体を持たないコンピュータ」とみなす伝統的認知科学からの転換点となった<sup class="cite-ref">※14</sup>。</p>
+  </section>
+
+  <section id="dissonance">
+    <h2><span class="icon">🔄</span>社会心理学の転換点：認知的不協和理論</h2>
+    <div class="policy-tag">レオン・フェスティンガー（1957）</div>
+    <p>「行動が意識を変える」という命題を実証的な心理学理論として初めて体系化したのが、レオン・フェスティンガーが1957年に発表した<strong>認知的不協和理論</strong>である。この理論は、人が自分の中に矛盾する認知（信念・態度・行動）を同時に抱えると心理的な不快感（不協和）が生じ、その不快感を解消するために、態度・信念・行動のいずれかを変化させようとすると説明する<sup class="cite-ref">※1</sup><sup class="cite-ref">※2</sup>。</p>
+    <p>フェスティンガーがこの理論に着想を得たきっかけは興味深い。彼は「地球が大洪水で滅びる」と信じるカルト集団への参与観察を行っており、予言が外れたにもかかわらず、家や仕事まで手放していた熱心な信者たちが信仰を捨てるどころかむしろ布教を強化する様子を目撃した。行動（生活を犠牲にしてまでの信仰）を取り消せない以上、認知（予言は外れた）の方を歪めて整合性を保とうとしたのである<sup class="cite-ref">※1</sup>。</p>
+    <p>この理論を実証したのが、フェスティンガーとジェームズ・カールスミスによる1959年の古典的実験である。スタンフォード大学の学生に1時間ほど極めて退屈な作業（ペグを回す、糸巻きを出し入れする）をさせた後、次の被験者に「この作業はとても面白かった」と嘘をつくよう依頼し、報酬として1ドルまたは20ドルを支払った。結果は直観に反するものだった。20ドルという十分な外的正当化を得たグループは「退屈だった」という本音を保持できたのに対し、1ドルしか受け取れなかったグループは、嘘をついた自分の行動を正当化する外的理由が乏しいために不協和が強まり、その不協和を解消するべく「本当は面白かった」と自分の態度そのものを書き換えてしまったのである<sup class="cite-ref">※15</sup>。</p>
+    <div class="highlight"><strong>不十分な正当化（insufficient justification）</strong>：報酬が少ないほど（＝行動を正当化する外的理由が乏しいほど）、行動に合わせて態度が変化しやすいという原理<sup class="cite-ref">※2</sup>。</div>
+  </section>
+
+  <section id="self-perception">
+    <h2><span class="icon">🪞</span>自己知覚理論：行動から態度を「読み取る」</h2>
+    <div class="policy-tag">ダリル・ベム（1972）</div>
+    <p>フェスティンガーの理論が「矛盾の解消」という動機に基づくのに対し、心理学者ダリル・ベムは1972年、まったく異なるメカニズムで同じ現象――行動が態度に先行する現象――を説明する<strong>自己知覚理論（Self-Perception Theory）</strong>を提唱した<sup class="cite-ref">※3</sup>。</p>
+    <p>ベムの主張はこうだ。人は自分の内的な感情や態度が曖昧・弱い場合、あたかも第三者が自分の行動を外側から観察するのと同じように、自分自身の行動とそれが生じた状況を手がかりにして「自分はこう感じているに違いない」と事後的に推論する。つまり、態度を変えるために不快感（不協和）を経由する必要すらなく、単に「自分の行動を観察して結論を導く」という認知的な推論プロセスだけで態度形成が起こりうるというのである<sup class="cite-ref">※3</sup>。</p>
+    <p>ベムはこれを検証するために、ある男性が単調な作業について説明する録音を被験者に聞かせる実験を行った。「この男性は1ドルの報酬で説明した」と伝えられたグループと「20ドルの報酬で説明した」と伝えられたグループを比較したところ、1ドルグループの被験者は、その男性が作業を本当に楽しんでいたはずだと判断した。これはフェスティンガーの実験の被験者自身に起きた心理過程を、第三者の観察者に再現させたものであり、「行動＋状況の手がかり→態度の推論」という自己知覚理論の骨格を裏づけた<sup class="cite-ref">※3</sup>。</p>
+    <p>不協和理論と自己知覚理論は、同一の現象を「不快感の解消」と「認知的推論」という異なるメカニズムで説明しており、どちらが優勢かは状況（既存の態度がどれだけ明確か、行動がどれだけ既存の態度と乖離しているか）によって変わるというのが、その後の研究における大まかな整理である<sup class="cite-ref">※3</sup>。</p>
+  </section>
+
+  <section id="persuasion">
+    <h2><span class="icon">🚪</span>行動が説得力を持つ理由：小さな行動から自己像へ</h2>
+    <div class="policy-tag">フット・イン・ザ・ドア技法／自己シグナリング／アイデンティティ習慣</div>
+    <p>「行動が意識を変える」という原理は、対人説得の技法としても古くから経験的に用いられてきた。その代表例が、心理学者ジョナサン・フリードマンとスコット・フレイザーが1966年に報告した<strong>フット・イン・ザ・ドア技法</strong>である。彼らは米国対がん協会の名目で調査を行い、まず「がんについての簡単な質問に答えてほしい」という小さな依頼に応じた住民に対して、数日後に「募金活動のボランティアを自宅に迎え入れてほしい」という大きな依頼をしたところ、事前に小さな依頼へ応じていた住民の方が、大きな依頼への同意率が有意に高くなることを示した<sup class="cite-ref">※10</sup><sup class="cite-ref">※11</sup>。</p>
+    <p>この効果の背後にあるメカニズムは、自己知覚理論と軌を一にする。小さな要請に応じるという「行動」を一度取ると、人は自分自身を「協力的な人間」として認識し直し、その新しい自己像と整合する行動（＝大きな依頼への同意）を取りやすくなる<sup class="cite-ref">※10</sup>。</p>
+    <p>この考え方をさらに経済学的なモデルへと発展させたのが、ロニット・ボドナーとドラゼン・プレレックによる<strong>自己シグナリング（self-signaling）理論</strong>である。この理論では、人は「決定を下す自分（decider）」と「その決定を解釈する自分（judge）」という二重の自己を持つと仮定する。ある選択をするとき、人はその選択がもたらす実利的な結果だけでなく、「このような選択をする自分は、どのような人間なのか」という診断的な情報からも動機づけられる。行動そのものが、自分自身に向けたメッセージ＝シグナルとして機能し、その後の自己像や意欲を左右するのである<sup class="cite-ref">※17</sup>。</p>
+    <p>この理論的系譜は、近年のポピュラー心理学分野で広く応用されている<strong>アイデンティティ・ベースの習慣形成</strong>（ジェームズ・クリア『Atomic Habits』, 2018）にも直接つながっている。クリアは、習慣を変える上で最も強力なのは「何を達成したいか」でも「何をするか」でもなく、「自分は何者だと信じているか」であると主張し、その理論的な裏づけとしてベムの自己知覚理論を明示的に援用している。「行動を選ぶたびに、それは自分がなりたい人間への一票を投じている」というクリアの表現は、自己知覚理論の一般向け翻訳と言える<sup class="cite-ref">※16</sup>。</p>
+  </section>
+
+  <section id="neuroscience">
+    <h2><span class="icon">🔬</span>神経科学からの裏づけと限界</h2>
+    <div class="policy-tag">行動ベースモデル／ソマティック・マーカー仮説</div>
+    <p>2000年代以降、認知的不協和が単なる仮説的な「不快感」ではなく、実際に測定可能な神経基盤を持つことが示されてきた。心理学者エディ・ハーモン=ジョーンズらが提唱する<strong>行動ベースモデル（Action-Based Model）</strong>は、不協和理論を拡張し、認知の矛盾がなぜ不快感と行動修正の両方を引き起こすのかを説明する<sup class="cite-ref">※7</sup><sup class="cite-ref">※8</sup>。</p>
+    <p>このモデルによれば、人間の多くの知覚・認知は本来、特定の「行動」へと自動的に人を駆り立てる性質を持つ。したがって不協和が強い不快感を生むのは、それぞれが異なる行動を要求するような、行動指向性を持った認知同士が衝突したときに限られる。実際、被験者が自分の態度に基づく意図と矛盾する反応を求められたとき、前帯状皮質（ACC）の活動が高まることが確認されており、不協和の解消が脳内で「接近動機づけ」を伴う神経活動として実装されていることが示唆されている<sup class="cite-ref">※7</sup><sup class="cite-ref">※8</sup>。</p>
+    <p>情動と身体反応の結びつきに関するもう一つの有力な神経科学的知見が、神経科学者アントニオ・ダマシオの<strong>ソマティック・マーカー仮説</strong>である。心拍数の上昇と不安、吐き気と嫌悪感の結びつきのように、身体的な変化（ソマティック・マーカー）が過去の経験と結びつけられて蓄積され、意思決定の場面で瞬時に「この選択肢は良い／悪い」という無意識的なシグナルとして機能すると説明される。腹内側前頭前野や扁桃体がこの処理に関わるとされ、身体反応が意識的な熟慮に先立って意思決定の方向性を決めているという点で、ジェームズ=ランゲ説以来の系譜に連なる知見である<sup class="cite-ref">※19</sup>。</p>
+  </section>
+
+  <section id="clinical">
+    <h2><span class="icon">🏃</span>臨床応用：行動活性化療法とうつ病治療</h2>
+    <div class="policy-tag">行動活性化療法／運動とうつ病</div>
+    <p>「行動が意識を変える」という原理は、臨床心理学において最も実践的な形で応用されている。うつ病の治療法の一つである<strong>行動活性化療法（Behavioral Activation）</strong>は、「意欲が湧いてから行動する」のではなく「行動することで意欲が後からついてくる」という逆転の発想に基づく<sup class="cite-ref">※6</sup>。</p>
+    <p>うつ状態では脳の報酬系・意欲に関わる領域の活動が低下しており、「気分が良くなってから動こう」と待っていると、いつまでも行動を起こせない悪循環に陥りやすい。行動活性化療法は、気分に関わらずまず小さな行動を起こし、「行動する→わずかに気分が上向く→意欲が高まる→さらに行動する」という好循環を意図的に作り出すことを狙う。臨床試験のナラティブレビューによれば、行動活性化療法はうつ病治療において抗うつ薬や標準的な認知行動療法（CBT）と同程度の効果を持つことが繰り返し示されており、複数の診療ガイドラインで第一選択の心理療法の一つとして推奨されている<sup class="cite-ref">※6</sup>。</p>
+    <p>これと関連して近年注目されるのが、運動とうつ病の関係を「相関」ではなく「因果」として検証する研究である。遺伝的なばらつきを自然実験として利用するメンデルランダム化という手法を用いた研究では、客観的に測定された身体活動量が多い人ほど、大うつ病性障害のリスクが有意に低いという結果が得られている。すなわち、行動（運動）が先に立ち、気分の改善という意識面の変化が後から生じるという因果の向きが、統計的手法によっても裏づけられつつある<sup class="cite-ref">※20</sup>。</p>
+  </section>
+
+  <section id="replication">
+    <h2><span class="icon">⚠️</span>反証・再現性の壁：どこまでが頑健な知見か</h2>
+    <div class="policy-tag">表情フィードバック仮説／パワーポージング／過剰正当化効果</div>
+    <p>「行動が意識を変える」という魅力的な命題には、慎重に扱うべき反例も存在する。学術的に誠実にこのテーマを扱うには、この点を避けて通ることはできない。</p>
+    <p>最も象徴的な事例が<strong>表情フィードバック仮説</strong>である。心理学者フリッツ・シュトラック、レナード・マーティン、サビーネ・シュテッパーは1988年、被験者にペンを唇でくわえさせる（不機嫌な表情になる）条件と、歯でくわえさせる（笑顔に近い表情になる）条件を設定し、後者の方が漫画をより面白いと評価することを示した<sup class="cite-ref">※4</sup>。</p>
+    <p>しかし2016年、心理科学の再現性向上を目的とした「登録追試報告」の枠組みで、17の独立した研究室が同一の厳密なプロトコルに従って直接追試を行った結果、いずれの追試でもオリジナルの効果は統計的に有意な形では再現されなかった。さらに2022年には多施設共同研究（Nature Human Behaviour誌）でも同様に効果は確認されなかった<sup class="cite-ref">※4</sup><sup class="cite-ref">※5</sup>。</p>
+    <p>同様の運命をたどったのが、心理学者エイミー・カディが2010年に発表し、2012年のTEDトークで一躍有名になった<strong>パワーポージング</strong>（力強い姿勢を取ることでホルモンバランスや自信が変化するという主張）である。2015年以降、複数の研究者が効果を再現できないと報告し始め、2016年には共著者の一人であるダナ・カーニー自身が「パワーポーズ効果が実在するとは考えていない」と公式に表明した。カーニーは、当初のデータ分析において結果が有意になるまで様々な処理を試す手法が用いられていたことも明らかにしている。パワーポージングは現在、心理学における再現性の危機を象徴する事例としてしばしば引用される<sup class="cite-ref">※12</sup><sup class="cite-ref">※13</sup>。</p>
+    <p>これらの事例が示すのは、「身体・行動の変化が意識を変える」という命題そのものが誤りだということではなく、<strong>効果の大きさや頑健性は現象ごとに大きく異なり、単純な一般化は危険だ</strong>ということである。もう一つの重要な限界が、<strong>過剰正当化効果（overjustification effect）</strong>である。内発的に行っていた行動に対して外的な報酬を与えると、かえって「報酬のためにやっている」という認知が生じ、内発的動機づけそのものが損なわれるというもので、一見すると「行動が態度を作る」という原則の裏返しのように見える。ただし近年のレビューでは、この効果は普遍的なものではなく、報酬が心理的欲求を支援するものと感じられるか、統制するものと感じられるかという条件に強く依存することが指摘されている<sup class="cite-ref">※18</sup>。</p>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>「行動が意識を変える」という考え方は、単一の理論ではなく、哲学（アリストテレスの徳倫理学）、生理学・心理学（ジェームズ=ランゲ説）、社会心理学（認知的不協和理論・自己知覚理論）、行動経済学（自己シグナリング理論）、神経科学（行動ベースモデル・ソマティック・マーカー仮説）、臨床心理学（行動活性化療法）という複数の異なる学問的系譜が、100年以上かけて別々の角度から収束してきた知見の集合体である。</p>
+    <div class="point">
+      <div class="pt-title">1. 行動→意識という因果の向きは複数の独立した経路で支持されている</div>
+      <p>不協和の解消という動機づけ経路（フェスティンガー）、行動からの推論という認知的経路（ベム）、身体反応の神経的処理という生理学的経路（ジェームズ=ランゲ説・ソマティック・マーカー仮説）は、それぞれ異なるメカニズムでありながら、いずれも「行動・身体状態が意識に先行しうる」という同じ結論を支持している。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">2. 臨床応用において最も実用的な裏づけを得ている</div>
+      <p>行動活性化療法は、抗うつ薬や標準的CBTに匹敵する効果を持つことが繰り返し確認されており、「意欲を待たずにまず動く」という原則は、うつ病治療という実践の場で最も頑健なエビデンスを持つ応用例と言える。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">3. すべての「行動が意識を変える」現象が同じ強度で成り立つわけではない</div>
+      <p>表情フィードバック仮説やパワーポージングの追試失敗が示すように、身体・行動と意識の結びつきの強さは現象ごとに大きく異なる。派手なメディア露出を得た知見ほど、統計的な誇張のリスクが高いという再現性の危機の教訓を踏まえた慎重な評価が必要である。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">4. 今後の課題：どのような条件で、どの程度の効果が生じるかの精緻化</div>
+      <p>「行動は意識を変えるか」という二値的な問いから、「どのような行動が、どのような条件下で、どの程度、どの側面の意識を変えるか」という精緻化された問いへの移行が、今後の研究に求められている。事前登録・大規模追試・多施設共同研究といった開かれた科学の手法が、この精緻化を進める鍵となる。</p>
+    </div>
+  </div>
+
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li><span class="ref-num">1</span><span>Oxford Research Encyclopedia of Psychology「Dissonance and Attitude Change」<span class="ref-tag">学術文献</span><br><a href="https://oxfordre.com/psychology/display/10.1093/acrefore/9780190236557.001.0001/acrefore-9780190236557-e-296" target="_blank" rel="noopener">https://oxfordre.com/psychology/display/10.1093/acrefore/9780190236557.001.0001/acrefore-9780190236557-e-296</a></span></li>
+      <li><span class="ref-num">2</span><span>SimplyPsychology「What Is Cognitive Dissonance Theory?」<span class="ref-tag">ウェブサイト</span><br><a href="https://www.simplypsychology.org/cognitive-dissonance.html" target="_blank" rel="noopener">https://www.simplypsychology.org/cognitive-dissonance.html</a></span></li>
+      <li><span class="ref-num">3</span><span>Wikipedia「Self-perception theory」<span class="ref-tag">ウェブサイト</span><br><a href="https://en.wikipedia.org/wiki/Self-perception_theory" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Self-perception_theory</a></span></li>
+      <li><span class="ref-num">4</span><span>PubMed「Registered Replication Report: Strack, Martin, &amp; Stepper (1988)」<span class="ref-tag">論文</span><br><a href="https://pubmed.ncbi.nlm.nih.gov/27784749/" target="_blank" rel="noopener">https://pubmed.ncbi.nlm.nih.gov/27784749/</a></span></li>
+      <li><span class="ref-num">5</span><span>Nature Human Behaviour「A multi-lab test of the facial feedback hypothesis」（Many Smiles Collaboration）<span class="ref-tag">論文</span><br><a href="https://www.nature.com/articles/s41562-022-01458-9" target="_blank" rel="noopener">https://www.nature.com/articles/s41562-022-01458-9</a></span></li>
+      <li><span class="ref-num">6</span><span>PMC「A Narrative Review of Empirical Literature of Behavioral Activation Treatment for Depression」<span class="ref-tag">論文</span><br><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9082162/" target="_blank" rel="noopener">https://pmc.ncbi.nlm.nih.gov/articles/PMC9082162/</a></span></li>
+      <li><span class="ref-num">7</span><span>Harmon-Jones, E., Harmon-Jones, C., &amp; Levy, N.「An Action-Based Model of Cognitive-Dissonance Processes」（2015）<span class="ref-tag">論文</span><br><a href="https://journals.sagepub.com/doi/10.1177/0963721414566449" target="_blank" rel="noopener">https://journals.sagepub.com/doi/10.1177/0963721414566449</a></span></li>
+      <li><span class="ref-num">8</span><span>Harmon-Jones, E.「Action‐Based Model of Dissonance: A Review of Behavioral, Anterior Cingulate, and Prefrontal Cortical Mechanisms」（2008）<span class="ref-tag">論文</span><br><a href="https://compass.onlinelibrary.wiley.com/doi/10.1111/j.1751-9004.2008.00110.x" target="_blank" rel="noopener">https://compass.onlinelibrary.wiley.com/doi/10.1111/j.1751-9004.2008.00110.x</a></span></li>
+      <li><span class="ref-num">9</span><span>Psychology Fanatic「James-Lange Theory of Emotion: How the Body Shapes Feeling」<span class="ref-tag">ウェブサイト</span><br><a href="https://psychologyfanatic.com/james-lange-theory-of-emotion/" target="_blank" rel="noopener">https://psychologyfanatic.com/james-lange-theory-of-emotion/</a></span></li>
+      <li><span class="ref-num">10</span><span>Wikipedia「Foot-in-the-door technique」<span class="ref-tag">ウェブサイト</span><br><a href="https://en.wikipedia.org/wiki/Foot-in-the-door_technique" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Foot-in-the-door_technique</a></span></li>
+      <li><span class="ref-num">11</span><span>Freedman, J. L., &amp; Fraser, S. C.「Compliance without pressure: the foot-in-the-door technique」（1966, PubMed）<span class="ref-tag">論文</span><br><a href="https://pubmed.ncbi.nlm.nih.gov/5969145/" target="_blank" rel="noopener">https://pubmed.ncbi.nlm.nih.gov/5969145/</a></span></li>
+      <li><span class="ref-num">12</span><span>Wikipedia「Power posing」<span class="ref-tag">ウェブサイト</span><br><a href="https://en.wikipedia.org/wiki/Power_posing" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Power_posing</a></span></li>
+      <li><span class="ref-num">13</span><span>Gelman, A.「Beyond "power pose": Using replication failures...」Statistical Modeling, Causal Inference, and Social Science<span class="ref-tag">ウェブサイト</span><br><a href="https://statmodeling.stat.columbia.edu/2017/10/18/beyond-power-pose-using-replication-failures-better-understanding-data-collection-analysis-better-science/" target="_blank" rel="noopener">https://statmodeling.stat.columbia.edu/2017/10/18/beyond-power-pose-using-replication-failures-better-understanding-data-collection-analysis-better-science/</a></span></li>
+      <li><span class="ref-num">14</span><span>Wikipedia「Embodied cognition」<span class="ref-tag">ウェブサイト</span><br><a href="https://en.wikipedia.org/wiki/Embodied_cognition" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Embodied_cognition</a></span></li>
+      <li><span class="ref-num">15</span><span>Zimbardo.com「The Festinger and Carlsmith Cognitive Dissonance Experiment」<span class="ref-tag">ウェブサイト</span><br><a href="https://www.zimbardo.com/the-festinger-and-carlsmith-cognitive-dissonance-experiment-setup-results-and-psychological-insights/" target="_blank" rel="noopener">https://www.zimbardo.com/the-festinger-and-carlsmith-cognitive-dissonance-experiment-setup-results-and-psychological-insights/</a></span></li>
+      <li><span class="ref-num">16</span><span>Clear, J.「Identity-Based Habits: How to Actually Stick to Your Goals This Year」<span class="ref-tag">ウェブサイト</span><br><a href="https://jamesclear.com/identity-based-habits" target="_blank" rel="noopener">https://jamesclear.com/identity-based-habits</a></span></li>
+      <li><span class="ref-num">17</span><span>Bodner, R., &amp; Prelec, D.「Self-signaling and diagnostic utility in everyday decision making」（MIT）<span class="ref-tag">論文</span><br><a href="https://economics.mit.edu/sites/default/files/2022-09/bodner_prelec_self_signaling_52001.pdf" target="_blank" rel="noopener">https://economics.mit.edu/sites/default/files/2022-09/bodner_prelec_self_signaling_52001.pdf</a></span></li>
+      <li><span class="ref-num">18</span><span>Wikipedia「Overjustification effect」<span class="ref-tag">ウェブサイト</span><br><a href="https://en.wikipedia.org/wiki/Overjustification_effect" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Overjustification_effect</a></span></li>
+      <li><span class="ref-num">19</span><span>Wikipedia「Somatic marker hypothesis」（Damasio）<span class="ref-tag">ウェブサイト</span><br><a href="https://en.wikipedia.org/wiki/Somatic_marker_hypothesis" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Somatic_marker_hypothesis</a></span></li>
+      <li><span class="ref-num">20</span><span>PMC「Exercise as a therapeutic modality for the prevention and treatment of depression」<span class="ref-tag">論文</span><br><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10225323/" target="_blank" rel="noopener">https://pmc.ncbi.nlm.nih.gov/articles/PMC10225323/</a></span></li>
+      <li><span class="ref-num">21</span><span>「Aristotle on habit and moral character formation」（Universidad del Azuay）<span class="ref-tag">論文</span><br><a href="https://etica.uazuay.edu.ec/sites/etica.uazuay.edu.ec/files/public/uazuay-etica-aristotle-on-habit-and-moral-character-formation.pdf" target="_blank" rel="noopener">https://etica.uazuay.edu.ec/sites/etica.uazuay.edu.ec/files/public/uazuay-etica-aristotle-on-habit-and-moral-character-formation.pdf</a></span></li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>本レポートは元ファイルを用いず、ウェブ調査に基づいて作成しました（作成日：2026年7月9日）。</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  /* ── テキスト選択 → ここから読み上げ ── */
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>
