@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>「働きがいを持つべき」という前提への批判的検討</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+@media (max-width: 640px) { .references { padding: 28px 20px; } }
+
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .layer-grid { grid-template-columns: 1fr; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">働きがいと働きやすさ</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>「働きがいを持つべき」という<br>前提への批判的検討</h1>
+  <p class="sub">やりがい搾取論を中心に、国内の批判的先行研究を横断整理</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#honda">やりがい搾取論</a></li>
+    <li><a href="#cases">具体的な事例</a></li>
+    <li><a href="#kumazawa">自己実現という罠</a></li>
+    <li><a href="#mechanism">心理的メカニズム</a></li>
+    <li><a href="#emotional-labor">感情労働論</a></li>
+    <li><a href="#conclusion">総括</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>前回整理した国内先行研究の多くは、「働く人は働きがいを持てたほうがよい」「働きがいを高めることは望ましい」という前提の上に立っている。官公庁の調査も、民間シンクタンクの実態調査も、学術研究も、企業評価の枠組みも、いずれも働きがいの向上を自明の善として扱い、その規定要因や測定方法を精緻化することに関心を注いできた。</p>
+    <p>しかし、この前提そのものを問い直す系譜が、日本の労働社会学・教育社会学の分野に存在する。その中心にあるのが、教育社会学者・本田由紀が2007年に提起した「やりがい搾取」という概念である<sup class="cite-ref">※1</sup>。この視座に立てば、「働きがい」を強調する言説は、単に働く人の幸福に資するだけでなく、経営者・管理者が本来支払うべき賃金や労働条件の整備を回避するための道具として機能しうる。「働きがいを持つべきだ」という規範は、働く側の自発的な献身を引き出すことで、構造的な労働問題を個人の内面の問題にすり替えてしまう危険をはらんでいる。</p>
+    <p>以下では、この批判的系譜を、本田由紀の「やりがい搾取」論、具体的な事例、熊沢誠による「自己実現系ワーカホリック」論、社会心理学的なメカニズムの説明、感情労働論との関連という5つの角度から整理する。</p>
+  </div>
+
+  <section id="honda">
+    <h2><span class="icon">①</span>「やりがい搾取」論：本田由紀の問題提起</h2>
+    <div class="policy-tag">本田由紀（教育社会学）</div>
+    <p>「やりがい搾取」とは、経営者または依頼者が本来支払うべき賃金や手当、料金の代わりに、労働者に「やりがい」を強く意識させることで、サービス残業（長時間労働）や無賃労働を勧奨し、正当な対価の支払いを免れる行為を指す<sup class="cite-ref">※1</sup>。東京大学教授で教育社会学者の本田由紀が、2007年に雑誌『世界』に発表した論文「自己実現という罠〈やりがい〉の搾取―拡大する新たな『働きすぎ』」で提起し、著書『軋む社会―教育・仕事・若者の現在』などを通じて広く知られるようになった概念である<sup class="cite-ref">※2</sup>。</p>
+    <p>本田は、「やりがい搾取」を「働く側から高いレベルのエネルギーや貢献、時間を、正当な賃金や労働時間の保証なしに動員するために、仕事に『意味』を付加することで『自己実現系ワーカホリック』を生み出すこと」と定義し、その「意味」を（1）趣味性、（2）ゲーム性、（3）サービス性、（4）カルト性、（5）聖性の5類型に整理している<sup class="cite-ref">※1</sup>。この整理が示唆するのは、働きがいを喚起する仕掛けが多様であり、必ずしも露骨な精神論だけでなく、ゲーム的な達成感の演出や、顧客への貢献意識の強調、あるいは組織への一体感の醸成といった、一見すると健全に見える手法を通じても機能しうるという点である。</p>
+    <div class="highlight"><strong>核心的な指摘</strong>　働く側は自らの意思で「自己実現」を追求しているように見えるが、実際には雇用する側が働く意味を仕事の中に周到に埋め込み、労働者をその方向へ誘導する仕組みが働いている。「やりがい」と「報酬」はトレードオフの関係にはならない、すなわちやりがいがあることは報酬の不十分さを正当化する理由にはならない<sup class="cite-ref">※1</sup>。</div>
+  </section>
+
+  <section id="cases">
+    <h2><span class="icon">②</span>具体的な事例：やりがい搾取が問題化した現場</h2>
+    <div class="policy-tag">アニメ業界／医療／教育／五輪ボランティア</div>
+    <p>この概念が理論にとどまらず、実際の労働問題として社会的に認知されてきた背景には、いくつかの象徴的な事例がある。2014年の「ブラック企業大賞」では、あるアニメ制作会社が象徴的事例としてノミネートされ、業界賞を受賞した<sup class="cite-ref">※1</sup>。同社では2010年、当時28歳の男性社員が過労によるうつ病を原因として自殺し、労働災害と認定された。男性の1か月あたりの労働時間は600時間を超えていたが、残業手当は一切支払われていなかった。日本のアニメ業界では、特に非正規雇用のアニメーターや制作進行に、長期にわたる著しい労働環境の悪さと賃金の低さが指摘されているが、業界構造上の問題もあり、改善はほとんど見られていない。</p>
+    <p>医療現場でも、医師の時間外労働を短く見せかけるため、実態としては仕事をしていたものを「自己研鑽」として扱う傾向が指摘されている。多くの病院が医師の労働時間を正確に把握してこなかったため、時間外の行為のどこまでが業務でどこまでが自己研鑽かが曖昧なまま、正当な対価がほぼ支払われてこなかった。2019年、厚生労働省は業務と自己研鑽を線引きする基準を通達したが、「上司の指示なく自由意思に基づき行えば研鑽」という抽象的な内容であるため、経営側が都合よく解釈する余地が残っている<sup class="cite-ref">※1</sup>。</p>
+    <p>教育現場では、公立学校教員に適用される「給特法」（1971年制定）が、しばしば「やりがい搾取」の典型例として言及される。同法のもとでは、教員がどれだけ残業しても、部活動顧問を含め残業代は支払われない。教職調整額として一律4％が上乗せされているにすぎないが、この4％は1966年の調査で平均月8時間程度だった残業実態に基づいて設定されたものである。2022年度の国の調査では、持ち帰り仕事を含めない月平均残業時間が小学校64時間48分、中学校83時間44分、高校64時間52分に達しており、制度設計の前提から大きく乖離している。近年この制度は「4％定額働かせ放題」と呼ばれ、しばしば「やりがい搾取」とも称される<sup class="cite-ref">※3</sup>。</p>
+    <p>そのほか、2018年の東京オリンピック・パラリンピックのボランティア募集要項に「交通費及び宿泊は自己負担・自己手配」との記述があったことや、平昌オリンピックの準備過程で、深夜勤務の後に極寒の屋外で長時間バスを待たされたボランティアが反発してリハーサル会場へのボイコットに至った事例なども、「国のため、社会のため」という意味づけが労働条件の不備を覆い隠す機能を果たした例として挙げられている<sup class="cite-ref">※4</sup>。</p>
+  </section>
+
+  <section id="kumazawa">
+    <h2><span class="icon">③</span>熊沢誠「自己実現という罠」：自己実現系ワーカホリック</h2>
+    <div class="policy-tag">熊沢誠（労使関係論）</div>
+    <p>労使関係論を専門とする熊沢誠も、著書『自己実現という罠―悪用される「内発的動機づけ」』において、近接する問題意識を展開している。働く側が「やりがい」のために低賃金・過重労働を受け入れ、「自己実現系ワーカホリック」となっていく仕組みを論じ、仕事と自己実現を結びつけてやりがいを感じさせることが、結果として働く人々に低賃金・長時間労働を強いる構造を成立させていると指摘する<sup class="cite-ref">※5</sup>。この視座は本田の議論と重なりながらも、より労使関係論的な文脈から、「内発的動機づけ」という本来は心理学的にポジティブな概念が、経営管理の手段として利用されうることを問題化している点に特徴がある。</p>
+  </section>
+
+  <section id="mechanism">
+    <h2><span class="icon">④</span>なぜ「やりがい」は搾取の道具になりうるのか</h2>
+    <div class="policy-tag">社会心理学：社会的交換理論</div>
+    <p>なぜ「やりがい」の強調がこれほど有効に機能してしまうのか。社会心理学者の山口裕幸は、社会的交換理論を参照しながら、そのメカニズムを次のように説明している。人は働くとき、心の中で、仕事に投入する資源（労力・時間・専門的技能・心身の緊張やストレスなど）を「損失（cost）」として、仕事から得られる資源（給与・職位・社会的評価・周囲からの賞賛・信頼関係など）を「報酬（reward）」として、無意識のうちに天秤にかけている<sup class="cite-ref">※6</sup>。給料や職位に多少の不満があっても、心理的な報酬を含めたトータルで損失とのバランスが取れていれば、人は心穏やかに働き続けることができる。</p>
+    <p>「やりがい搾取」は、経営者・管理者の側が、獲得できる心理的な報酬（社会貢献の実感、成長機会、仲間との連帯など）を過大に強調して働く人々に認識させることで、賃金の低さや長時間労働、休暇の取りにくさといった「損失」を相対的に小さく見せることで成立する。とりわけボランティアや教育、福祉といった、社会への貢献や困っている人々の支援という大義を掲げやすい仕事は、この構造が働きやすい。また、「自分が好きで選んだ仕事だから」という理由づけも同様の機能を果たし、将来のあるべき自分の姿を思い描き自己実現を目指すような、いわゆる真面目な人ほど、この搾取の被害を受けやすいという指摘もなされている<sup class="cite-ref">※6</sup>。</p>
+  </section>
+
+  <section id="emotional-labor">
+    <h2><span class="icon">⑤</span>関連する理論的視座：感情労働論とバーンアウトのリスク</h2>
+    <div class="policy-tag">A.ホックシールド／感情社会学</div>
+    <p>やりがい搾取論と隣接する理論として、アメリカの社会学者アーリー・ホックシールドが提起した「感情労働（emotional labor）」論も参照に値する。感情労働とは、他者から観察可能な表情や身体的表現、言葉遣いを作り出すために、感情のコントロールが求められる労働を指す。ホックシールドは、労働者があまりにも一心不乱に仕事へ献身し、そのために燃え尽きてしまう危険性のあるケースを取り上げており、感情労働とバーンアウト（燃え尽き症候群）の関連が示唆されている<sup class="cite-ref">※8</sup>。仕事への意味づけや感情的な没入を強く求める職場文化は、働きがいを高めると同時に、燃え尽きのリスクを高めるという両義性を持つ点で、やりがい搾取論と問題意識を共有している。</p>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>前回整理した国内の実態調査・学術研究は、いずれも「働きがいをどう高めるか」を問いの出発点としていた。しかし、本田由紀に代表される批判的系譜は、そもそも「働きがいを持つべきだ」という規範自体が、労働条件の不備を個人の内面の問題へとすり替え、経営側にとって都合のよい「動員」の道具として機能しうることを指摘している。</p>
+    <div class="point">
+      <div class="pt-title">「やりがい」と「報酬」はトレードオフではない</div>
+      <p>やりがいがあることは、賃金や労働時間の不十分さを正当化する理由にはならない。この原則を曖昧にする言説は、構造的な労務管理の不備を覆い隠す機能を果たしうる。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">「多忙感」と「活力実感」の境界は曖昧である</div>
+      <p>前回整理したリクルートワークス研究所の調査でも、「多忙感」は残業や持ち帰り仕事によって高まり、孤独感やネガティブ感情と結びつく一方、「活力実感」との相関は単純ではなかった。忙しく働くことと搾取されていることの境界は、当事者にとっても見分けにくい。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">「自発性」を制度の前提に置くリスク</div>
+      <p>給特法や医師の自己研鑽の事例が示すように、「やりがい」や「自発性」を制度の前提に据えることは、労働時間管理という最も基本的な労務管理の機能を空洞化させるリスクを伴う。</p>
+    </div>
+    <p>働きがい向上策を検討する際には、それが働く人の内発的な充実に資するものなのか、それとも正当な対価の支払いや労働時間管理を回避するための代替物になっていないか、という批判的な検証が併せて求められると言える。</p>
+  </div>
+
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-num">1</span>
+        <span>「やりがい搾取」<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://ja.wikipedia.org/wiki/やりがい搾取" target="_blank" rel="noopener">https://ja.wikipedia.org/wiki/やりがい搾取</a></span>
+      </li>
+      <li>
+        <span class="ref-num">2</span>
+        <span>本田由紀『軋む社会―教育・仕事・若者の現在』（河出文庫）<span class="ref-tag">著書</span><br>
+        <a href="https://www.kawade.co.jp/np/isbn/9784309410906/" target="_blank" rel="noopener">https://www.kawade.co.jp/np/isbn/9784309410906/</a></span>
+      </li>
+      <li>
+        <span class="ref-num">3</span>
+        <span>PRESIDENT Online「だから誰も学校の先生になりたがらない…どれだけ働いても残業代が一切出ない公立教師というブラック職場」<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://president.jp/articles/-/71205" target="_blank" rel="noopener">https://president.jp/articles/-/71205</a></span>
+      </li>
+      <li>
+        <span class="ref-num">4</span>
+        <span>Business Insider Japan「東京五輪ボランティア問題、11万人"動員"はやりがい搾取か──支給は1000円のみ、不安な熱中症対策」（2018年9月25日）<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://www.businessinsider.jp/post-175616" target="_blank" rel="noopener">https://www.businessinsider.jp/post-175616</a></span>
+      </li>
+      <li>
+        <span class="ref-num">5</span>
+        <span>熊沢誠『自己実現という罠―悪用される「内発的動機づけ」』<span class="ref-tag">著書</span><br>
+        <a href="https://www.rosei.jp/readers/article/73669" target="_blank" rel="noopener">https://www.rosei.jp/readers/article/73669</a></span>
+      </li>
+      <li>
+        <span class="ref-num">6</span>
+        <span>山口裕幸「第105回　人的資源管理に『心』の要素を考慮することの意味（２）―『やりがい搾取』問題をめぐって―」オージス総研コラム（2019年7月31日）<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://www.ogis-ri.co.jp/column/kr/357.html" target="_blank" rel="noopener">https://www.ogis-ri.co.jp/column/kr/357.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">7</span>
+        <span>本田由紀「自己実現という罠〈やりがい〉の搾取―拡大する新たな『働きすぎ』」『世界』762号（2007年）<span class="ref-tag">論文</span><br>
+        <span>雑誌掲載論文（岩波書店『世界』誌）</span></span>
+      </li>
+      <li>
+        <span class="ref-num">8</span>
+        <span>A.R.ホックシールド 感情労働論の紹介（日本労働研究雑誌 書評）<span class="ref-tag">論文</span><br>
+        <a href="https://www.jil.go.jp/institute/zassi/backnumber/2016/04/pdf/036-039.pdf" target="_blank" rel="noopener">https://www.jil.go.jp/institute/zassi/backnumber/2016/04/pdf/036-039.pdf</a></span>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>素材：Wikipedia「やりがい搾取」項目、本田由紀・熊沢誠の著書紹介ページ、オージス総研コラム、報道記事、日本労働研究雑誌書評（いずれも2026年8月時点のWeb公開情報に基づく）</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>

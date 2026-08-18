@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>働きがいと働きやすさ 尺度化の先行研究</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+@media (max-width: 640px) { .references { padding: 28px 20px; } }
+
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .layer-grid { grid-template-columns: 1fr; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">働きがいと働きやすさ</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>働きがいと働きやすさ<br>尺度化の先行研究</h1>
+  <p class="sub">UWES・JDI/MSQから新職業性ストレス簡易調査票、Trust Index©まで、測定方法の系譜を横断整理</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#uwes">UWES</a></li>
+    <li><a href="#stress-check">職場調査票への統合</a></li>
+    <li><a href="#job-satisfaction">職務満足の尺度</a></li>
+    <li><a href="#nurse-scale">働きやすさの実務尺度</a></li>
+    <li><a href="#trust-index">企業評価の尺度</a></li>
+    <li><a href="#conclusion">総括</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>働きがいと働きやすさを研究や実務で扱う以上、それをどう測るかという「尺度化」の問題は避けて通れない。この領域には大きく二つの系譜がある。一つは、心理学・産業保健の分野で信頼性・妥当性の検証を経て確立された学術的な心理尺度であり、代表例がワーク・エンゲイジメントを測定する「ユトレヒト・ワーク・エンゲイジメント尺度（UWES）」や、職務満足を測定する「JDI（Job Descriptive Index）」「MSQ（Minnesota Satisfaction Questionnaire）」である。もう一つは、企業の人事施策や国の労働政策のために開発された、より実務志向の組織診断ツールであり、厚生労働省の「新職業性ストレス簡易調査票」や、Great Place To Work®の「Trust Index©」がこれにあたる。</p>
+    <p>両者は目的も設計思想も異なるが、共通して直面する課題がある。「働きがい」「働きやすさ」という主観的で多義的な状態を、どのような下位概念（因子）に分解し、何項目で、どのような回答形式で測定すれば、妥当かつ再現性のあるデータが得られるのか、という尺度構成上の問いである。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">17/9/3</div><div class="lbl">UWES 項目数バリエーション（フルスケール/短縮版/超短縮版）</div></div>
+      <div class="stat"><div class="val">.92</div><div class="lbl">UWES-J 内的整合性（クロンバックα）</div></div>
+      <div class="stat"><div class="val">.935</div><div class="lbl">病院看護師用「働きやすさ」評価尺度 α係数</div></div>
+    </div>
+    <p>以下では、ワーク・エンゲイジメントの尺度、職場レベルの調査票への統合、職務満足の尺度、働きやすさの実務的尺度、企業評価における尺度という5つの角度から、国内外の尺度化の系譜を整理する。</p>
+  </div>
+
+  <section id="uwes">
+    <h2><span class="icon">①</span>ワーク・エンゲイジメントの尺度：UWES</h2>
+    <div class="policy-tag">Schaufeli／島津明人ら</div>
+    <p>働きがいに最も近い学術概念である「ワーク・エンゲイジメント」を測定する代表的な尺度が、オランダ・ユトレヒト大学のシャウフェリらが開発した「ユトレヒト・ワーク・エンゲイジメント尺度（Utrecht Work Engagement Scale：UWES）」である。この尺度は、仕事に積極的に向かい活力を得ている状態を、「活力（vigor）」「熱意（dedication）」「没頭（absorption）」の3つの下位尺度で捉え、17項目版・9項目版・3項目版の3種類があり、7件法（0＝全くない～6＝いつも感じる）で回答する。学術研究目的であれば無料で使用できる、非常に普及した尺度である。</p>
+    <p>日本語版（UWES-J）は、島津明人らによって開発・検証された（Shimazu, A., Schaufeli, W. B., Kosugi, S., et al., 2008, <em>Applied Psychology: An International Review</em>, 57, 510-523）。3つの独立したサンプル（総計N=2,334）を対象とした検証の結果、内的整合性は十分に高く（α=.92）、2か月間隔での再検査信頼性は.66であった。</p>
+    <div class="highlight"><strong>因子構造の文化差</strong>　確認的因子分析では、原尺度が想定する「活力・熱意・没頭」の3因子モデルよりも、すべての項目が単一の因子に負荷する1因子モデルの方が、日本のデータへの適合度が高いという結果が示された。欧米で開発された尺度の因子構造が、文化的背景の異なる日本のサンプルではそのまま再現されるとは限らないことを示す事例であり、尺度の国際的な移植（cross-cultural adaptation）における妥当性検証の重要性を裏づけている。</div>
+    <p>さらに近年では、シャウフェリらにより、5か国のデータをもとに検証された超短縮版「UWES-3」（活力・熱意・没頭から各1項目、計3項目）も提案されており（Schaufeli et al., 2019, <em>European Journal of Psychological Assessment</em>, 35, 577-591）、大規模調査や継続的なモニタリングにおいて、回答負荷を抑えつつワーク・エンゲイジメントを測定する需要に応える形で、尺度の簡略化が進んでいる。</p>
+  </section>
+
+  <section id="stress-check">
+    <h2><span class="icon">②</span>職場レベルの調査票への統合：新職業性ストレス簡易調査票</h2>
+    <div class="policy-tag">厚生労働省／川上憲人ら</div>
+    <p>学術的な尺度は、そのままでは企業の労務管理やストレスチェック制度の実務に組み込みにくい。この橋渡しを行ったのが、厚生労働省の平成21～23年度厚生労働科学研究費補助金「労働者のメンタルヘルス不調の第一次予防の浸透手法に関する調査研究」（主任研究者：川上憲人）が開発した「新職業性ストレス簡易調査票」である。</p>
+    <p>従来の「職業性ストレス簡易調査票」（57項目、20尺度）は、仕事の負荷やストレス反応など、主にネガティブな側面を測定するものであったが、新調査票では、部署・事業場レベルの心理社会的要因や、仕事の資源、労働者の仕事へのポジティブな関わりを測定する尺度が追加された。現行版と組み合わせた「80項目版」では、42尺度が設定されており、その中には「働きがいのある仕事だ」（1項目）、「仕事をしていると、活力がみなぎるように感じる」（UWES短縮版に相当）、「自分の仕事に誇りを感じる」といった、働きがいを直接的に問う項目が組み込まれている。あわせて、「経営層からの情報は信頼できる」「一人ひとりの価値観を大事にしてくれる職場だ」「職場では、いろいろな立場の人が職場の一員として尊重されている」といった、組織の「働きやすさ」に近い項目も含まれており、単一項目でありながら、働きがい・働きやすさを職場診断の中に位置づける実務的な設計となっている。</p>
+    <p>この調査票は、精緻な多項目尺度ではなく、事業場単位で継続的に運用できることを重視した「簡易」調査票であり、学術的なUWES・JDIのような多項目・多因子の精密測定とは異なる設計思想に立っている点に留意が必要である。</p>
+  </section>
+
+  <section id="job-satisfaction">
+    <h2><span class="icon">③</span>職務満足の尺度と理論</h2>
+    <div class="policy-tag">JDI／MSQ／櫻木晃裕</div>
+    <p>職務満足（job satisfaction）の測定は、ワーク・エンゲイジメントより古い歴史を持つ研究領域である。国際的に広く使われてきた尺度として、Smith, Kendall, & Hulin（1969）による「JDI（Job Descriptive Index）」があり、職務満足を「仕事自体への満足」「給与への満足」「昇進への満足」「監督への満足」「同僚への満足」の5つの下位尺度、計72項目で測定する多次元尺度である。また、Weissらによる「MSQ（Minnesota Satisfaction Questionnaire）」も国際的に認知度の高い尺度であり、個人のニーズと職務が提供する強化因子との適合度から職務満足を捉える職業適応理論（work adjustment theory）に基づいている。</p>
+    <p>理論面では、ハーズバーグの二要因（動機づけ－衛生）理論が、職務満足研究の基礎的な参照枠として用いられ続けている。日本国内での実証研究として、櫻木晃裕（2006）「職務満足概念の構造と機能」は、2つの独自調査（中高年ホワイトカラー調査、浜松市従業員調査）のデータをもとに、職務満足を構成する15項目に因子分析を実施している。その結果、「仕事キャリア因子」（自己成長・仕事内容・仕事上の責任など）が動機づけ要因として、「仕事環境因子」（給与・労働時間・会社の政策など）が衛生要因として、それぞれ抽出された。ただし、日本のサンプルでは「人間関係」に関する項目が、欧米の研究とは異なり動機づけ要因側に分類される傾向があることも指摘されており、これはHerzberg理論の日本における追試研究（村杉, 1994）とも符合する。さらに機能分析（重回帰分析）では、職務満足を構成する各項目のうち「仕事を通じてのこれまでの人生」「経営方針や会社の政策」「仕事の内容」「仕事を通じての自己成長」が、組織コミットメントや職務コミットメントなどの組織行動指標に対する説明力が高いことが示されている。</p>
+  </section>
+
+  <section id="nurse-scale">
+    <h2><span class="icon">④</span>働きやすさの実務的尺度：病院看護師用評価尺度</h2>
+    <div class="policy-tag">職域限定の尺度開発</div>
+    <p>「働きがい」に比べ、「働きやすさ」そのものを対象とした心理尺度の開発研究は少ないが、職域を限定した尺度開発が進んでいる分野として看護領域が挙げられる。JSTAGE掲載論文「職場の『働きやすさ』評価尺度－病院スタッフ看護師用－」の開発研究では、スタッフ看護師が「働きやすい」「働きにくい」と判断する際の基準にもとづき、38項目からなる評価尺度が作成された。全国の病院に勤務するスタッフ看護師を対象とした質問紙調査（有効回答459）の結果、クロンバックのα係数は.935、再テスト法による信頼性係数は.872であり、高い内的整合性と安定性が確認されている。</p>
+    <p>この尺度は、厚生労働省の「働きやすい・働きがいのある職場づくりに関する調査報告書」が示した「働きやすさ＝働く苦労・障壁が小さい」という定義を出発点としつつ、看護師という職種特有の労働条件（交替勤務、人手不足、専門職としてのキャリア形成など）を反映した項目設計になっている点が特徴であり、「働きやすさ」の尺度化が、業種・職種ごとに固有の文脈を反映して個別に進められてきたことを示す一例と言える。</p>
+  </section>
+
+  <section id="trust-index">
+    <h2><span class="icon">⑤</span>企業評価における尺度：Great Place To Work® Trust Index©</h2>
+    <div class="policy-tag">Trust Model©／リクルートワークス研究所</div>
+    <p>学術的な心理尺度とは別の系譜として、企業の働きがいを外部評価するために開発された実務的な尺度も存在する。Great Place To Work®が用いる「Trust Model©」は、従業員が経験する「信頼」を、「信用（Credibility）」「尊重（Respect）」「公正（Fairness）」の3要素（管理者への信頼に関わる）と、「誇り（Pride）」「連帯感（Camaraderie）」の2要素（同僚や組織全体との関係に関わる）、計5つの次元で捉えるモデルである。この5次元にもとづき開発された「Trust Index©」調査は、60の質問項目に対して5件法で回答する構成になっており、世界50か国以上、年間1,200万人以上の従業員データを蓄積する、企業の働きがい評価における事実上の国際標準として運用されている。</p>
+    <p>学術的なUWESやJDIが、個人の心理状態を精密に測定することを主眼とするのに対し、Trust Index©は、企業間の比較可能性やランキング化、認定制度への活用を前提として設計されている点で、尺度としての目的や運用方法が異なる。リクルートワークス研究所の「働きがいの実態調査2020」が独自に開発した32項目・8因子の尺度（活力実感・強みの認知・職務満足・有意味感・オーナーシップ・居場所感・持ち味の発揮・多忙感）も、学術的な因子分析の手法を用いながら、日本の労働市場・組織文化に即したオリジナル項目を数多く含んでいる点で、両者の中間に位置づけられる尺度と見ることができる。</p>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>働きがい・働きやすさの尺度化をめぐる先行研究を横断すると、大きく3つの系譜が併存していることが分かる。第一に、UWESやJDI、MSQのように、国際的に信頼性・妥当性が検証され、学術研究で広く共有されている心理尺度。第二に、新職業性ストレス簡易調査票のように、学術的な知見を職場診断の実務に落とし込んだ、単一項目や短縮版を組み合わせるハイブリッド型の調査票。第三に、Trust Index©やリクルートワークス研究所の独自尺度のように、企業評価やランキング化、政策提言といった実務目的のために独自開発された尺度である。</p>
+    <div class="point">
+      <div class="pt-title">海外尺度の移植には文化的妥当性の検証が必要</div>
+      <p>UWES-Jの因子構造の検証では、原尺度の3因子モデルより1因子モデルの方が日本のデータに適合した。海外で開発された尺度をそのまま移植する際には、因子構造が文化的文脈で変化しうることを踏まえる必要がある。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">日本では人間関係が動機づけ要因になりやすい</div>
+      <p>櫻木（2006）の研究では、欧米の理論と異なり、日本のサンプルでは人間関係が動機づけ要因側に分類される傾向が見られた。欧米の理論枠組みがそのまま当てはまらない可能性がある。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">単一項目測定には精度の限界がある</div>
+      <p>新職業性ストレス簡易調査票のように、実務上の負荷軽減のために単一項目で構成概念全体を代表させる測定も多く、多項目尺度に比べて測定の精度や下位概念間の弁別力は限定的にならざるを得ない。</p>
+    </div>
+    <p>働きがい・働きやすさに関する調査結果を解釈する際には、その数値がどの系譜の、どのような項目構成・因子構造にもとづく尺度から得られたものかを踏まえることが、数値の一人歩きを避けるうえで重要だと言える。</p>
+  </div>
+
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-num">1</span>
+        <span>島津明人研究室「ワーク・エンゲイジメント（UWES）」尺度紹介ページ<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://hp3.jp/tool/uwes" target="_blank" rel="noopener">https://hp3.jp/tool/uwes</a></span>
+      </li>
+      <li>
+        <span class="ref-num">2</span>
+        <span>Shimazu, A., Schaufeli, W. B., Kosugi, S., et al. (2008). Work engagement in Japan: Validation of the Japanese version of Utrecht Work Engagement Scale. <em>Applied Psychology: An International Review</em>, 57, 510-523.<span class="ref-tag">論文</span><br>
+        <a href="https://iaap-journals.onlinelibrary.wiley.com/doi/10.1111/j.1464-0597.2008.00333.x" target="_blank" rel="noopener">https://iaap-journals.onlinelibrary.wiley.com/doi/10.1111/j.1464-0597.2008.00333.x</a></span>
+      </li>
+      <li>
+        <span class="ref-num">3</span>
+        <span>Schaufeli, W. B., Shimazu, A., Hakanen, J., Salanova, M., & De Witte, H. (2019). An ultra-short measure for work engagement: The UWES-3 validation across five countries. <em>European Journal of Psychological Assessment</em>, 35, 577-591.<span class="ref-tag">論文</span><br>
+        <a href="https://doi.org/10.1027/1015-5759/a000430" target="_blank" rel="noopener">https://doi.org/10.1027/1015-5759/a000430</a></span>
+      </li>
+      <li>
+        <span class="ref-num">4</span>
+        <span>厚生労働省「職業性ストレス簡易調査票（80項目版）」（新職業性ストレス簡易調査票 推奨尺度セット短縮版を含む、主任研究者：川上憲人）<span class="ref-tag">調査票</span><br>
+        <a href="https://kokoro.mhlw.go.jp/etc/pdf/stress-check_80_j.pdf" target="_blank" rel="noopener">https://kokoro.mhlw.go.jp/etc/pdf/stress-check_80_j.pdf</a></span>
+      </li>
+      <li>
+        <span class="ref-num">5</span>
+        <span>「職場の『働きやすさ』評価尺度－病院スタッフ看護師用－」の開発<span class="ref-tag">論文</span><br>
+        <a href="https://www.jstage.jst.go.jp/article/jasne/28/1/28_31/_article/-char/ja/" target="_blank" rel="noopener">https://www.jstage.jst.go.jp/article/jasne/28/1/28_31/_article/-char/ja/</a></span>
+      </li>
+      <li>
+        <span class="ref-num">6</span>
+        <span>櫻木晃裕（2006）「職務満足概念の構造と機能」『豊橋創造大学紀要』第10号, 37-47頁<span class="ref-tag">論文</span><br>
+        <a href="https://www2.sozo.ac.jp/pdf/kiyou2006/03sakura.pdf" target="_blank" rel="noopener">https://www2.sozo.ac.jp/pdf/kiyou2006/03sakura.pdf</a></span>
+      </li>
+      <li>
+        <span class="ref-num">7</span>
+        <span>Great Place To Work® Canada「Trust Model（The Definition of a Great Workplace）」<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://www.greatplacetowork.ca/en/about-us/trust-model" target="_blank" rel="noopener">https://www.greatplacetowork.ca/en/about-us/trust-model</a></span>
+      </li>
+      <li>
+        <span class="ref-num">8</span>
+        <span>谷伊織・辰巳哲子（リクルートワークス研究所）「働きがいの実態調査2020」報告書<span class="ref-tag">調査報告</span><br>
+        <a href="https://www.works-i.com/research/report/item/hatarakigai-survey.pdf" target="_blank" rel="noopener">https://www.works-i.com/research/report/item/hatarakigai-survey.pdf</a></span>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>素材：島津明人研究室・厚生労働省・JSTAGE掲載論文・Great Place To Work公式サイト・リクルートワークス研究所（いずれも2026年8月時点のWeb公開情報に基づく）</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>

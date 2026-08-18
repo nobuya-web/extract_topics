@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>働きがいと働きやすさ 国内先行研究レポート</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── cite-ref ── */
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+
+/* ── references ── */
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+@media (max-width: 640px) { .references { padding: 28px 20px; } }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .layer-grid { grid-template-columns: 1fr; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">働きがいと働きやすさ</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>働きがいと働きやすさ<br>国内先行研究レポート</h1>
+  <p class="sub">官公庁調査・民間シンクタンク調査・学術論文をもとに国内の先行研究を横断整理</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#mhlw">官公庁による調査</a></li>
+    <li><a href="#works">実態調査：生き生き働く8因子</a></li>
+    <li><a href="#academic">学術的知見</a></li>
+    <li><a href="#gptw">企業評価の枠組み</a></li>
+    <li><a href="#conclusion">総括</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>「働きがい」と「働きやすさ」は、しばしば同じ言葉のように扱われるが、国内の調査・研究の蓄積を見渡すと、この二つは明確に異なる軸として捉えられてきたことがわかる。働きやすさは、給与や労働時間、福利厚生、人間関係、施設環境といった「働き続けるための条件」を指し、これが欠けると不満につながる。一方、働きがいは、仕事の達成感、成長実感、社会的意義といった「働くことへの前向きな動機づけ」を指し、これが満たされることで意欲や活力が高まる。</p>
+    <p>この整理の理論的な出発点としてしばしば参照されるのが、心理学者ハーズバーグの二要因理論である<sup class="cite-ref">※8</sup>。給与や労働条件など「衛生要因」は、不足すれば不満を生むが、充実させても積極的な満足には結びつかない。これに対し、達成感や責任、成長機会などの「動機付け要因」は、充実することで意欲を高める。働きやすさは前者に、働きがいは後者に対応すると整理され、どちらか一方が欠けても、従業員が本当の意味で前向きに働き続けることは難しいという理解が、国内の調査研究に共通する基盤になっている。</p>
+    <p>もっとも、日本における「働きがい」の実態は、必ずしも楽観できるものではない。内閣府「国民生活選好度調査」（2008年）によれば、「仕事のやりがいが十分・かなり満たされている」と回答した割合は、1981年の31.9％をピークに1999年まで下がり続け、2008年時点でも18.5％とピーク時の水準には遠く及ばない<sup class="cite-ref">※9</sup>。長時間労働は着実に是正されつつあるにもかかわらず、働く人の満足度は必ずしも改善していない、というねじれが、その後の官公庁・民間シンクタンク双方の調査を動機づけている。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">31.9<span>％</span></div><div class="lbl">仕事のやりがいを実感（1981年・ピーク時）</div></div>
+      <div class="stat"><div class="val">18.5<span>％</span></div><div class="lbl">仕事のやりがいを実感（2008年）</div></div>
+      <div class="stat"><div class="val">9,716<span>名</span></div><div class="lbl">「働きがいの実態調査2020」有効サンプル数</div></div>
+    </div>
+    <p>以下では、官公庁による政策的な実態調査、民間シンクタンクによる大規模な意識調査、学術研究における理論的知見、そして企業評価の枠組みという4つの角度から、国内の先行研究を横断的に整理する。</p>
+  </div>
+
+  <section id="mhlw">
+    <h2><span class="icon">①</span>官公庁による調査：働きやすさと働きがいをめぐる政策的関心</h2>
+    <div class="policy-tag">厚生労働省・内閣府</div>
+    <p>厚生労働省は2014年5月、「働きやすい・働きがいのある職場づくりに関する調査報告書」を公表している<sup class="cite-ref">※1</sup>。これは中小企業における雇用管理制度の実施状況と、従業員が感じる「働きやすさ」「働きがい」との関係を人事担当者・従業員双方へのアンケートで明らかにしたものであり、働き方改革が制度論に偏りがちな中で、従業員の主観的な受け止めに焦点を当てた点に特徴がある。</p>
+    <div class="highlight"><strong>実務的な示唆</strong>　「働きやすさ（柔軟な働き方）は、一度検討した転職を思いとどまらせる要因」であり、「働きがい（仕事のやりがい）は、そもそも転職を考えさせないカギ」であるという整理があり、両者が離職防止において異なる機能を果たすことが示唆されている<sup class="cite-ref">※6</sup>。</div>
+    <p>また、厚生労働省の労働経済白書では、近年「ワーク・エンゲイジメント」という学術概念を継続的に取り上げ、働く人の活力・熱意・没頭の状態を政策的な関心の対象としている。これは、働きやすさという制度的な条件整備だけでは説明できない、働く人の内発的な意欲の状態を政策論に取り込もうとする動きと位置づけられる。</p>
+  </section>
+
+  <section id="works">
+    <h2><span class="icon">②</span>民間シンクタンクの大規模実態調査：「生き生き働く」を構成する8つの因子</h2>
+    <div class="policy-tag">リクルートワークス研究所／パーソル総合研究所／JMAR</div>
+    <p>国内の実態調査の中でもとりわけ体系的なのが、リクルートワークス研究所が2019年11月に実施した「働きがいの実態調査2020」である<sup class="cite-ref">※2</sup>。約1万人（有効サンプル9,716名）を対象としたインターネット調査で、性別・年齢・就業形態・地域・学歴の分布が総務省「労働力調査」の母集団構成に近づくよう設計されている点で、単なる意識調査を超えた代表性を備えている。</p>
+    <p>この調査は、働きがいを「生き生き働く」状態として定義し直し、文献研究・専門家20名へのインタビュー・1,600名への自由記述調査から得られた101項目を対象に因子分析（探索的因子分析と確認的因子分析の二段階）を行った。その結果、最終的に32項目・8因子構造が得られ、各因子はいずれもCronbachのα係数.800以上という十分な信頼性を示した。8つの因子は「活力実感」（仕事への没頭と熱意）、「強みの認知」（自らの経験や専門性への自覚）、「職務満足」（責任・評価・会社への誇り）、「有意味感」（仕事の意味・社会的価値の理解）、「オーナーシップ」（仕事の進め方への主体的関与）、「居場所感」（職場での承認と安心感）、「持ち味の発揮」（自分らしさと仕事内容の一致）、「多忙感」（仕事量への没入と負荷）であり、これは「働きがい」が単一の指標ではなく、多面的な構成概念であることを裏づけている。</p>
+    <p>この8因子がどのような要因によって規定されるかについて、同調査は「心理的個人差」（レジリエンス、性格特性、認知の歪みなど）、「組織風土」（自由闊達さ、個の尊重、成果主義など）、「生活習慣」（睡眠、自己啓発、家族との関わりなど）の3系統から重回帰分析を行っている。特徴的なのは、組織風土のうち「自由闊達・開放的」であることと「個の尊重」が、活力実感・職務満足・有意味感・居場所感など多くの因子に一貫して強い影響を与えていた点である。一方、「成果主義・競争」の風土は職務満足を押し下げ、多忙感を高める方向に働いていた。生活習慣では、十分な睡眠時間と自己啓発活動が複数の因子に安定した正の影響を示し、逆に残業や持ち帰り仕事は多忙感を高める要因となっていた。</p>
+    <p>さらに同調査は、これら8因子が心身の健康や人生の幸福感にどう波及するかも検討している。セリグマンの主観的幸福感モデル（PERMA）を参照した分析では、「居場所感」が自尊感情・ポジティブ感情・他者との良い関係・主観的健康など幅広い指標に強い影響を及ぼす一方、「多忙感」は孤独感やネガティブ感情を高める方向に作用していた。すなわち、忙しく働くこと自体は必ずしも「生き生き」働くことと矛盾しないが、それが居場所感の欠如や孤立と結びついたとき、心身への負の影響が顕在化するという構造が示されている。この知見は、働きがいを高める施策が、単に仕事の裁量や達成感を増やすだけでなく、職場における承認と心理的安全性をいかに確保するかという論点と不可分であることを示唆している。</p>
+    <p>パーソル総合研究所も「働く1万人の就業・成長定点調査」を毎年実施し、働き方の実態と意識、成長実感を継続的に観測している<sup class="cite-ref">※4</sup>。同研究所は近年、Well-Being経営という文脈の中で「『働きやすさ』のその先へ、一人ひとりの『働きがい』を実現する」というテーマを取り上げており<sup class="cite-ref">※5</sup>、制度としての働きやすさの整備が一巡した企業が、次の課題として個々人の働きがいの実現に向き合う必要性を指摘している。</p>
+    <p>日本能率協会総合研究所が実施した「働きがい1万人調査」では、より実務的な視点から、働きやすさ（柔軟な働き方）は一度検討した転職を思いとどまらせる要因である一方、働きがい（仕事のやりがい）はそもそも転職を考えさせないカギになるという知見が示されている<sup class="cite-ref">※6</sup>。同調査はまた、エンゲージメントが高くても4割近くの人が転職を検討する時代になっているとし、働きがいの向上だけでは人材の定着を保証できない現実も指摘している。</p>
+  </section>
+
+  <section id="academic">
+    <h2><span class="icon">③</span>学術研究における理論的知見：ワーク・エンゲイジメントと職務満足</h2>
+    <div class="policy-tag">J-STAGE／CiNii 学術論文</div>
+    <p>学術領域では、「ワーク・エンゲイジメント」という概念が働きがいと働きやすさを橋渡しする理論的枠組みとして扱われてきた。産業保健心理学の分野で発表されたレビュー論文「ワーク・エンゲイジメント：研究と実践における最近10年の動向」は、ワーク・エンゲイジメントを「活力」「熱意」「没頭」がそろった、仕事に関する持続的かつ全般的な充実した心理状態と定義し、バーンアウト（燃え尽き）や職務満足感、ワーカホリズムといった近接概念との異同を整理している<sup class="cite-ref">※8</sup>。同論文では、ワーク・エンゲイジメントの先行要因と結果要因を説明する枠組みとして「仕事の要求度－資源モデル」が紹介されており、仕事の要求度（負荷）と仕事の資源（裁量、上司の支援、成長機会など）のバランスが、働く人のエンゲイジメントを規定するという理論的な見立てが示されている。これは、前述のリクルートワークス研究所の調査における「組織風土」（個の尊重、自由闊達さ）が働きがいの諸因子に影響するという実証的知見と、理論的に整合的である。</p>
+    <p>国内の学術誌にも、「働きがいとワークモチベーション」（青森中央短期大学研究紀要, 2019年）など、働きがいを動機づけ理論の枠組みから論じた研究や、「従業員満足度（ES）調査を活用して社員の『働きがい』の向上を図る」（2014年）といった、企業の実務データを用いた研究が蓄積されている。これらの研究に共通するのは、働きがいを単一の満足度指標として扱うのではなく、動機づけ理論（ハーズバーグの二要因理論、自己決定理論など）に基づいて多面的に分解しようとする姿勢である。</p>
+  </section>
+
+  <section id="gptw">
+    <h2><span class="icon">④</span>企業評価の枠組みと実務的知見</h2>
+    <div class="policy-tag">Great Place To Work® Institute Japan</div>
+    <p>学術・官公庁の調査と並行して、企業の働きがいを外部評価する枠組みも国内に定着してきた。Great Place To Work® Institute Japan（働きがいのある会社研究所）は、世界約170カ国で展開されるグローバル共通基準を用いて日本企業の働きがいを調査し、一定基準を満たした企業を「働きがい認定企業」として認定するとともに、年1回「働きがいのある会社」ランキングを公表している<sup class="cite-ref">※7</sup>。これは学術的な尺度開発とは異なる系譜だが、多数の企業の従業員意識データを横断的に蓄積している点で、実務における働きがいの構成要素（経営層への信頼、公正な処遇、誇り、連帯感など）を可視化する役割を果たしている。</p>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>国内の先行研究を横断してみると、働きがいと働きやすさは、理論的にも実証的にも明確に異なる次元として扱われてきたことが確認できる。働きやすさは労働条件・制度面の充実によって不満を予防する役割を果たす一方、働きがいは仕事の意味づけや裁量、職場での承認といった、より内発的な要素によって規定される。</p>
+    <div class="point">
+      <div class="pt-title">働きがいは多面的な構成概念である</div>
+      <p>リクルートワークス研究所の大規模調査が示すように、働きがいは活力・強みの認知・職務満足・有意味感・オーナーシップ・居場所感・持ち味の発揮・多忙感という8つの因子から構成される。中でも「居場所感」は幸福感や健康への波及効果という観点で特に大きな役割を果たしている。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">働きやすさの改善は働きがいの向上を保証しない</div>
+      <p>働き方改革によって労働時間は着実に短縮されてきたにもかかわらず、内閣府調査に見る仕事のやりがいの実感は依然として1980年代の水準を回復していない。両者は異なるメカニズムで機能する、非対称な関係にある。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">「働きやすさのその先」が次の課題</div>
+      <p>働きやすさは離職の抑止に、働きがいは転職意欲そのものの抑制に、それぞれ異なる形で寄与する。制度整備が一巡した組織にとって、個人の心理的個人差や生活習慣まで視野に入れた、より個別的な働きがい向上策が次の論点になる。</p>
+    </div>
+    <p>これらの知見を踏まえると、今後の実務・政策的な課題は、働きやすさの制度整備が一巡した組織が、次の段階として個々人の働きがいをどう実現するか、という論点に移りつつあることが挙げられる。パーソル総合研究所が指摘するように、「働きやすさのその先」にある働きがいの実現は、画一的な制度設計では対応しきれず、個人差まで視野に入れた、より個別的なアプローチが求められる段階に来ていると言える。</p>
+  </div>
+
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-num">1</span>
+        <span>厚生労働省職業安定局雇用開発部雇用開発企画課「働きやすい・働きがいのある職場づくりに関する調査報告書」（2014年）<span class="ref-tag">調査報告</span><br>
+        <a href="https://www.mhlw.go.jp/chushoukigyou_kaizen/investigation/report.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/chushoukigyou_kaizen/investigation/report.pdf</a></span>
+      </li>
+      <li>
+        <span class="ref-num">2</span>
+        <span>谷伊織・辰巳哲子（リクルートワークス研究所）「働きがいの実態調査2020」報告書（調査：2019年11月）<span class="ref-tag">調査報告</span><br>
+        <a href="https://www.works-i.com/research/report/item/hatarakigai-survey.pdf" target="_blank" rel="noopener">https://www.works-i.com/research/report/item/hatarakigai-survey.pdf</a></span>
+      </li>
+      <li>
+        <span class="ref-num">3</span>
+        <span>リクルートワークス研究所「全国就業実態パネル調査（JPSED）」<span class="ref-tag">調査報告</span><br>
+        <a href="https://www.works-i.com/surveys/report/panel-surveys/" target="_blank" rel="noopener">https://www.works-i.com/surveys/report/panel-surveys/</a></span>
+      </li>
+      <li>
+        <span class="ref-num">4</span>
+        <span>パーソル総合研究所「働く1万人の就業・成長定点調査」（2023年版ほか）<span class="ref-tag">調査報告</span><br>
+        <a href="https://www.nikkei.com/article/DGXZRSP654304_R00C23A5000000/" target="_blank" rel="noopener">https://www.nikkei.com/article/DGXZRSP654304_R00C23A5000000/</a></span>
+      </li>
+      <li>
+        <span class="ref-num">5</span>
+        <span>パーソル総合研究所「《Well-Being》『働きやすさ』のその先へ　一人ひとりの『働きがい』を実現するために」<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://rc.persol-group.co.jp/thinktank/thinktank-column/i-202412020006/" target="_blank" rel="noopener">https://rc.persol-group.co.jp/thinktank/thinktank-column/i-202412020006/</a></span>
+      </li>
+      <li>
+        <span class="ref-num">6</span>
+        <span>日本能率協会総合研究所「働きがい1万人調査」<span class="ref-tag">調査報告</span><br>
+        <a href="https://jmar-im.com/column_es/es2409/" target="_blank" rel="noopener">https://jmar-im.com/column_es/es2409/</a></span>
+      </li>
+      <li>
+        <span class="ref-num">7</span>
+        <span>Great Place To Work® Institute Japan（働きがいのある会社研究所）認定・ランキング制度<span class="ref-tag">ウェブサイト</span><br>
+        <a href="https://hatarakigai.info/" target="_blank" rel="noopener">https://hatarakigai.info/</a></span>
+      </li>
+      <li>
+        <span class="ref-num">8</span>
+        <span>産業保健心理学レビュー「ワーク・エンゲイジメント：研究と実践における最近10年の動向」<span class="ref-tag">論文</span><br>
+        <a href="https://www.jstage.jst.go.jp/article/ohpfrev/37/3/37_121/_pdf/-char/ja" target="_blank" rel="noopener">https://www.jstage.jst.go.jp/article/ohpfrev/37/3/37_121/_pdf/-char/ja</a></span>
+      </li>
+      <li>
+        <span class="ref-num">9</span>
+        <span>内閣府「国民生活選好度調査」（2008年）<span class="ref-tag">統計</span><br>
+        <span>内閣府経済社会総合研究所刊行資料</span></span>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>素材：厚生労働省・内閣府の公開調査資料、リクルートワークス研究所・パーソル総合研究所・日本能率協会総合研究所の公開調査資料、J-STAGE/CiNii掲載学術論文、Great Place To Work® Institute Japan公開情報（2026年8月時点のWeb公開情報に基づく）</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  /* ── テキスト選択 → ここから読み上げ ── */
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>
