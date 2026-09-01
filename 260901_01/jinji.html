@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中小企業の経営課題 ― 人材強化・人手不足・賃上げの実態</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+.overview table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+.overview th, .overview td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+.overview th { background: var(--tag-bg); color: var(--blue); font-weight: 700; }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── cite / references ── */
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+@media (max-width: 640px) { .references { padding: 28px 20px; } }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .layer-grid { grid-template-columns: 1fr; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+  .overview table { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">中小企業の経営課題</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>中小企業の経営課題 ― 人材強化・人手不足・賃上げの実態</h1>
+  <p class="sub">帝国データバンク・商工会議所・中小企業庁・厚生労働省等の実際の調査結果に基づくウェブ調査レポート／人事系課題を中心に</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#section1">人手不足の実態</a></li>
+    <li><a href="#section2">賃上げの実態</a></li>
+    <li><a href="#section3">定着・人材育成</a></li>
+    <li><a href="#section4">働き方改革対応</a></li>
+    <li><a href="#section5">事業承継・後継者問題</a></li>
+    <li><a href="#conclusion">総括</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>中小企業が2026年に最も重く受け止めている経営課題は、資金繰りでも設備投資でもなく「人材」である。帝国データバンクが2026年1月20日から2月6日にかけて経営層・マネジャー5,241人を対象に実施した「企業の経営課題に関するアンケート（2026年）」によれば、「人材強化（採用・定着・育成）」を課題に挙げた企業は90.2%にのぼり、2位の「既存顧客との取引深耕」（66.0%）、3位の「販路開拓」（60.5%）を20ポイント以上引き離してトップに立った<sup class="cite-ref">※1</sup>。さらに5位には「賃上げ・人事評価制度への対応」（57.6%）も入っており、経営課題トップ10のうち2項目が人事領域で占められている。</p>
+
+    <table>
+      <tr><th>順位</th><th>経営課題</th><th>割合</th></tr>
+      <tr><td>1</td><td>人材強化（採用・定着・育成）</td><td>90.2%</td></tr>
+      <tr><td>2</td><td>既存顧客との取引深耕</td><td>66.0%</td></tr>
+      <tr><td>3</td><td>販路開拓</td><td>60.5%</td></tr>
+      <tr><td>4</td><td>業務の標準化</td><td>58.3%</td></tr>
+      <tr><td>5</td><td>賃上げ・人事評価制度への対応</td><td>57.6%</td></tr>
+      <tr><td>6</td><td>資金繰り・財務体質の強化</td><td>52.5%</td></tr>
+      <tr><td>7</td><td>設備投資</td><td>48.0%</td></tr>
+      <tr><td>8</td><td>原材料・エネルギーコスト上昇の価格転嫁</td><td>47.7%</td></tr>
+      <tr><td>9</td><td>AI活用</td><td>40.4%</td></tr>
+      <tr><td>10</td><td>業務プロセスのDX化</td><td>40.1%</td></tr>
+    </table>
+
+    <p>企業規模別に見ると、人材強化を課題とする割合は大企業98.2%、中堅企業96.6%、中小企業94.0%、小規模企業77.6%と、規模が小さいほど数値が下がる傾向にある<sup class="cite-ref">※1</sup>。これは小規模企業が人材課題を軽視しているのではなく、「資金繰り」（小規模企業61.9%、全体比+10pt）への対応に追われ、人材への計画的な投資に手が回りにくい実態を反映していると考えられる。同調査では、人材強化に「1年以内に着手すべき」と答えた企業が全カテゴリー中最高の80.5%に達しており、多くの経営者が人材課題を先送りできない緊急課題と認識していることがうかがえる<sup class="cite-ref">※1</sup>。</p>
+
+    <p>こうした個別企業の実感は、政策側の分析とも整合する。2026年4月に閣議決定された中小企業庁「2026年版中小企業白書・小規模企業白書」は、日本社会が「労働供給制約社会」に突入しつつあると指摘し、現状のままでは2040年の雇用者数が2018年比で約85%まで減少しうると警鐘を鳴らしている<sup class="cite-ref">※8</sup>。白書は「現状維持は最大のリスク」とし、賃上げが進む一方で価格転嫁や生産性向上が追いつかず、「業績改善を伴わない賃上げ」に陥っている企業が少なくない実態を指摘している<sup class="cite-ref">※8</sup>。人材の量的不足と、それに対応するための処遇改善コストという二正面の圧力が、中小企業経営の中心的な課題になっていると言える。</p>
+
+    <p>以下では、この人事領域の課題を「人手不足の実態」「賃上げの実態」「定着・人材育成」「働き方改革対応の負担」「事業承継・後継者問題」の5つの切り口から、実際の調査データに基づいて掘り下げる。</p>
+  </div>
+
+  <section id="section1">
+    <h2><span class="icon">👥</span>迫る人手不足 ― 現場が最も強く感じる課題</h2>
+    <div class="policy-tag">帝国データバンク／東京商工会議所 調査</div>
+    <p>人材強化が経営課題の首位に立つ背景には、すでに現場で顕在化している深刻な人手不足がある。帝国データバンクが毎月実施している「人手不足に対する企業の動向調査」の2026年1月分では、正社員の人手不足を感じている企業は52.3%（前年同月比-1.1pt）で、1月としては4年連続で50%を超える高水準が続いている。非正社員についても28.8%（前年同月比-1.8pt）と、2年ぶりに30%を下回ったものの、依然として3割近くの企業が人手不足を訴えている<sup class="cite-ref">※2</sup>。</p>
+    <p>業種別に見ると、正社員では建設（69.6%）、情報サービス（69.2%）、メンテナンス・警備・検査（67.4%）、リース・賃貸（66.0%）の4業種が突出しており、7業種で6割を超える。非正社員では人材派遣・紹介（60.0%）が唯一6割を超え、飲食店（58.6%）、メンテナンス・警備・検査（54.6%）が続く<sup class="cite-ref">※2</sup>。東京商工会議所の調査でも、全体の65.6%が「人手不足」と回答しており、業種別では建設業78.9%、運輸業77.3%、介護・看護業76.9%と、対人サービス・現場系の業種で特に深刻な水準にある（製造業は57.8%で相対的に低い）<sup class="cite-ref">※3</sup>。</p>
+    <div class="highlight"><strong>人手不足倒産、3年連続で過去最多を更新</strong><br>人手不足は経営上のボトルネックにとどまらず、企業の存続そのものを脅かす要因になりつつある。2025年の「人手不足倒産」は427件で3年連続の過去最多を更新し、初めて400件を突破した。主な業種は建設、物流、老人福祉事業で、いずれも人手不足の割合が高い業種と重なる<sup class="cite-ref">※2</sup>。一方で飲食店・旅館ホテル業の非正社員部門は3年連続の改善が見られ、DXやスポットワークの普及が人手不足の緩和に寄与している可能性が指摘されている<sup class="cite-ref">※2</sup>。</div>
+  </section>
+
+  <section id="section2">
+    <h2><span class="icon">💴</span>賃上げの実態 ― 広がる「防衛的賃上げ」</h2>
+    <div class="policy-tag">日本商工会議所／東京商工リサーチ／東京商工会議所 調査</div>
+    <p>人手不足への対抗策として、多くの中小企業が賃上げに動いている。日本商工会議所の調査によれば、2026年度の中小企業の賃上げ率見通しは平均4.29%で、人手確保の必要性から伸び幅が拡大している<sup class="cite-ref">※5</sup>。東京商工リサーチの調査でも、2026年度に賃上げを実施する企業は83.2%にのぼり、賃上げ率5%以上の企業の割合では中小企業が大企業を上回るという結果が出ている<sup class="cite-ref">※4</sup>。</p>
+    <p>もっとも、その内実を見ると「業績の裏付けを伴わない賃上げ」が広がっている点に注意が必要だ。東京商工会議所の調査では、2024年度に賃上げを予定する企業は61.3%（前年度比+3.1pt）だったが、そのうち60.3%が「業績改善がないにもかかわらず賃上げを行う」といういわゆる防衛的賃上げだった<sup class="cite-ref">※3</sup>。賃上げ率の内訳では「3%以上」が36.6%（前年度比+3.1pt）、「5%以上」が10.0%となっている一方、最低賃金への対応では「最低賃金未満の水準から引き上げる」企業が38.4%、「最低賃金以上だが引き上げる」企業が29.8%（前年度比+5.2pt）と、賃金水準の底上げ圧力が強まっていることがわかる<sup class="cite-ref">※3</sup>。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">4.29<span>%</span></div><div class="lbl">2026年度 中小企業賃上げ率見通し（日商）</div></div>
+      <div class="stat"><div class="val">83.2<span>%</span></div><div class="lbl">2026年度に賃上げを実施する企業の割合（東京商工リサーチ）</div></div>
+      <div class="stat"><div class="val">60.3<span>%</span></div><div class="lbl">賃上げ予定企業のうち「業績改善なき賃上げ」の割合（東商）</div></div>
+    </div>
+    <p>中小企業庁の中小企業白書もこの点を課題として明示しており、原価管理を徹底し価格転嫁に成功している企業ほど賃上げの原資を確保できている一方、多くの中小企業では「制度整備や処遇改善を行いたくても資金的な制約が大きく」対応が追いつかない実態があると指摘する<sup class="cite-ref">※8</sup>。賃上げそのものは人材確保のための必須条件になりつつあるが、それを持続可能にするための付加価値額の向上、すなわち価格転嫁力や生産性の改善が、賃上げと表裏一体の課題として浮上している。</p>
+  </section>
+
+  <section id="section3">
+    <h2><span class="icon">🎓</span>採用できても辞める ― 定着と人材育成の壁</h2>
+    <div class="policy-tag">厚生労働省「能力開発基本調査」等</div>
+    <p>人材課題は「採る」ことだけでなく、「育てる」「定着させる」段階にも及ぶ。厚生労働省が公表した令和6年度「能力開発基本調査」によれば、正社員に対してOFF-JT（職場を離れた計画的な教育訓練）を実施した事業所の割合は37.0%、教育訓練費用を支出した企業は54.9%で、OFF-JTの一人当たり平均支出額は1.5万円にとどまる。一方で、能力開発上「何らかの問題がある」とした事業所は79.9%にのぼり、多くの企業が人材育成の必要性を認識しつつも十分な投資ができていない状況がうかがえる<sup class="cite-ref">※9</sup>。</p>
+    <p>離職の面でも、企業規模による格差が根強い。大卒新入社員の3年以内離職率は、従業員1000人以上の企業では27.0%（2022年卒）である一方、規模が小さくなるほど離職率は上昇する傾向が一貫して見られ、従業員5人未満の企業では50%を超えるケースもあるとされる。もっとも、近年は大企業側の離職率も上昇傾向にあり、大企業と中小企業の差は過去の10ポイント超から6〜7ポイント程度まで縮小してきているとの分析もある<sup class="cite-ref">※10</sup>。中小企業にとって、限られた採用コストをかけて確保した人材が早期に離職することは、採用活動そのものをやり直すコストに直結するため、人手不足の悪循環を助長する要因になっている。</p>
+    <p>こうした状況を反映し、帝国データバンクの経営課題調査でも「人材強化」の内訳として「採用」「定着」「育成」の3つが一体で挙げられており、賃金体系や評価制度の透明性など、働き続けたいと思える処遇・制度設計が人材確保の成否を左右する要素として指摘されている<sup class="cite-ref">※1</sup>。</p>
+  </section>
+
+  <section id="section4">
+    <h2><span class="icon">⏱️</span>働き方改革対応のひずみ ― 人材育成にも影を落とす規制対応</h2>
+    <div class="policy-tag">日本商工会議所・東京商工会議所「中小企業の働き方改革に関する調査」</div>
+    <p>人手不足のなかで、時間外労働の上限規制など働き方改革関連法制への対応も中小企業の重荷になっている。日本商工会議所・東京商工会議所が全国の商工会議所会員企業1,724社を対象に2026年4月7日から5月18日にかけて実施した調査によれば、現行の時間外労働規制の範囲内で「概ね支障なく対応できている」企業は80.9%だった一方、19.1%は何らかの事業運営上の制約を抱えていると回答した<sup class="cite-ref">※7</sup>。</p>
+    <p>業種別に見ると、制約を感じている企業の割合は運輸業35.7%、建設業28.7%、宿泊・飲食業24.5%と、いわゆる「2024年問題」の対象業種で特に高い。36協定の締結状況では、特別条項付き36協定を締結している企業が35.2%、通常の36協定が46.8%である一方、18.1%は36協定を未締結のまま運営している<sup class="cite-ref">※7</sup>。</p>
+    <div class="highlight"><strong>人材育成にも波及する規制対応の負荷</strong><br>時間外労働規制への対応で事業運営に制約があると答えた企業（n=329）のうち、63.2%が「管理職・リーダー層への業務負担増加や業務の偏在」を課題として挙げ、33.1%が「従業員のプロ意識・スキル低下や人材育成の停滞」を、23.1%が「前向きな投資機会の減少」を挙げている<sup class="cite-ref">※7</sup>。労働時間規制への対応が、人材育成という別の人事課題にしわ寄せを生んでいる構図が読み取れる。</div>
+    <p>企業側が政府に求める施策としては、「変形労働時間制・フレックスタイム制度等の拡充、要件緩和や手続きの簡素化等」による柔軟な労働時間制度の整備を求める声が72.6%と最も多く、繁閑差や突発的な業務量の変動に対応しきれない中小企業の実情がにじむ<sup class="cite-ref">※7</sup>。労働時間そのものについては、企業の60.5%が「現状維持」を望む一方、30.1%は「減らしたい」と回答しており、規制対応と業務量のバランスに苦慮する経営者の姿がうかがえる<sup class="cite-ref">※7</sup>。</p>
+  </section>
+
+  <section id="section5">
+    <h2><span class="icon">🤝</span>経営を引き継ぐ人がいない ― 事業承継と後継者問題</h2>
+    <div class="policy-tag">帝国データバンク「後継者不在率」動向調査</div>
+    <p>人事課題は従業員の採用・育成にとどまらず、経営そのものを引き継ぐ「後継者」の不在という形でも中小企業を圧迫している。帝国データバンクの「全国『後継者不在率』動向調査（2025年）」によれば、2025年の後継者不在率は50.1%で、前年比2.0ポイント低下し7年連続の改善となった。2017年の66.5%からは16.4ポイントの改善だが、改善ペースは鈍化しており、今後も50%前後で高止まりする可能性が指摘されている<sup class="cite-ref">※6</sup>。</p>
+    <p>企業規模別では、大企業24.9%に対し、中小企業51.2%、小規模企業57.3%と、規模が小さいほど後継者不在率が高い状態が続いている。業種別では初めて全8業種で不在率が60%を下回り、最も高い建設業でも57.3%（ピーク時71.4%から大幅改善）、最も低い製造業は42.4%となっている<sup class="cite-ref">※6</sup>。</p>
+    <p>後継者不在率の改善を支えているのは、事業承継のあり方そのものの変化である。同調査では、後継者の選定方法として「内部昇格」が36.1%と、初めて「同族承継」（32.3%）を上回った。これに「M&A等」（20.6%）、「外部招聘」（7.6%）が続き、後継者候補の属性でも「非同族」が41.0%と初めて4割を超え、4年連続でトップとなった<sup class="cite-ref">※6</sup>。血縁によらない「脱ファミリー化」が、中小企業の事業承継における新たな標準になりつつある。この変化は、経営人材の確保・育成という観点でも、社内の人事制度や人材育成のあり方が経営の持続可能性に直結することを示している。</p>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+
+    <div class="point">
+      <div class="pt-title">人材課題は「経営課題そのもの」になっている</div>
+      <p>帝国データバンクの調査で90.2%の企業が挙げた「人材強化」は、もはや個別の人事施策の課題ではなく、販路開拓や資金繰りと並ぶ、あるいはそれ以上に優先度の高い経営課題として位置づけられている。人手不足の深刻化（正社員52.3%、人手不足倒産427件）が賃上げ圧力（賃上げ実施率83.2%）を生み、その原資確保のために価格転嫁や生産性向上が必要になるという構造が、多くの中小企業に共通している。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">「防衛的賃上げ」が示す構造的な余力不足</div>
+      <p>賃上げ予定企業の6割が「業績改善を伴わない賃上げ」と回答している事実は、中小企業の賃上げが必ずしも好業績の裏付けを持って行われているわけではないことを示している。原価管理・価格転嫁・生産性向上という「稼ぐ力」の強化なしに賃上げだけが先行すれば、処遇改善の持続可能性そのものが問われることになる。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">規模が小さいほど、あらゆる人事課題が重層化する</div>
+      <p>人材強化への着手率、後継者不在率、離職率のいずれにおいても、企業規模が小さいほど厳しい数値が並ぶ。小規模企業は資金繰りへの対応に追われて人材への計画的投資が後回しになりやすく（人材強化課題77.6%、資金繰り課題61.9%）、後継者不在率も57.3%と最も高い。人事課題への対応力そのものに規模間格差があることを踏まえた支援策の必要性がうかがえる。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">制度対応の負荷が人材育成を圧迫する二次的な課題</div>
+      <p>働き方改革関連の規制対応に追われる企業の3割超が、人材育成の停滞やスキル低下を課題として挙げている。人手不足の解消を目指す取り組み（採用強化、労働時間短縮）が別の人事課題（育成投資の余力低下）を生む、いわば「人事課題の連鎖」が生じている点は、単発の施策では解決が難しい構造的な問題であることを示唆している。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">「脱ファミリー化」が示す経営人材への視点の変化</div>
+      <p>事業承継における内部昇格の増加（36.1%、初めて同族承継を上回る）は、経営人材の確保・育成というテーマが、従業員レベルの人事課題と地続きであることを示している。社内で経営を担える人材をどう育てるかという視点が、今後の中小企業における人材戦略の中心的なテーマになっていくと考えられる。</p>
+    </div>
+
+    <p>以上のように、中小企業の経営課題は「人材強化」を軸に、人手不足・賃上げ・定着・働き方改革対応・事業承継という複数の人事関連課題が相互に絡み合う複合的な構造を持つ。個々の施策を単発で講じるだけでなく、処遇改善と生産性向上を両輪で進める視点が、今後の中小企業支援・経営における鍵になると考えられる。</p>
+  </div>
+
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li><span class="ref-num">1</span><span>帝国データバンク「企業の経営課題に関するアンケート（2026年）」（2026年3月4日）<span class="ref-tag">調査報告</span><br><a href="https://www.tdb.co.jp/report/economic/20260304-management-issues/" target="_blank" rel="noopener">https://www.tdb.co.jp/report/economic/20260304-management-issues/</a></span></li>
+      <li><span class="ref-num">2</span><span>帝国データバンク「人手不足に対する企業の動向調査（2026年1月）」（2026年2月20日）<span class="ref-tag">調査報告</span><br><a href="https://www.tdb.co.jp/report/economic/20260220-laborshortage202601/" target="_blank" rel="noopener">https://www.tdb.co.jp/report/economic/20260220-laborshortage202601/</a></span></li>
+      <li><span class="ref-num">3</span><span>東京商工会議所「中小企業の人手不足、賃金・最低賃金に関する調査」集計結果<span class="ref-tag">調査報告</span><br><a href="https://www.tokyo-cci.or.jp/page.jsp?id=1202158" target="_blank" rel="noopener">https://www.tokyo-cci.or.jp/page.jsp?id=1202158</a></span></li>
+      <li><span class="ref-num">4</span><span>東京商工リサーチ「2026年度の『賃上げ』83.2％の企業で実施 賃上げ率5%以上、中小企業が大企業を上回る」<span class="ref-tag">調査報告</span><br><a href="https://www.tsr-net.co.jp/data/detail/1203140_1527.html" target="_blank" rel="noopener">https://www.tsr-net.co.jp/data/detail/1203140_1527.html</a></span></li>
+      <li><span class="ref-num">5</span><span>時事通信「26年度の中小賃上げ率4.29％ 人手確保へ伸び拡大―日商」（2026年6月8日）<span class="ref-tag">ウェブサイト</span><br><a href="https://www.jiji.com/jc/article?k=2026060800835&amp;g=eco" target="_blank" rel="noopener">https://www.jiji.com/jc/article?k=2026060800835&amp;g=eco</a></span></li>
+      <li><span class="ref-num">6</span><span>帝国データバンク「全国『後継者不在率』動向調査（2025年）」（2025年11月21日）<span class="ref-tag">調査報告</span><br><a href="https://www.tdb.co.jp/report/economic/20251121-successor25y/" target="_blank" rel="noopener">https://www.tdb.co.jp/report/economic/20251121-successor25y/</a></span></li>
+      <li><span class="ref-num">7</span><span>日本商工会議所・東京商工会議所「中小企業の働き方改革に関する調査」集計結果（2026年5月25日）<span class="ref-tag">調査報告</span><br><a href="https://www.mhlw.go.jp/content/12602000/001704953.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/content/12602000/001704953.pdf</a></span></li>
+      <li><span class="ref-num">8</span><span>経済産業省・中小企業庁「2026年版中小企業白書・小規模企業白書の概要」（2026年4月）<span class="ref-tag">白書</span><br><a href="https://www.meti.go.jp/press/2026/04/20260424005/20260424005.html" target="_blank" rel="noopener">https://www.meti.go.jp/press/2026/04/20260424005/20260424005.html</a></span></li>
+      <li><span class="ref-num">9</span><span>厚生労働省「令和6年度『能力開発基本調査』の結果を公表します」<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/stf/houdou/newpage_00202.html" target="_blank" rel="noopener">https://www.mhlw.go.jp/stf/houdou/newpage_00202.html</a></span></li>
+      <li><span class="ref-num">10</span><span>カイラボ「2025年版｜大卒新入社員の3年以内離職率と会社の規模別傾向」<span class="ref-tag">ウェブサイト</span><br><a href="https://kailabo.com/soukirisyoku/31354/" target="_blank" rel="noopener">https://kailabo.com/soukirisyoku/31354/</a></span></li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>素材：帝国データバンク・東京商工会議所・日本商工会議所・東京商工リサーチ・中小企業庁・厚生労働省 等の公開調査結果（ウェブ調査、2026年9月時点）</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  /* ── テキスト選択 → ここから読み上げ ── */
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>

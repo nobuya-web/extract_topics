@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中小企業はどこに相談しているか ― 相談先と支援策の活用実態</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── cite / references ── */
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+@media (max-width: 640px) { .references { padding: 28px 20px; } }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .layer-grid { grid-template-columns: 1fr; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">中小企業の経営課題</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>中小企業はどこに相談しているか ― 相談先と支援策の活用実態</h1>
+  <p class="sub">中小企業庁・中小機構等の実際の調査結果に基づくウェブ調査レポート／相談先・支援機関の活用実態を中心に</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#section1">日常の相談相手</a></li>
+    <li><a href="#section2">よろず支援拠点</a></li>
+    <li><a href="#section3">商工会議所・商工会</a></li>
+    <li><a href="#section4">事業承継・M&A支援</a></li>
+    <li><a href="#section5">専門家派遣・補助金</a></li>
+    <li><a href="#conclusion">総括</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>前回のレポートで見た通り、中小企業の経営課題は「人材強化」を筆頭に、賃上げ・人手不足・事業承継など複数の人事関連課題が重なり合う複合的な構造を持つ。では、こうした課題に直面したとき、中小企業の経営者は実際にどこへ相談し、どのような支援を受けているのだろうか。</p>
+    <p>中小企業庁「2024年版中小企業白書」の分析では、小規模事業者の8割以上が支援機関を「頻繁に活用」または「ある程度活用」していると回答している。そして支援機関を活用している事業者は、活用していない事業者と比べて、2019年比での売上「大幅増加」「増加」の回答割合が高く、2023年営業利益が「黒字」となる割合も高い傾向にある<sup class="cite-ref">※1</sup>。相談先を持ち、外部の知見を取り込むこと自体が、経営の安定・成長と結びついている可能性がうかがえる。</p>
+    <p>一方で、支援する側の体制には課題も見えている。同白書では、支援機関の相談員について半数以上が「不足している」と回答し、約6割が2019年比で相談件数の増加を実感、8割超が相談内容の多様化を認識している<sup class="cite-ref">※1</sup>。中小企業の相談ニーズが量的にも質的にも拡大する一方、それを受け止める側の体制整備が追いついていない構図がある。</p>
+    <p>以下では、中小企業が実際に頼っている相談相手・支援機関を「日常の相談相手」「よろず支援拠点」「商工会議所・商工会」「事業承継・M&A専門支援」「専門家派遣等その他メニュー」の5つの切り口で、公表されている調査データに基づいて整理する。</p>
+  </div>
+
+  <section id="section1">
+    <h2><span class="icon">💬</span>日常の相談相手 ― 誰に、どんな時に相談しているか</h2>
+    <div class="policy-tag">中小企業庁「2020年版小規模企業白書」</div>
+    <p>中小企業庁「2020年版小規模企業白書」が行った調査によれば、中小企業・小規模事業者が日常的に頼る相談相手として、企業規模を問わず最も回答率が高いのは「税理士・公認会計士」である。すべての決算・税務処理を通じて日常的に接点を持つ専門家であることが、相談相手として選ばれやすい理由と考えられる<sup class="cite-ref">※2</sup>。</p>
+    <p>2番目に多い相談相手は企業規模によって異なる。従業員数が少ない小規模事業者では「同業種の経営者仲間（取引先を除く）」が2番目に多く、規模がやや大きい中規模企業では「経営陣、従業員」など社内の人材が2番目に挙げられている<sup class="cite-ref">※2</sup>。相談相手として実際に「有効」と評価されている先も、小規模事業者では税理士・公認会計士や同業種の経営者仲間が中心である一方、規模の大きい企業では社内の経営陣・従業員からの助言が高く評価される傾向にある<sup class="cite-ref">※2</sup>。</p>
+    <div class="highlight"><strong>相談相手を持たない事業者の7割が「つながりがない」と回答</strong><br>同調査では、相談相手を持たない事業者にその理由を尋ねたところ、約70%が「適切な相談相手とのつながりがないから」と回答している<sup class="cite-ref">※2</sup>。これは相談の必要性を感じていないというより、どこに・誰にアクセスすればよいか分からないという情報・接点の不足が、支援を受けられない大きな要因になっていることを示している。よろず支援拠点や商工会議所など、公的な相談窓口の認知向上が引き続き課題であることがうかがえる。</div>
+  </section>
+
+  <section id="section2">
+    <h2><span class="icon">🏢</span>よろず支援拠点 ― 無料で使える公的な総合相談窓口</h2>
+    <div class="policy-tag">中小企業庁「よろず支援拠点のあり方検討会 報告書」（2025年3月）</div>
+    <p>税理士や同業者といった身近な相談相手に加え、国が全国47都道府県に設置している無料の経営相談所が「よろず支援拠点」である。中小企業庁が2025年3月31日に公表した「地域の経営支援力強化に向けたよろず支援拠点のあり方検討会 報告書」によれば、令和5年度の相談対応件数は40万件強にのぼり、平成26年度の拠点設置以来、一貫して増加を続けている<sup class="cite-ref">※3</sup>。</p>
+    <p>利用者の評価も高く、各拠点の顧客満足度は90%を超える水準を維持している<sup class="cite-ref">※3</sup>。相談内容の内訳を見ると、「売上拡大」に関する相談が74.1%と圧倒的に多く、次いで「経営改善・事業再生」が12.7%、「創業」が11.1%となっている<sup class="cite-ref">※3</sup>。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">40<span>万件強</span></div><div class="lbl">令和5年度 よろず支援拠点 相談対応件数</div></div>
+      <div class="stat"><div class="val">90<span>%超</span></div><div class="lbl">各拠点の顧客満足度</div></div>
+      <div class="stat"><div class="val">74.1<span>%</span></div><div class="lbl">相談内容のうち「売上拡大」の割合</div></div>
+    </div>
+    <p>支援対象となる事業者の規模を見ると、創業前の相談が57.3%と半数を超え、5人以下の事業者が19.5%、6〜20人が13.5%と続く<sup class="cite-ref">※3</sup>。業種別ではサービス業（34.4%）、製造業（15.1%）、宿泊業・飲食業（12.3%）、小売業（11.7%）の順となっており、比較的小規模で、対人サービス性の高い業種の利用が多いことがわかる<sup class="cite-ref">※3</sup>。</p>
+    <p>もっとも、同報告書は課題も指摘している。相談対応に必要なスキルや資格を持つコーディネーターの配置、地域間での支援能力の格差、拠点間の連携不足などが、今後の見直しの論点として挙げられている<sup class="cite-ref">※3</sup>。よろず支援拠点は「相談件数」「満足度」の両面で高い実績を上げている一方、支援の質を担う人材の確保・育成が制度としての課題になっている。</p>
+  </section>
+
+  <section id="section3">
+    <h2><span class="icon">🏛️</span>商工会議所・商工会 ― 地域に根差した経営支援の担い手</h2>
+    <div class="policy-tag">中小企業庁「2024年版中小企業白書」</div>
+    <p>地域の商工会議所・商工会も、中小企業にとって身近な相談先の一つである。中小企業庁「2024年版中小企業白書」では、支援機関全般（商工会議所・商工会を含む）について、小規模事業者の8割以上が活用していると回答している一方、支援機関側の視点では相談員の半数以上が「人員不足」を訴え、約6割が相談件数の増加を、8割超が相談ジャンルの多様化を実感していると分析されている<sup class="cite-ref">※1</sup>。</p>
+    <p>これは、資金繰りや税務といった伝統的な相談分野に加え、人材確保・育成、賃上げ対応、DX推進、事業承継など、より専門性の高いテーマへの相談ニーズが商工会議所・商工会にも押し寄せていることを示唆している。地域の相談窓口としての役割が拡大する一方で、それに応えるための相談員体制の強化が、支援機関側の共通課題になっていると言える。</p>
+  </section>
+
+  <section id="section4">
+    <h2><span class="icon">🤝</span>事業承継・M&Aの専門支援 ― 「事業承継・引継ぎ支援センター」の実績拡大</h2>
+    <div class="policy-tag">中小企業基盤整備機構 プレスリリース</div>
+    <p>前回のレポートで取り上げた通り、中小企業の後継者不在率は2025年時点で50.1%と依然として高い水準にある。こうした課題に対応する専門機関が、中小企業基盤整備機構（中小機構）が全国48か所に設置する「事業承継・引継ぎ支援センター」である。</p>
+    <p>中小機構が公表した令和6年度実績によれば、同センターへの相談者数は23,000者超（累計では15万者超）にのぼる。このうち第三者承継（M&A）に関する相談者数は16,045者（累計約12万者）で、成約件数は2,132件と過去最高を更新した<sup class="cite-ref">※4</sup>。また、後継者不在の中小企業と創業希望者をマッチングする「後継者人材バンク」でも、成約件数106件（過去最高）、新規登録の創業希望者1,551者（累計1万者超）と、実績を伸ばしている<sup class="cite-ref">※4</sup>。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">23,000<span>者超</span></div><div class="lbl">令和6年度 相談者数（事業承継・引継ぎ支援センター）</div></div>
+      <div class="stat"><div class="val">2,132<span>件</span></div><div class="lbl">第三者承継（M&A）成約件数（過去最高）</div></div>
+      <div class="stat"><div class="val">106<span>件</span></div><div class="lbl">後継者人材バンク成約件数（過去最高）</div></div>
+    </div>
+    <p>M&Aによる第三者承継の成約件数が過去最高を更新し続けている背景には、前回レポートで見た「脱ファミリー化」（内部昇格36.1%が同族承継32.3%を初めて上回る）の流れとも重なる、事業承継の選択肢そのものの多様化がある。後継者問題を抱える経営者にとって、公的な専門窓口が「相談してみる」という最初の一歩の受け皿として機能し始めていると言える。</p>
+  </section>
+
+  <section id="section5">
+    <h2><span class="icon">🧭</span>専門家派遣・補助金など、その他の支援メニュー</h2>
+    <div class="policy-tag">経営者コネクト 等</div>
+    <p>このほか、中小企業庁は中小企業診断士・社会保険労務士・ITコーディネーターなど各分野の専門家を経営課題に応じて無料または低額で派遣する「専門家派遣」の仕組みも用意してきた。たとえば「中小企業119」は、経営課題ごとに専門家を選んで相談できる制度で、同一年度内に5回まで利用でき、初回相談は無料、2回目以降も数千円程度の低廉な負担で専門家の助言を受けられる仕組みだった<sup class="cite-ref">※5</sup>。ただし、こうした個別の専門家派遣事業は制度改編の対象になりやすく、実際に活用できる制度や窓口は年度によって変わりうるため、利用を検討する際は中小企業庁・中小機構や地域の商工会議所・よろず支援拠点など公的窓口で最新の制度を確認することが望ましい。</p>
+    <p>補助金についても、ものづくり補助金や小規模事業者持続化補助金など、経営課題に応じたメニューが用意されているが、制度の詳細や採択率は公募回ごとに変動するため、本レポートでは個別の数値の紹介は割愛し、「相談窓口を経由して自社に合う制度を確認する」という活用の入口を押さえておくことを優先したい。よろず支援拠点や商工会議所・商工会は、こうした補助金・支援制度の紹介機能も担っている。</p>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+
+    <div class="point">
+      <div class="pt-title">相談相手を持つこと自体が経営の安定に結びついている</div>
+      <p>中小企業白書の分析が示す通り、支援機関を活用している事業者は、そうでない事業者に比べて売上増加・黒字化の割合が高い。相談先の有無は、単なる情報収集の手段にとどまらず、経営の質そのものに影響しうる要素として位置づけられる。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">「相談相手がいない」の主因は情報不足であり、機会は用意されている</div>
+      <p>相談相手を持たない事業者の約7割が「つながりがないから」と回答している一方、よろず支援拠点（相談40万件超・満足度90%超）や事業承継・引継ぎ支援センター（相談者23,000者超）など、無料で使える公的窓口は着実に実績を伸ばしている。課題は制度の不在ではなく、経営者への周知と最初の一歩をどう後押しするかにある。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">相談ニーズの多様化に、支援側の体制強化が追いついていない</div>
+      <p>商工会議所・商工会・よろず支援拠点いずれにおいても、相談件数の増加と相談内容の多様化（資金繰りだけでなく人材・DX・事業承継まで）が共通して指摘されている。一方で相談員の半数以上が人員不足を訴えており、相談を受け止める側の質と量の確保が、支援機関共通の課題になっている。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">事業承継は「相談すれば動く」段階に入りつつある</div>
+      <p>事業承継・引継ぎ支援センターのM&A成約件数・後継者人材バンク成約件数がいずれも過去最高を更新している事実は、後継者不在という深刻な課題に対して、専門窓口への相談が実際の解決に結びつき始めていることを示している。後継者問題を一人で抱え込まず、早い段階で公的窓口に相談することの有効性が、実績データからも裏付けられつつある。</p>
+    </div>
+
+    <p>前回整理した「人材強化」「人手不足」「賃上げ」「事業承継」といった経営課題は、いずれも中小企業単独で解決することが難しいテーマである。税理士・同業者といった身近な相談相手に加え、よろず支援拠点・商工会議所・事業承継支援センターなど無料で使える公的な相談窓口が全国に整備されており、実際に活用した事業者は業績面でも良い傾向が見られる。課題を抱えたときに「まず相談してみる」ことが、中小企業の経営・人材課題への現実的な対処法として、データの上でも裏付けられていると言える。</p>
+  </div>
+
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li><span class="ref-num">1</span><span>中小企業庁「2024年版中小企業白書」第2部第4章第1節 支援機関の現状と課題<span class="ref-tag">白書</span><br><a href="https://www.chusho.meti.go.jp/pamflet/hakusyo/2024/chusho/b2_4_1.html" target="_blank" rel="noopener">https://www.chusho.meti.go.jp/pamflet/hakusyo/2024/chusho/b2_4_1.html</a></span></li>
+      <li><span class="ref-num">2</span><span>中小企業庁「2020年版小規模企業白書」第3部第2章第4節 日常の相談相手の活用<span class="ref-tag">白書</span><br><a href="https://www.chusho.meti.go.jp/pamflet/hakusyo/2020/shokibo/b3_2_4.html" target="_blank" rel="noopener">https://www.chusho.meti.go.jp/pamflet/hakusyo/2020/shokibo/b3_2_4.html</a></span></li>
+      <li><span class="ref-num">3</span><span>中小企業庁「地域の経営支援力強化に向けたよろず支援拠点のあり方検討会 報告書」（2025年3月31日）<span class="ref-tag">政策文書</span><br><a href="https://www.chusho.meti.go.jp/koukai/kenkyukai/yorozu/report/250331report01.pdf" target="_blank" rel="noopener">https://www.chusho.meti.go.jp/koukai/kenkyukai/yorozu/report/250331report01.pdf</a></span></li>
+      <li><span class="ref-num">4</span><span>独立行政法人中小企業基盤整備機構「令和6年度 事業承継・引継ぎ支援センターの実績について」<span class="ref-tag">調査報告</span><br><a href="https://prtimes.jp/main/html/rd/p/000001727.000021609.html" target="_blank" rel="noopener">https://prtimes.jp/main/html/rd/p/000001727.000021609.html</a></span></li>
+      <li><span class="ref-num">5</span><span>経営者コネクト「中小企業庁の専門家派遣事業『中小企業119』を解説！制度概要や事例も紹介」<span class="ref-tag">ウェブサイト</span><br><a href="https://keieisha-connect.com/2021/10/07/chusho_119/" target="_blank" rel="noopener">https://keieisha-connect.com/2021/10/07/chusho_119/</a></span></li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>素材：中小企業庁（中小企業白書・小規模企業白書）・中小企業基盤整備機構 等の公開調査結果（ウェブ調査、2026年9月時点）</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  /* ── テキスト選択 → ここから読み上げ ── */
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>
