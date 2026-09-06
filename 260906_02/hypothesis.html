@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>固定残業代は賃金と転職を抑制するか</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-rate { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; width: 72px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 25px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+.container { max-width: 880px; margin: 0 auto; padding: 48px 24px 80px; }
+
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── term comparison cards ── */
+.term-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+.term-card { border-radius: 8px; padding: 20px 22px; }
+.term-card.blue { background: #e8f0f9; border: 1px solid #b8d0ea; }
+.term-card.orange { background: #fff3e0; border: 1px solid #f5c97a; }
+.term-card .tc-title { font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+.term-card.blue .tc-title { color: var(--blue); }
+.term-card.orange .tc-title { color: #7a3e00; }
+.term-card .tc-name { font-size: 15px; font-weight: 700; margin-bottom: 10px; line-height: 1.4; }
+.term-card p { font-size: 13px; margin-bottom: 8px; color: var(--text); }
+.term-card .tc-kw { display: inline-block; font-size: 11px; font-weight: 700; background: rgba(255,255,255,0.7); border-radius: 4px; padding: 2px 8px; margin: 2px 2px 0 0; }
+
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section h3 { font-size: 15px; font-weight: 700; color: var(--blue); margin: 22px 0 10px; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+.caution { background: #fdeeee; border-left: 4px solid #c85a5a; border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #6b1f1f; }
+.caution strong { color: #c85a5a; }
+
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 25px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 14px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── case law list ── */
+.case-list { list-style: none; margin: 16px 0; }
+.case-list li { padding: 16px 0; border-bottom: 1px solid var(--border); }
+.case-list li:last-child { border-bottom: none; }
+.case-name { font-weight: 700; font-size: 14px; color: var(--blue); margin-bottom: 6px; }
+.case-name .case-date { font-weight: 400; font-size: 11px; color: var(--muted); margin-left: 8px; }
+.case-list p { font-size: 13.5px; margin-bottom: 0; }
+
+/* ── trend table (reused from previous report) ── */
+.trend-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--border); border-radius: 8px; }
+.trend-table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 640px; }
+.trend-table th, .trend-table td { padding: 9px 10px; text-align: center; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.trend-table thead th { background: var(--blue); color: #fff; font-weight: 700; }
+.trend-table th.rowh, .trend-table td.rowh { text-align: left; background: var(--bg); color: var(--muted); font-weight: 700; white-space: normal; min-width: 150px; }
+.trend-table tbody tr:nth-child(even) td:not(.rowh) { background: #fafcfe; }
+.trend-table tr:last-child td { border-bottom: none; }
+.trend-note { font-size: 11px; color: var(--muted); margin-top: 8px; }
+
+/* ── evidence-level list ── */
+.evidence-list { list-style: none; margin: 16px 0; }
+.evidence-list li { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.7; }
+.evidence-list li:last-child { border-bottom: none; }
+.ev-badge { flex-shrink: 0; width: 74px; text-align: center; font-size: 10px; font-weight: 700; border-radius: 99px; padding: 4px 0; height: 22px; line-height: 14px; margin-top: 2px; }
+.ev-badge.strong { background: #e3f3e6; color: #1f7a3a; }
+.ev-badge.partial { background: #fff3e0; color: #7a3e00; }
+.ev-badge.weak { background: #fdeeee; color: #a13a3a; }
+.ev-text strong { display: block; font-size: 13px; color: var(--blue); margin-bottom: 4px; }
+
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-rate { font-size: 0.7rem; width: 60px; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 19px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+  .term-grid { grid-template-columns: 1fr; }
+  .references { padding: 28px 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="site-title">固定残業代制度</span>
+  <div class="tts-bar">
+    <select id="tts-voice" class="tts-select" aria-label="音声選択"></select>
+    <select id="tts-rate" class="tts-rate" aria-label="読み上げ速度">
+      <option value="0.8">0.8×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.2">1.2×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.8">1.8×</option>
+    </select>
+    <button id="tts-btn" class="tts-btn" data-state="idle">▶ 読み上げ</button>
+    <button id="tts-stop" class="tts-stop">■ 停止</button>
+    <span id="tts-label" class="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <span class="label">トピックス</span>
+  <h1>固定残業代制度は賃金上昇と転職を抑制するか<br>仮説の検討</h1>
+  <p class="sub">「みなし残業制」「固定残業代」「みなし労働時間制」を区別し、判例・行政通達・政府統計から仮説を検証する</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#teigi">①制度の仕組み</a></li>
+    <li><a href="#gyousei">②行政の対応</a></li>
+    <li><a href="#minashi">③みなし労働時間制の実態</a></li>
+    <li><a href="#donyu">④導入率と未払い実態</a></li>
+    <li><a href="#chingin">⑤賃金抑制の検討</a></li>
+    <li><a href="#tenshoku">⑥転職抑制の検討</a></li>
+    <li><a href="#hanshou">⑦反証・留保</a></li>
+    <li><a href="#conclusion">総括</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像：まず3つの言葉を区別する</h2>
+    <p>「みなし残業制」「固定残業代」「みなし労働時間制」は日常的にほぼ同じ意味で使われがちだが、法律上はまったく別の制度である。この区別を最初に押さえないと、前稿で整理した就労条件総合調査の数値（みなし労働時間制の採用企業割合11.7%～15.8%）を固定残業代の話に流用してしまう、という典型的な誤解に陥る。</p>
+    <div class="term-grid">
+      <div class="term-card blue">
+        <div class="tc-title">賃金の支払い方式</div>
+        <div class="tc-name">固定残業代制度<br>（定額残業代・みなし残業代）</div>
+        <p>一定時間分の時間外労働に相当する賃金をあらかじめ月給に組み込む支払い方法。実労働時間の記録義務は変わらず、超過分は追加払いが必要。</p>
+        <span class="tc-kw">労基法上の独立制度ではない</span>
+        <span class="tc-kw">政府統計での普及率は未確認</span>
+      </div>
+      <div class="term-card orange">
+        <div class="tc-title">労働時間の制度</div>
+        <div class="tc-name">みなし労働時間制<br>（事業場外・裁量労働制）</div>
+        <p>労基法38条の2〜4に基づき、実際の労働時間にかかわらず一定時間働いたものとみなす制度。就労条件総合調査が毎年調査。</p>
+        <span class="tc-kw">採用企業11.7%→15.8%（H28→R7）</span>
+        <span class="tc-kw">適用労働者8〜12%</span>
+      </div>
+    </div>
+    <p>両者は法的には別物だが、経済的な帰結には共通点がある。どちらも「実際に働いた時間と受け取る賃金の連動性が弱まる」という構造を持ち、これが本稿で検討する仮説──固定残業代（およびみなし労働時間制）が賃金上昇や転職を抑制しているのではないか──の出発点になる。</p>
+  </div>
+
+  <section id="teigi">
+    <h2><span class="icon">⚖️</span>①固定残業代制度の法的な仕組み</h2>
+    <p>固定残業代が有効と認められるためには、判例上おおむね「明確区分性」（基本給と固定残業代の金額が判別できること）、「対価性」（何時間分・いくら分の対価かが明示されていること）、「差額精算義務」（超過分を別途支払うこと）の3要件を満たす必要があるとされている<sup class="cite-ref">※1</sup>。</p>
+    <ul class="case-list">
+      <li>
+        <div class="case-name">医療法人社団康心会事件<span class="case-date">最高裁 平成29年7月7日判決</span></div>
+        <p>年俸1700万円に残業代が含まれるという合意はあったが、いくらが残業代に当たるか示されていなかった。最高裁は「通常の労働時間の賃金に当たる部分と割増賃金に当たる部分とを判別することができない」として、割増賃金が支払われたとは認めなかった。金額を明示しない「残業代込み」の合意は、それだけで無効になり得ることを示した。<sup class="cite-ref">※4</sup></p>
+      </li>
+      <li>
+        <div class="case-name">国際自動車事件<span class="case-date">最高裁 令和2年3月30日判決</span></div>
+        <p>タクシー会社で、歩合給の計算時に売上高の一定割合から残業手当相当額を控除する賃金規則が問題となった。時間外労働が増えて割増金が増えても、同額が歩合給から差し引かれるため手取りは実質的に変わらない。最高裁はこれを「割増賃金をその経費とみた上で、その全額を労働者に負担させているに等しい」と評価し、有効な支払いと認めなかった。<sup class="cite-ref">※5</sup></p>
+      </li>
+      <li>
+        <div class="case-name">日本ケミカル事件<span class="case-date">最高裁 平成30年7月19日判決</span></div>
+        <p>雇用契約書の記載内容、労働者への説明内容、実際の労働時間など諸般の事情を総合的に考慮して有効性を判断する枠組みを示した。<sup class="cite-ref">※6</sup></p>
+      </li>
+      <li>
+        <div class="case-name">トラック運転手に関する裁判例<span class="case-date">令和5年3月10日判決</span></div>
+        <p>月平均80時間弱の時間外労働を前提とした固定残業代の設定が、基本給の大幅な圧縮を伴っていたことなどを理由に無効と判断された。過労死ラインに近い時間数を前提にした設計は、公序良俗違反として無効とされ得る。<sup class="cite-ref">※6</sup></p>
+      </li>
+    </ul>
+    <div class="highlight"><strong>国際自動車事件が示すもの：</strong>固定残業代そのものではないが、「働いても総額が変わらない」賃金設計を最高裁が正面から問題視した実例であり、本稿の仮説にとって最も具体的な参考事例になる。</div>
+  </section>
+
+  <section id="gyousei">
+    <h2><span class="icon">📋</span>②行政の対応：2017年通達と2018年の求人票規制</h2>
+    <p>固定残業代を巡るトラブルの多さは、厚生労働省自身が行政指導に乗り出していることからも裏付けられる<sup class="cite-ref">※2</sup><sup class="cite-ref">※3</sup>。</p>
+    <p>2017年7月31日、厚生労働省は「時間外労働等に対する割増賃金の適切な支払いのための留意事項について」（基発0731第27号）という通達を発出した。背景にあったのは、「固定残業代を超えた残業分は支払わない」という誤った運用でサービス残業を強いる事例の増加である。以後、労働基準監督官が事業場を指導する際、基本給と割増賃金部分が明確に区別されているか、固定額を超えた差額が実際に支払われているかを確認し、問題があれば是正勧告を行うことが明示された。</p>
+    <p>さらに2018年頃からは、若者雇用促進法に基づく指針として、固定残業代制を採用する求人票・募集要項には次の3点をすべて明示することが義務付けられている。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">①</div><div class="lbl">固定残業代を除いた<br>基本給の額</div></div>
+      <div class="stat"><div class="val">②</div><div class="lbl">固定残業代の計算根拠となる<br>労働時間数と金額</div></div>
+      <div class="stat"><div class="val">③</div><div class="lbl">固定時間を超える分の<br>割増賃金を追加払いする旨</div></div>
+    </div>
+    <div class="highlight"><strong>規制導入の理由：</strong>「賃金に関すること（固定残業代を含む）」が労働条件を巡る申出・苦情の中で最多だったとされる。求職者が「固定残業代込みの高い月給」を見て応募したが、実際には基本給が低く想定より稼げなかった、というトラブルが規制の背景にある。この規制の存在自体が、固定残業代が労働市場の賃金情報の透明性を損ないやすいことの、行政による事実上の裏書きだと言える。</div>
+  </section>
+
+  <section id="minashi">
+    <h2><span class="icon">📊</span>③みなし労働時間制の実態：就労条件総合調査と裁量労働制実態調査</h2>
+    <span class="policy-tag">前稿データの再掲＋新規データ</span>
+    <p>就労条件総合調査は毎年、みなし労働時間制（事業場外みなし労働時間制・専門業務型裁量労働制・企画業務型裁量労働制）の採用企業割合と適用労働者割合を調査している<sup class="cite-ref">※11</sup>。ただし、この数字は固定残業代の普及率ではない。</p>
+    <div class="trend-wrap">
+      <table class="trend-table">
+        <thead>
+          <tr><th class="rowh">年</th><th>H28</th><th>H29</th><th>H30</th><th>H31/R1</th><th>R2</th><th>R3</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="rowh">みなし労働時間制（企業割合）</td><td>11.7%</td><td>14.0%</td><td>15.9%</td><td>14.2%</td><td>13.0%</td><td>13.1%</td><td>14.1%</td><td>14.3%</td><td>15.3%</td><td>15.8%</td></tr>
+          <tr><td class="rowh">適用労働者割合</td><td>8.1%</td><td>8.5%</td><td>9.5%</td><td>9.1%</td><td>―</td><td>8.2%</td><td>7.9%</td><td>8.9%</td><td>9.2%</td><td>11.8%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>みなし労働時間制のうち、実態としての働き方に最も踏み込んだ調査が、厚生労働省「裁量労働制実態調査」（令和3年）である。この調査は、みなし労働時間制の一類型である裁量労働制について、「みなし時間」と「実際に働いた時間」の乖離を測る貴重なデータを提供している<sup class="cite-ref">※9</sup><sup class="cite-ref">※10</sup>。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">45:18<span>vs 43:02</span></div><div class="lbl">1週間の実労働時間<br>裁量労働制適用 vs 非適用</div></div>
+      <div class="stat"><div class="val">60.6<span>%</span></div><div class="lbl">週55時間以上働く適用労働者の割合<br>（非適用より明確に高い）</div></div>
+      <div class="stat"><div class="val">32.2<span>% vs 30.0%</span></div><div class="lbl">健康状態「よい」の割合<br>適用 vs 非適用（差は限定的）</div></div>
+    </div>
+    <p>「一定時間働いたものとみなす」制度のもとでは、みなし時間を超えて働いても賃金・処遇には反映されにくい構造があり、実際に長時間労働につながっている実態が、少なくとも裁量労働制については政府統計で確認できる。これは固定残業代そのものではないが、「実際の労働時間と賃金の連動が切れることで、労働時間が延びる」という同じ経済メカニズムを示す傍証として重要である。</p>
+  </section>
+
+  <section id="donyu">
+    <h2><span class="icon">🏙️</span>④固定残業代の導入率と未払いの実態：東京都の調査データ</h2>
+    <span class="policy-tag">新規発見データ・東京都産業労働局</span>
+    <p>「固定残業代の採用企業割合を測定した政府統計は見つからない」と述べたが、その後さらに調べたところ、東京都産業労働局が固定残業代そのものをピンポイントで調査した公的統計を実施していたことが分かった。<strong>「労働時間管理に関する実態調査」</strong>（平成28年度実施・平成29年3月公表）である。都内の常用労働者30人以上の事業所3,000社に調査票を送り、838事業所・労働者1,061人から回答を得た、地域限定ではあるが本格的な統計調査だ<sup class="cite-ref">※8</sup>。</p>
+    <p>この調査では、固定残業代を「一定時間数分を定額で支給し、これを超えた時間について支払う」制度と定義した上で、導入企業割合は<strong>8.9%（838事業所中75事業所）</strong>という具体的な数字を示している。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">8.9<span>%</span></div><div class="lbl">固定残業代の導入企業割合<br>（838事業所中75事業所）</div></div>
+      <div class="stat"><div class="val">26.7<span>%</span></div><div class="lbl">設定時間数の最多レンジ<br>「30〜45時間未満」</div></div>
+      <div class="stat"><div class="val">5.3<span>%</span></div><div class="lbl">設定時間数「80時間以上」<br>過労死ラインに達する水準</div></div>
+    </div>
+    <p>さらに重要なのは、残業代が全額支払われていないと答えた労働者（825人中16.6%）に、その理由を尋ねた結果である。</p>
+    <div class="trend-wrap">
+      <table class="trend-table">
+        <thead><tr><th class="rowh">未払いの理由</th><th>割合</th></tr></thead>
+        <tbody>
+          <tr><td class="rowh">基本給に含まれているため</td><td>25.2%</td></tr>
+          <tr><td class="rowh">職場の雰囲気で申請しにくいため</td><td>21.3%</td></tr>
+          <tr><td class="rowh">その他</td><td>27.1%</td></tr>
+          <tr><td class="rowh">定額で支給されているため</td><td>15.9%</td></tr>
+          <tr><td class="rowh">残業の申請に上限が設定されているため</td><td>6.2%</td></tr>
+          <tr><td class="rowh">上司が残業を認めないため</td><td>3.1%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="highlight"><strong>41.1%：</strong>「基本給に含まれている」（25.2%）と「定額で支給されている」（15.9%）を合わせると41.1%にのぼり、残業代が未払いになっている労働者のうち4割以上が、何らかの形で「賃金に残業代が織り込まれている」という認識・運用を理由に挙げている。固定残業代（あるいはそれに類する「残業代込み」という賃金認識）が、実際にサービス残業の温床になっていることを示す、規模は小さいながらも具体的な統計的裏付けである。</div>
+    <p>なお、みなし労働時間制についても同調査は実労働時間との関係を尋ねており、みなし時間を「超えていない」54.6%、「超えている」23.7%、「把握していない」12.4%という結果だった。約4分の1のケースでみなし時間を上回る実労働が生じていることが分かる。</p>
+    <div class="caution"><strong>データの限界：</strong>この調査は東京都内・平成28年度（2016年度）時点のもので、2018年の求人票明示義務化や度重なる働き方改革関連法の施行より前の状況を反映している。後継の「働き方改革に関する実態調査」（令和2年度以降）には、固定残業代の導入率を直接尋ねた設問は確認できなかった。全国最新の数値ではない点に留意が必要だが、「約1割の企業が固定残業代を採用し、そのうち一定割合が未払い残業の温床になっている」という定量的な実態が、少なくとも一時点・一地域については公的統計で裏付けられている。</div>
+  </section>
+
+  <section id="chingin">
+    <h2><span class="icon">💸</span>⑤賃金抑制メカニズムの検討</h2>
+    <p>固定残業代が賃金上昇を抑制しているとすれば、考えられる経路は主に3つある。</p>
+    <h3>経路① 実質時間単価の圧縮</h3>
+    <p>基本給30万円に月45時間分の固定残業代が組み込まれている場合、実際の残業がそれを超えても差額が支払われなければ、労働時間が増えるほど実質的な時間単価は下がっていく<sup class="cite-ref">※7</sup>。2017年通達が問題視したのは、まさにこの「固定額に含まれている」という誤解・悪用でサービス残業が生じるパターンである。前章で見た東京都の調査では、残業代未払いの労働者の41.1%が「基本給に含まれている」「定額で支給されている」ことを理由に挙げており、この経路が理論上の懸念にとどまらず実際に生じていることを具体的な数字で裏付けている。</p>
+    <h3>経路② 基本給そのものの圧縮</h3>
+    <p>固定残業代を導入する際、基本給の一部を「固定残業代」に付け替えることで、見かけの月給を変えずに基本給だけを引き下げるケースが指摘されている。基本給は賞与・退職金・社会保険料の算定基礎になることが多いため、基本給の圧縮は固定残業代を除いた実質的な生涯賃金の抑制につながり得る。</p>
+    <h3>経路③ 歩合給・成果給からの実質控除（国際自動車事件型）</h3>
+    <p>固定残業代そのものではないが、国際自動車事件が示したように、時間外労働に応じて増える手当と同額を別の賃金項目（歩合給など）から控除する設計は、「働いても総額が変わらない」状態を生み出す。この判決は、残業時間の増加が賃金増加に結びつかない仕組みが現実に存在し、しかも訴訟にまで発展するほど広がっていたことを示している。</p>
+    <div class="caution"><strong>留保：</strong>これらはいずれも「制度が悪用された場合」あるいは「特定の賃金設計の場合」に成立するメカニズムであり、固定残業代制度そのものが必然的に賃金を抑制するという意味ではない。差額精算が徹底されている適正な運用では、理論上この抑制効果は生じない。しかし2017年の行政通達や複数の最高裁判決は、「適正な運用」が実務では徹底されていないケースが相当数存在することを示しており、これが賃金抑制仮説を支持する最も具体的な根拠になる。</div>
+  </section>
+
+  <section id="tenshoku">
+    <h2><span class="icon">🔄</span>⑥転職抑制メカニズムの検討</h2>
+    <p>転職抑制について、賃金抑制ほど直接的な証拠は見つからなかった。ただし、理論的に考えられる経路と、それを間接的に裏付ける事実がある。</p>
+    <h3>情報の非対称性による比較困難</h3>
+    <p>固定残業代込みの月給は、求人票の見た目の金額を押し上げる効果を持つ。2018年の求人票規制が導入された直接の理由は、「賃金に関すること」が労働条件を巡る苦情の最多項目だったことにある。求職者が固定残業代を含む額面だけを見て応募し、転職後に「思っていたより基本給が低かった」と気づくケースが多発していたことを意味する。この情報の非対称性が労働市場に広く存在するなら、労働者が複数の求人の実質的な条件を正確に比較することが難しくなり、転職を抑制する方向に働く可能性は理論上ある。</p>
+    <h3>額面への心理的な固定（行動経済学的な仮説）</h3>
+    <p>固定残業代を含む月給に慣れると、転職によって額面上の月給が下がって見える会社への移動を避けたくなる心理が働く可能性は考えられるが、固定残業代に特化した実証研究は今回の調査では見つからなかった。</p>
+    <div class="caution"><strong>見つからなかった証拠：</strong>固定残業代の導入率・未払いの実態そのものは前章の東京都調査で確認できたが、固定残業代の有無と転職率・賃金上昇率を実際に統計的に関連付けた学術研究や政府統計は、今回のウェブ調査の範囲では確認できなかった。全国就業実態パネル調査（JPSED）などのパネルデータには関連設問が含まれている可能性があるが、この仮説を直接検証した公開分析は見当たらなかった。これは「効果がない」ことの証明ではなく、<strong>「制度の存在と未払いの実態は統計的に確認できるが、それが賃金上昇率や転職率にどの程度影響するかまでは、まだ厳密に検証されていない」</strong>というのが正確な現状である。</div>
+  </section>
+
+  <section id="hanshou">
+    <h2><span class="icon">🔍</span>⑦仮説に対する反証・留保</h2>
+    <p>仮説を検討する上で、逆方向に働く可能性がある要因も併記しておく必要がある。</p>
+    <ul class="evidence-list">
+      <li>
+        <span class="ev-badge weak">相関と因果</span>
+        <span class="ev-text"><strong>業種による交絡の可能性</strong>固定残業代を導入している企業には、飲食・小売・不動産営業・IT受託などの業種的な偏りがあるとされる。これらの業種はもともと離職率が高い、賃金水準が低いといった構造的な特徴を持つ場合があり、固定残業代の有無ではなく業種・企業規模そのものが影響している可能性がある。</span>
+      </li>
+      <li>
+        <span class="ev-badge partial">制度は中立的</span>
+        <span class="ev-text"><strong>本来は中立的な賃金設計の一手法</strong>業務量の繁閑が激しい職種（営業職など）では、残業代計算の手間を省き、残業が少ない月でも収入が安定するというメリットを持つ。差額精算が徹底されている企業では、固定残業代の有無が労働条件の悪さを直接意味するわけではない。</span>
+      </li>
+      <li>
+        <span class="ev-badge weak">他の要因が支配的</span>
+        <span class="ev-text"><strong>日本の労働移動の少なさを説明する他の構造要因</strong>年功賃金・退職金の勤続年数による優遇・企業特殊的スキルの評価の高さなど、固定残業代よりもはるかに大きな構造要因によって説明されてきたというのが労働経済学の通説である。固定残業代の有無だけを転職抑制の主因とするのは、他の要因を過小評価するリスクがある。</span>
+      </li>
+    </ul>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括：分かっていること・分かっていないこと</h2>
+    <p>固定残業代（およびそれに類似する賃金設計）が「働いても賃金が増えにくい」仕組みになり得ることは、医療法人康心会事件・国際自動車事件という最高裁判例、2017年の厚生労働省通達が繰り返し問題視してきた実務上のトラブルパターン、そして東京都「労働時間管理に関する実態調査」が示す具体的な数字（導入企業8.9%、未払い残業の41.1%が基本給組み込み・定額支給を理由とする）から、事例レベルを超えて定量的にも裏付けられる。みなし労働時間制についても、裁量労働制実態調査が示す「適用労働者の実労働時間が非適用労働者より長い」というデータは、時間と賃金の連動が切れる制度が長時間労働と結びつきやすいことを示す一つの傍証になる。</p>
+    <div class="point">
+      <div class="pt-title">制度の存在と未払いの実態は統計的に裏付けられる</div>
+      <p>最高裁判例・行政通達・東京都の実態調査は、「働いても賃金が増えない」仕組みが実際に存在し、一定割合の企業・労働者に影響していることを具体的な数字とともに示している。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">全国レベルの因果効果はまだ未検証</div>
+      <p>「固定残業代が経済全体で賃金上昇・転職を抑制している」という、より広い意味での因果関係を統計的に実証した研究は、今回のウェブ調査の範囲では見つからなかった。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">仮説をさらに検証するなら</div>
+      <p>全国就業実態パネル調査（JPSED）などの個人追跡型パネルデータで固定残業代の有無別に賃金上昇率・転職率を比較する、賃金構造基本統計調査の個票データで業種・企業規模を統制した分析を行う、といった追加のデータ収集・分析が有効と考えられる。</p>
+    </div>
+    <p>「制度の存在自体が問題を生みやすい構造を持つ」ことと、「その構造が経済全体でどの程度の影響を持つか」は、切り分けて考える必要がある。</p>
+  </div>
+
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li><span class="ref-num">1</span><span>SmartHR Mag.「みなし残業（固定残業代制）とは？みなし労働時間制の違いと違法ラインを解説」<span class="ref-tag">ウェブサイト</span><br><a href="https://mag.smarthr.jp/hr/labor/minashi-zangyo/" target="_blank" rel="noopener">https://mag.smarthr.jp/hr/labor/minashi-zangyo/</a></span></li>
+      <li><span class="ref-num">2</span><span>厚生労働省・都道府県労働局・ハローワーク「固定残業代制を採用する場合の求人票明示事項」<span class="ref-tag">政策文書</span><br><a href="https://www.mhlw.go.jp/file/06-Seisakujouhou-11600000-Shokugyouanteikyoku/0000184068.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/file/06-Seisakujouhou-11600000-Shokugyouanteikyoku/0000184068.pdf</a></span></li>
+      <li><span class="ref-num">3</span><span>労働問題弁護士ガイド「固定残業代についての厚生労働省の通達（2017年7月）」<span class="ref-tag">ウェブサイト</span><br><a href="https://roudou-bengoshi.com/zangyoudai/4052/" target="_blank" rel="noopener">https://roudou-bengoshi.com/zangyoudai/4052/</a></span></li>
+      <li><span class="ref-num">4</span><span>たくみ法律事務所「固定残業代制度が無効になる場合とは？（医療法人社団康心会事件）」<span class="ref-tag">判例解説</span><br><a href="https://www.takumi-corporate-law.com/column/20211225/" target="_blank" rel="noopener">https://www.takumi-corporate-law.com/column/20211225/</a></span></li>
+      <li><span class="ref-num">5</span><span>BUSINESS LAWYERS「国際自動車事件最高裁判決の解説」<span class="ref-tag">判例解説</span><br><a href="https://www.businesslawyers.jp/articles/786" target="_blank" rel="noopener">https://www.businesslawyers.jp/articles/786</a></span></li>
+      <li><span class="ref-num">6</span><span>桑原法律事務所「固定残業代の有効性を否定した最高裁判例」<span class="ref-tag">判例解説</span><br><a href="https://www.kuwahara-law.com/posts/23607/" target="_blank" rel="noopener">https://www.kuwahara-law.com/posts/23607/</a></span></li>
+      <li><span class="ref-num">7</span><span>freee「固定残業代（みなし残業代）とは？メリットや計算方法について解説」<span class="ref-tag">ウェブサイト</span><br><a href="https://www.freee.co.jp/kb/kb-payroll/fixed-overtime-pay/" target="_blank" rel="noopener">https://www.freee.co.jp/kb/kb-payroll/fixed-overtime-pay/</a></span></li>
+      <li><span class="ref-num">8</span><span>東京都産業労働局「労働時間管理に関する実態調査」（平成28年度実施・平成29年3月公表）<span class="ref-tag">統計</span><br><a href="https://www.sangyo-rodo.metro.tokyo.lg.jp/toukei/koyou/jiccho28_all.pdf" target="_blank" rel="noopener">https://www.sangyo-rodo.metro.tokyo.lg.jp/toukei/koyou/jiccho28_all.pdf</a></span></li>
+      <li><span class="ref-num">9</span><span>厚生労働省「裁量労働制実態調査 結果の概況：調査の概要」<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/toukei/list/171-1a.html" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/list/171-1a.html</a></span></li>
+      <li><span class="ref-num">10</span><span>厚生労働省労働基準局「裁量労働制実態調査を踏まえた裁量労働制の検討状況等について」（内閣府規制改革推進会議資料、令和3年12月1日）<span class="ref-tag">統計</span><br><a href="https://www8.cao.go.jp/kisei-kaikaku/kisei/meeting/wg/kosodate/211201/211201kosodate_01.pdf" target="_blank" rel="noopener">https://www8.cao.go.jp/kisei-kaikaku/kisei/meeting/wg/kosodate/211201/211201kosodate_01.pdf</a></span></li>
+      <li><span class="ref-num">11</span><span>厚生労働省「就労条件総合調査 結果の概況」平成28年～令和7年各年版<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/toukei/list/11-23c.html" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/list/11-23c.html</a></span></li>
+    </ul>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <p>素材：厚生労働省通達・最高裁判例・裁量労働制実態調査・就労条件総合調査ほか、ウェブ調査により新規収集</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。法的な判断が必要な場合は、必ず弁護士・社会保険労務士等の専門家にご相談ください。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  /* ── テキスト選択 → ここから読み上げ ── */
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>

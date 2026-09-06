@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>就労条件総合調査 10年の経年比較</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-rate { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; width: 72px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+.container { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+.rotation-list { list-style: none; margin: 20px 0; counter-reset: rot; }
+.rotation-list li { position: relative; padding: 12px 0 12px 40px; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.7; }
+.rotation-list li:last-child { border-bottom: none; }
+.rotation-list li::before { counter-increment: rot; content: counter(rot); position: absolute; left: 0; top: 10px; width: 26px; height: 26px; background: var(--blue); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+.rotation-list .yrs { display: inline-block; margin-left: 8px; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 1px 8px; }
+
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 26px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 14px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── 10年推移テーブル ── */
+.trend-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--border); border-radius: 8px; }
+.trend-table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 680px; }
+.trend-table caption { caption-side: top; text-align: left; font-size: 11px; color: var(--muted); padding: 8px 12px; }
+.trend-table th, .trend-table td { padding: 9px 10px; text-align: center; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.trend-table thead th { background: var(--blue); color: #fff; font-weight: 700; position: sticky; top: 0; }
+.trend-table th.rowh, .trend-table td.rowh { text-align: left; background: var(--bg); color: var(--muted); font-weight: 700; position: sticky; left: 0; white-space: normal; min-width: 150px; }
+.trend-table tbody tr:nth-child(even) td:not(.rowh) { background: #fafcfe; }
+.trend-table tr:last-child td { border-bottom: none; }
+.trend-note { font-size: 11px; color: var(--muted); margin-top: 8px; }
+
+/* ── 2時点比較テーブル（個別テーマ） ── */
+.compare-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13.5px; }
+.compare-table th { padding: 12px 16px; text-align: center; font-weight: 700; font-size: 12px; border-bottom: 2px solid var(--border); }
+.compare-table th.label-col { width: 34%; background: var(--bg); color: var(--muted); text-align: left; }
+.compare-table th.survey-a { background: #e8f0f9; color: var(--blue); }
+.compare-table th.survey-b { background: #fff3e0; color: #7a3e00; }
+.compare-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.7; text-align: center; }
+.compare-table td.label-col { font-size: 12px; font-weight: 700; color: var(--muted); background: var(--bg); text-align: left; }
+.compare-table td.survey-a { background: #f5f8fc; }
+.compare-table td.survey-b { background: #fffaf3; }
+.compare-table tr:last-child td { border-bottom: none; }
+
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+.cite-ref { font-size: 0.78em; vertical-align: super; color: var(--blue-lt); font-weight: 700; white-space: nowrap; margin-left: 1px; }
+
+.references { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 56px; }
+.references h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; }
+.ref-list { list-style: none; }
+.ref-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.75; display: flex; gap: 12px; align-items: baseline; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-num { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--blue-lt); background: var(--tag-bg); border-radius: 4px; padding: 2px 7px; }
+.ref-list a { color: var(--blue-lt); text-decoration: none; word-break: break-all; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-tag { display: inline-block; font-size: 10px; font-weight: 700; background: #f0f4f8; color: var(--muted); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-rate { font-size: 0.7rem; width: 60px; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .conclusion { padding: 28px 24px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+  .compare-table { font-size: 12px; }
+  .compare-table td, .compare-table th { padding: 8px 10px; }
+  .references { padding: 28px 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="site-title">就労条件総合調査</span>
+  <div class="tts-bar">
+    <select id="tts-voice" class="tts-select" aria-label="音声選択"></select>
+    <select id="tts-rate" class="tts-rate" aria-label="読み上げ速度">
+      <option value="0.8">0.8×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.2">1.2×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.8">1.8×</option>
+    </select>
+    <button id="tts-btn" class="tts-btn" data-state="idle">▶ 読み上げ</button>
+    <button id="tts-stop" class="tts-stop">■ 停止</button>
+    <span id="tts-label" class="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <span class="label">トピックス</span>
+  <h1>就労条件総合調査 10年の経年比較<br>平成28年～令和7年</h1>
+  <p class="sub">厚生労働省が毎年実施する企業調査を10年分収集・整理 ── 共通項目の推移と、5年周期で入れ替わる個別テーマ</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#jikan">労働時間・休日</a></li>
+    <li><a href="#yukyu">年次有給休暇</a></li>
+    <li><a href="#hendou">柔軟な労働時間制度</a></li>
+    <li><a href="#warimashi">時間外割増賃金率</a></li>
+    <li><a href="#teinen">①定年制等</a></li>
+    <li><a href="#taishoku">②退職給付</a></li>
+    <li><a href="#shisan">③資産形成</a></li>
+    <li><a href="#hiyou">④労働費用</a></li>
+    <li><a href="#teate">⑤諸手当</a></li>
+    <li><a href="#conclusion">総括</a></li>
+    <li><a href="#references">参考文献</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像：毎年項目と5年ローテーション項目</h2>
+    <p>厚生労働省「就労条件総合調査」は、常用労働者30人以上の民営企業を対象に、労働時間制度・賃金制度・定年制・退職給付・労働費用などを毎年1月1日時点で調査するものである<sup class="cite-ref">※11</sup>。本レポートでは平成28年（2016年）から令和7年（2025年）までの10年分の「結果の概況」を新規に収集し、経年比較が可能な項目は時系列で整理し、年によって内容が異なる個別テーマは同一テーマの2時点を比較する形でまとめた。</p>
+    <p>10年分の目次を突き合わせると、「労働時間制度」と「賃金制度（時間外割増賃金率）」は毎年共通して調査される一方、それ以外の章は<strong>5年周期で同じ5テーマが順番に入れ替わるローテーション方式</strong>になっていることが分かった。平成28年～令和2年の1巡目と、令和3年～令和7年の2巡目で、まったく同じ順序でテーマが繰り返されている。</p>
+    <ul class="rotation-list">
+      <li>労働費用・派遣労働者活用状況<span class="yrs">平成28年／令和3年</span></li>
+      <li>定年制等（定年年齢・継続雇用措置）<span class="yrs">平成29年／令和4年</span></li>
+      <li>退職給付（一時金・年金）制度<span class="yrs">平成30年／令和5年</span></li>
+      <li>資産形成（社内貯蓄制度・住宅資金融資制度）<span class="yrs">平成31年・令和元年／令和6年</span></li>
+      <li>諸手当（賃金の内訳）<span class="yrs">令和2年／令和7年</span></li>
+    </ul>
+    <p>この10年間は、このローテーションがちょうど2巡した期間にあたる。以下では、①毎年調査される項目の10年推移（労働時間・休日／年次有給休暇／柔軟な労働時間制度／時間外割増賃金率）と、②5年に一度しか調査されない5つの個別テーマの5年差比較を、それぞれ整理する。</p>
+  </div>
+
+  <section id="jikan">
+    <h2><span class="icon">🕒</span>労働時間・休日の10年推移</h2>
+    <span class="policy-tag">毎年調査項目</span>
+    <p>週の所定労働時間はこの10年、39時間20分～39時間31分の狭いレンジで推移しほぼ横ばいである。一方、休日の量は着実に増え、休日の取り方（週休2日制の普及）は近年になって急速に進んでいる<sup class="cite-ref">※1</sup><sup class="cite-ref">※10</sup>。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">108.0<span>日→112.4日</span></div><div class="lbl">年間休日総数（企業平均）<br>平成28年→令和7年</div></div>
+      <div class="stat"><div class="val">49.0<span>%→65.5%</span></div><div class="lbl">完全週休2日制の採用企業割合<br>平成28年→令和7年</div></div>
+      <div class="stat"><div class="val">39:20〜39:31</div><div class="lbl">週所定労働時間（企業平均）<br>10年間のレンジ</div></div>
+    </div>
+    <div class="highlight"><strong>着目点：</strong>完全週休2日制の採用割合は平成29年～令和2年は44～49%台で停滞していたが、令和3年以降は毎年上昇し、特に令和5年から令和7年の3年間で53.3%→56.7%→65.5%と急伸した。人手不足下での採用力強化のため、対外的にアピールしやすい「完全週休2日制」を導入する企業が増えている可能性がある。</div>
+    <div class="trend-wrap">
+      <table class="trend-table">
+        <thead>
+          <tr>
+            <th class="rowh">年</th>
+            <th>H28</th><th>H29</th><th>H30</th><th>H31/R1</th><th>R2</th><th>R3</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rowh">週所定労働時間（企業平均）</td><td>39:26</td><td>39:25</td><td>39:31</td><td>39:26</td><td>39:24</td><td>39:25</td><td>39:28</td><td>39:20</td><td>39:23</td><td>39:24</td></tr>
+          <tr><td class="rowh">完全週休2日制（企業割合）</td><td>49.0%</td><td>46.9%</td><td>46.7%</td><td>44.3%</td><td>44.9%</td><td>48.4%</td><td>48.7%</td><td>53.3%</td><td>56.7%</td><td>65.5%</td></tr>
+          <tr><td class="rowh">年間休日総数（企業平均）</td><td>108.0日</td><td>108.3日</td><td>107.9日</td><td>108.9日</td><td>109.9日</td><td>110.5日</td><td>107.0日</td><td>110.7日</td><td>112.1日</td><td>112.4日</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="trend-note">出典：各年「就労条件総合調査 結果の概況」（参考文献1〜10）</p>
+  </section>
+
+  <section id="yukyu">
+    <h2><span class="icon">🌴</span>年次有給休暇取得率の10年推移</h2>
+    <span class="policy-tag">毎年調査項目</span>
+    <p>年次有給休暇の取得率は、平成28年の48.7%から令和7年の66.9%へ、10年間で18.2ポイント上昇した。付与日数自体は17.6～18.2日の間でほぼ一定なので、この上昇は「もらえる日数が増えた」のではなく「実際に休む日数が増えた」ことによるものだ<sup class="cite-ref">※1</sup><sup class="cite-ref">※10</sup>。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">48.7<span>%→66.9%</span></div><div class="lbl">年次有給休暇取得率<br>平成28年→令和7年</div></div>
+      <div class="stat"><div class="val">8.8<span>日→12.1日</span></div><div class="lbl">取得日数（労働者1人平均）</div></div>
+      <div class="stat"><div class="val">+18.2<span>pt</span></div><div class="lbl">10年間の取得率上昇幅</div></div>
+    </div>
+    <div class="highlight"><strong>転換点：</strong>平成28年～平成31年は年1ポイント前後の緩やかな上昇だったが、令和2年に56.3%へ一気に約4ポイント上昇し、以後も毎年最高値を更新し続けている。2019年4月施行の働き方改革関連法（年10日以上付与者への年5日取得義務化）の効果が令和2年調査以降にはっきり表れたとみられる。</div>
+    <div class="trend-wrap">
+      <table class="trend-table">
+        <thead>
+          <tr>
+            <th class="rowh">年</th>
+            <th>H28</th><th>H29</th><th>H30</th><th>H31/R1</th><th>R2</th><th>R3</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rowh">付与日数</td><td>18.1日</td><td>18.2日</td><td>18.2日</td><td>18.0日</td><td>18.0日</td><td>17.9日</td><td>17.6日</td><td>17.6日</td><td>16.9日</td><td>18.1日</td></tr>
+          <tr><td class="rowh">取得日数</td><td>8.8日</td><td>9.0日</td><td>9.3日</td><td>9.4日</td><td>10.1日</td><td>10.1日</td><td>10.3日</td><td>10.9日</td><td>11.0日</td><td>12.1日</td></tr>
+          <tr><td class="rowh">取得率</td><td>48.7%</td><td>49.4%</td><td>51.1%</td><td>52.4%</td><td>56.3%</td><td>56.6%</td><td>58.3%</td><td>62.1%</td><td>65.3%</td><td>66.9%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>産業別では、宿泊業・飲食サービス業が10年を通じて一貫して取得率が最も低い産業であり続けている。人手不足で休みを取りにくい構造が長期的に変わっていないことがうかがえる。</p>
+  </section>
+
+  <section id="hendou">
+    <h2><span class="icon">🔀</span>柔軟な労働時間制度：変形労働時間制・みなし労働時間制・勤務間インターバル制度</h2>
+    <span class="policy-tag">毎年調査項目</span>
+    <p>変形労働時間制の採用企業割合は57.5%～64.0%の間で年による振れがあり、明確な右肩上がりのトレンドとまでは言えない。一方、みなし労働時間制（事業場外みなし・裁量労働制）は11.7%（平成28年）から15.8%（令和7年）へじわじわと増加している<sup class="cite-ref">※1</sup><sup class="cite-ref">※10</sup>。</p>
+    <div class="highlight"><strong>着目点：</strong>勤務間インターバル制度は2019年4月に努力義務化された比較的新しい制度で、平成29年調査で初めて数値が確認できる（導入企業1.4%）。そこから令和7年には6.9%まで上昇し、7年で5倍近くに増えた。ただし導入予定なし・検討なしの企業が依然として8割前後を占めており、普及はまだ緒に就いたばかりの段階といえる。</div>
+    <div class="trend-wrap">
+      <table class="trend-table">
+        <thead>
+          <tr>
+            <th class="rowh">年</th>
+            <th>H28</th><th>H29</th><th>H30</th><th>H31/R1</th><th>R2</th><th>R3</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rowh">変形労働時間制（企業割合）</td><td>60.5%</td><td>57.5%</td><td>60.2%</td><td>62.6%</td><td>59.6%</td><td>59.6%</td><td>64.0%</td><td>59.3%</td><td>60.9%</td><td>60.2%</td></tr>
+          <tr><td class="rowh">みなし労働時間制（企業割合）</td><td>11.7%</td><td>14.0%</td><td>15.9%</td><td>14.2%</td><td>13.0%</td><td>13.1%</td><td>14.1%</td><td>14.3%</td><td>15.3%</td><td>15.8%</td></tr>
+          <tr><td class="rowh">勤務間インターバル制度（導入企業）</td><td>―</td><td>1.4%</td><td>1.8%</td><td>3.7%</td><td>4.2%</td><td>―</td><td>5.8%</td><td>―</td><td>5.7%</td><td>6.9%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="trend-note">「―」は当該年の「結果の概況」で該当数値の公表が確認できなかった項目。</p>
+  </section>
+
+  <section id="warimashi">
+    <h2><span class="icon">💰</span>時間外労働の割増賃金率</h2>
+    <span class="policy-tag">毎年調査項目</span>
+    <p>法定の時間外労働に対して割増賃金率を「一律に定めている」企業は8割台前半～半ばで安定的に推移しており、大きな変化はない。しかし「月60時間を超える時間外労働」への割増賃金率設定状況は、直近2年で劇的に変化した<sup class="cite-ref">※1</sup><sup class="cite-ref">※9</sup><sup class="cite-ref">※10</sup>。</p>
+    <div class="stats">
+      <div class="stat"><div class="val">30.0<span>%→64.5%</span></div><div class="lbl">月60時間超残業の割増賃金率を<br>定める企業（令和4年→令和7年）</div></div>
+      <div class="stat"><div class="val">2023年4月</div><div class="lbl">中小企業にも月60時間超50%<br>割増義務化（法改正）</div></div>
+      <div class="stat"><div class="val">約99<span>%</span></div><div class="lbl">定めている企業のうち<br>「50%以上」の割合（R6・R7）</div></div>
+    </div>
+    <div class="highlight"><strong>法改正の効果：</strong>令和4年までは27～33%台で推移していたこの指標が、令和6年調査で61.1%、令和7年調査で64.5%とほぼ倍増した。2023年4月に中小企業にも月60時間超の時間外労働に対する50%の割増賃金率が義務化された（従来は大企業のみ）効果がそのまま数値に表れている。</div>
+    <div class="trend-wrap">
+      <table class="trend-table">
+        <thead>
+          <tr>
+            <th class="rowh">年</th>
+            <th>H28</th><th>H29</th><th>H30</th><th>H31/R1</th><th>R2</th><th>R3</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rowh">一律に定める企業</td><td>83.1%</td><td>―</td><td>82.7%</td><td>84.0%</td><td>81.6%</td><td>84.7%</td><td>85.3%</td><td>86.4%</td><td>83.3%</td><td>85.6%</td></tr>
+          <tr><td class="rowh">うち26%以上</td><td>6.1%</td><td>―</td><td>6.1%</td><td>5.0%</td><td>4.5%</td><td>5.5%</td><td>6.1%</td><td>4.6%</td><td>5.5%</td><td>4.6%</td></tr>
+          <tr><td class="rowh">月60時間超の割増率を定める企業</td><td>27.4%</td><td>―</td><td>30.1%</td><td>27.3%</td><td>31.1%</td><td>32.5%</td><td>30.0%</td><td>33.4%</td><td>61.1%</td><td>64.5%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="teinen">
+    <h2><span class="icon">①</span>個別テーマ：定年制等</h2>
+    <span class="policy-tag">5年周期テーマ・平成29年／令和4年</span>
+    <p>定年制そのものを設けている企業の割合は、平成29年95.5%→令和4年94.4%とほぼ変わらないが、「定年年齢」の中身は大きく変化した。一律定年制企業のうち定年を65歳以上とする企業の割合は平成29年17.8%から令和4年24.5%へ、5年で6.7ポイント上昇し、統計を遡れる範囲（平成17年以降）で過去最高を更新した<sup class="cite-ref">※2</sup><sup class="cite-ref">※7</sup>。</p>
+    <p>継続雇用制度（勤務延長・再雇用）の内容にも変化がある。「勤務延長制度と再雇用制度の両方を用意している企業」の割合が平成29年11.8%から令和4年19.8%へほぼ倍増しており、単一の再雇用制度だけに頼るのではなく、複数の選択肢を用意する企業が増えている。これらの変化は、2021年4月施行の改正高年齢者雇用安定法（70歳までの就業機会確保の努力義務化）の影響が反映されたものと考えられる。</p>
+    <table class="compare-table">
+      <thead><tr><th class="label-col">項目</th><th class="survey-a">平成29年</th><th class="survey-b">令和4年</th></tr></thead>
+      <tbody>
+        <tr><td class="label-col">定年制を定めている企業</td><td class="survey-a">95.5%</td><td class="survey-b">94.4%</td></tr>
+        <tr><td class="label-col">一律定年制の割合</td><td class="survey-a">97.8%</td><td class="survey-b">96.9%</td></tr>
+        <tr><td class="label-col">定年65歳以上（一律定年制のうち）</td><td class="survey-a">17.8%</td><td class="survey-b">24.5%（過去最高）</td></tr>
+        <tr><td class="label-col">継続雇用制度あり（勤務延長or再雇用）</td><td class="survey-a">92.9%</td><td class="survey-b">94.2%</td></tr>
+        <tr><td class="label-col">勤務延長・再雇用の両制度併用</td><td class="survey-a">11.8%</td><td class="survey-b">19.8%</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="taishoku">
+    <h2><span class="icon">②</span>個別テーマ：退職給付（一時金・年金）制度</h2>
+    <span class="policy-tag">5年周期テーマ・平成30年／令和5年</span>
+    <p>退職給付制度（退職一時金または企業年金）を持つ企業の割合は、平成30年80.5%から令和5年74.9%へ、5年で5.6ポイント低下した。定年制の維持・強化と対照的に、退職給付制度は縮小傾向にある<sup class="cite-ref">※3</sup><sup class="cite-ref">※8</sup>。</p>
+    <p>制度がある企業の内訳を見ても「一時金のみ」が73.3%→69.0%に減る一方、「一時金と年金の併用」は18.1%→21.4%に増えており、制度を維持する企業の中では設計がより複合的になっている。なお退職給付額については、両年で集計方法（学歴・職種別か、制度形態別か）が異なるため単純な金額比較はできない点に留意されたい。令和5年調査では、勤続20年以上かつ45歳以上の定年退職者について、大学卒（管理・事務・技術職）で一時金のみ1,623万円・年金のみ1,801万円・併用2,261万円などと、制度の組み合わせによって受給額に大きな差があることが示されている。</p>
+    <table class="compare-table">
+      <thead><tr><th class="label-col">項目</th><th class="survey-a">平成30年</th><th class="survey-b">令和5年</th></tr></thead>
+      <tbody>
+        <tr><td class="label-col">退職給付制度がある企業</td><td class="survey-a">80.5%</td><td class="survey-b">74.9%</td></tr>
+        <tr><td class="label-col">うち「一時金のみ」</td><td class="survey-a">73.3%</td><td class="survey-b">69.0%</td></tr>
+        <tr><td class="label-col">うち「年金のみ」</td><td class="survey-a">8.6%</td><td class="survey-b">9.6%</td></tr>
+        <tr><td class="label-col">うち「一時金・年金の併用」</td><td class="survey-a">18.1%</td><td class="survey-b">21.4%</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="shisan">
+    <h2><span class="icon">③</span>個別テーマ：資産形成</h2>
+    <span class="policy-tag">5年周期テーマ・平成31年/令和元年／令和6年</span>
+    <p>企業が提供する資産形成支援（財形貯蓄などの社内貯蓄制度）は、この5年で縮小した。制度がある企業の割合は平成31年42.0%から令和6年33.2%へ、8.8ポイント低下している。財形貯蓄そのものの導入企業割合も38.1%→28.9%に減少した<sup class="cite-ref">※4</sup><sup class="cite-ref">※9</sup>。一方、住宅資金融資制度は3.6%→3.4%とほぼ横ばいで、もともと普及率が低い制度がさらに下げ止まっている状態にある。</p>
+    <div class="highlight">低金利環境の長期化で財形貯蓄の相対的な魅力が薄れたことや、企業がより柔軟な福利厚生にシフトしていることが背景として考えられるが、これは本調査の範囲外であり推測にとどまる。</div>
+    <table class="compare-table">
+      <thead><tr><th class="label-col">項目</th><th class="survey-a">平成31年/令和元年</th><th class="survey-b">令和6年</th></tr></thead>
+      <tbody>
+        <tr><td class="label-col">貯蓄制度がある企業</td><td class="survey-a">42.0%</td><td class="survey-b">33.2%</td></tr>
+        <tr><td class="label-col">うち財形貯蓄</td><td class="survey-a">38.1%</td><td class="survey-b">28.9%</td></tr>
+        <tr><td class="label-col">住宅資金融資制度がある企業</td><td class="survey-a">3.6%</td><td class="survey-b">3.4%</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="hiyou">
+    <h2><span class="icon">④</span>個別テーマ：労働費用・派遣労働者活用状況</h2>
+    <span class="policy-tag">5年周期テーマ・平成28年／令和3年</span>
+    <p>常用労働者1人1か月平均の労働費用総額は、平成28年416,824円から令和3年408,140円へ、5年で8,684円（約2.1%）減少した。現金給与額に対する現金給与以外の費用（社会保険料や退職給付、法定外福利費など）の比率も19.1%から18.0%へやや低下している。令和3年調査はコロナ禍による企業活動の停滞（賞与カットや福利厚生費の抑制）の影響が反映されている可能性がある<sup class="cite-ref">※1</sup><sup class="cite-ref">※6</sup>。</p>
+    <p>なお「派遣労働者関係費用等」は平成28年調査に固有の章立てで、令和3年調査では同じ枠での再調査は行われていない。平成28年時点では、派遣労働者を受け入れている企業の割合は31.3%、受入企業に占める派遣労働者比率は12.6%だった。</p>
+    <table class="compare-table">
+      <thead><tr><th class="label-col">項目</th><th class="survey-a">平成28年</th><th class="survey-b">令和3年</th></tr></thead>
+      <tbody>
+        <tr><td class="label-col">労働費用総額（1人1か月平均）</td><td class="survey-a">416,824円</td><td class="survey-b">408,140円</td></tr>
+        <tr><td class="label-col">うち現金給与額</td><td class="survey-a">337,192円（80.9%）</td><td class="survey-b">334,845円（82.0%）</td></tr>
+        <tr><td class="label-col">うち現金給与以外の労働費用</td><td class="survey-a">79,632円（19.1%）</td><td class="survey-b">73,296円（18.0%）</td></tr>
+        <tr><td class="label-col">派遣労働者を受け入れている企業</td><td class="survey-a">31.3%</td><td class="survey-b">（同章の調査なし）</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="teate">
+    <h2><span class="icon">⑤</span>個別テーマ：諸手当</h2>
+    <span class="policy-tag">5年周期テーマ・令和2年／令和7年</span>
+    <p>諸手当の内訳では、住宅手当・地域手当の支給企業割合が5年で大きく上昇している。住宅手当は24.2%（令和2年調査、令和元年11月分データ）から45.7%（令和7年調査、令和6年11月分データ）へ、地域手当は25.5%から53.0%へ、いずれもほぼ倍増した。家族手当は68.6%から62.3%へやや減少している<sup class="cite-ref">※5</sup><sup class="cite-ref">※10</sup>。</p>
+    <div class="highlight"><strong>注意点：</strong>住宅手当・地域手当の急上昇については、調査票上の集計区分（「住宅手当など」「地域手当など」といった類似手当のまとめ方）が変更された可能性もある。実態としての手当拡大（人材獲得競争下での住宅・地域手当の拡充）なのか、集計方法の変更によるものなのかは、原資料の「用語の解説」を照合する必要がある。</div>
+    <table class="compare-table">
+      <thead><tr><th class="label-col">項目</th><th class="survey-a">令和2年（令和元年11月分）</th><th class="survey-b">令和7年（令和6年11月分）</th></tr></thead>
+      <tbody>
+        <tr><td class="label-col">通勤手当など（支給企業割合）</td><td class="survey-a">92.3%</td><td class="survey-b">90.2%</td></tr>
+        <tr><td class="label-col">役付手当など</td><td class="survey-a">86.9%</td><td class="survey-b">84.2%</td></tr>
+        <tr><td class="label-col">家族手当など</td><td class="survey-a">68.6%</td><td class="survey-b">62.3%</td></tr>
+        <tr><td class="label-col">住宅手当など</td><td class="survey-a">24.2%</td><td class="survey-b">45.7%</td></tr>
+        <tr><td class="label-col">地域手当など</td><td class="survey-a">25.5%</td><td class="survey-b">53.0%</td></tr>
+        <tr><td class="label-col">諸手当が所定内賃金に占める比率</td><td class="survey-a">14.9%</td><td class="survey-b">15.9%</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+    <p>平成28年から令和7年までの10年間を通観すると、就労条件総合調査が映し出す日本企業の労働条件は、法制度の節目ごとに明確な変化を見せている。年次有給休暇取得率の急伸（48.7%→66.9%）は2019年の年5日取得義務化、月60時間超残業の割増賃金率の急伸（30%台→64.5%）は2023年の中小企業への適用拡大、定年65歳以上企業の増加（17.8%→24.5%）は2021年の高年齢者雇用安定法改正と、いずれも法改正から1～2年のタイムラグを置いて数値に反映されている。</p>
+    <div class="point">
+      <div class="pt-title">法律で動く指標</div>
+      <p>年次有給休暇取得率、月60時間超残業の割増賃金率、定年65歳以上企業割合は、いずれも法改正の施行後に数値が明確に跳ね上がっている。制度は義務化・法制化されて初めて実態が動く、という傾向が一貫している。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">市場競争で動く指標</div>
+      <p>完全週休2日制の急速な普及（令和5年以降、53.3%→65.5%）は、法改正を伴わずに人手不足下での採用力強化を背景に進んだとみられる変化である。</p>
+    </div>
+    <div class="point">
+      <div class="pt-title">緩やかに縮小している制度</div>
+      <p>退職給付制度がある企業の割合（80.5%→74.9%）、財形貯蓄制度の導入割合（38.1%→28.9%）は、いずれも5年間で緩やかに縮小している。伝統的な福利厚生の重心が変わりつつある可能性がある。</p>
+    </div>
+    <p>本調査は5年周期で「労働費用」「定年制等」「退職給付」「資産形成」「諸手当」という5つの個別テーマを順に取り上げる構成になっており、令和7年調査時点でこの10年間にちょうど2巡目の最後の「諸手当」までが終わったところにある。次に「労働費用」が取り上げられるのは令和8年調査、「定年制等」は令和9年調査になると見込まれる。</p>
+  </div>
+
+  <div class="references" id="references">
+    <h2>参考文献</h2>
+    <ul class="ref-list">
+      <li><span class="ref-num">1</span><span>厚生労働省「平成28年就労条件総合調査 結果の概況」<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/16/dl/gaikyou.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/16/dl/gaikyou.pdf</a></span></li>
+      <li><span class="ref-num">2</span><span>厚生労働省「平成29年就労条件総合調査 結果の概況」<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/17/dl/gaikyou.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/17/dl/gaikyou.pdf</a></span></li>
+      <li><span class="ref-num">3</span><span>厚生労働省「平成30年就労条件総合調査 結果の概況」<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/18/dl/gaikyou.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/18/dl/gaikyou.pdf</a></span></li>
+      <li><span class="ref-num">4</span><span>厚生労働省「平成31年（令和元年）就労条件総合調査 結果の概況」<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/19/dl/gaikyou.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/19/dl/gaikyou.pdf</a></span></li>
+      <li><span class="ref-num">5</span><span>厚生労働省「令和2年就労条件総合調査 結果の概況」<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/20/dl/gaikyou.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/20/dl/gaikyou.pdf</a></span></li>
+      <li><span class="ref-num">6</span><span>厚生労働省「令和3年就労条件総合調査 結果の概況」<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/21/dl/gaikyou.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/21/dl/gaikyou.pdf</a></span></li>
+      <li><span class="ref-num">7</span><span>厚生労働省「令和4年就労条件総合調査 結果の概況」<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/22/dl/gaikyou.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/22/dl/gaikyou.pdf</a></span></li>
+      <li><span class="ref-num">8</span><span>厚生労働省「令和5年就労条件総合調査 結果の概況」<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/23/dl/gaikyou.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/23/dl/gaikyou.pdf</a></span></li>
+      <li><span class="ref-num">9</span><span>厚生労働省「令和6年就労条件総合調査 結果の概況」<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/24/dl/gaikyou.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/24/dl/gaikyou.pdf</a></span></li>
+      <li><span class="ref-num">10</span><span>厚生労働省「令和7年就労条件総合調査 結果の概況」<span class="ref-tag">統計</span><br><a href="https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/25/dl/gaikyou.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/itiran/roudou/jikan/syurou/25/dl/gaikyou.pdf</a></span></li>
+      <li><span class="ref-num">11</span><span>厚生労働省「就労条件総合調査：結果の概要」（一覧ページ）<span class="ref-tag">ウェブサイト</span><br><a href="https://www.mhlw.go.jp/toukei/list/11-23c.html" target="_blank" rel="noopener">https://www.mhlw.go.jp/toukei/list/11-23c.html</a></span></li>
+    </ul>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <p>素材：厚生労働省「就労条件総合調査」結果の概況（平成28年～令和7年、各年版）をもとに新規収集・整理</p>
+  <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e0e0e0; font-size:11px; color:#8a939e; line-height:1.8; text-align:left; max-width:760px; margin-left:auto; margin-right:auto;">
+    【免責事項】本資料は生成AIを使用して収集・整理した情報に基づき作成したものです。内容が不正確であったり最新でない可能性があります。あくまでも参考情報としてご活用いただき、重要事項については必ず一次情報にあたり事実関係をご確認ください。本資料の利用により生じた損害について、作成者は一切の責任を負いません。
+  </div>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  /* ── テキスト選択 → ここから読み上げ ── */
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>
