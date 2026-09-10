@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>障害者の「18歳の壁」～切れ目のない支援を～</title>
+<style>
+:root {
+  --blue:    #1a4f7a;
+  --blue-lt: #2d7ab5;
+  --accent:  #e8811a;
+  --bg:      #f5f7fa;
+  --white:   #ffffff;
+  --text:    #1e2832;
+  --muted:   #5a6472;
+  --border:  #dde3ea;
+  --tag-bg:  #e8f0f9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.85;
+  padding-top: 56px;
+}
+
+/* ── Fixed top bar ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%);
+  color: #fff;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 1rem;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+/* ── TTS bar ── */
+.tts-bar { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.tts-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.9rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.5); background: transparent; color: #c8d6e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; white-space: nowrap; }
+.tts-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.tts-btn.playing { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.7); }
+.tts-stop { display: none; align-items: center; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: transparent; color: #c8d6e8; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+.tts-select { padding: 0.28rem 0.6rem; border-radius: 99px; border: 1.5px solid rgba(200,214,232,0.3); background: rgba(255,255,255,0.08); color: #c8d6e8; font-size: 0.8rem; cursor: pointer; max-width: 200px; }
+.tts-label { font-size: 0.75rem; color: rgba(200,214,232,0.7); white-space: nowrap; }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; padding: 56px 40px 48px; text-align: center; }
+.hero .label { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; font-size: 11px; letter-spacing: .1em; padding: 4px 12px; margin-bottom: 20px; text-transform: uppercase; }
+.hero h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.hero p.sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; position: sticky; top: 56px; z-index: 100; overflow-x: auto; }
+nav ul { display: flex; flex-wrap: nowrap; gap: 0; list-style: none; max-width: 1000px; margin: 0 auto; }
+nav ul li a { display: block; padding: 14px 16px; font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+nav ul li a:hover { color: var(--blue-lt); border-bottom-color: var(--blue-lt); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Overview card ── */
+.overview { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 48px; }
+.overview h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.overview p { margin-bottom: 14px; color: var(--text); }
+
+/* ── Section ── */
+section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 36px 40px; margin-bottom: 28px; scroll-margin-top: 110px; }
+section h2 { font-size: 19px; font-weight: 700; color: var(--blue); padding-bottom: 12px; border-bottom: 2px solid var(--blue); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+section h2 .icon { width: 32px; height: 32px; background: var(--blue); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+section p { margin-bottom: 16px; color: var(--text); }
+section p:last-child { margin-bottom: 0; }
+
+/* ── Policy tag ── */
+.policy-tag { display: inline-block; background: var(--tag-bg); color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 18px; border: 1px solid #c5d9ee; }
+
+/* ── Highlight box ── */
+.highlight { background: #fff8ee; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #5a3a00; }
+.highlight strong { color: var(--accent); }
+
+/* ── Data stat ── */
+.stats { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 160px; background: var(--tag-bg); border-radius: 8px; padding: 18px 20px; text-align: center; }
+.stat .val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat .val span { font-size: 16px; }
+.stat .lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── Conclusion ── */
+.conclusion { background: linear-gradient(135deg, var(--blue) 0%, #0f3356 100%); color: #fff; border-radius: 10px; padding: 40px 44px; margin-bottom: 28px; scroll-margin-top: 110px; }
+.conclusion h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); }
+.conclusion p { margin-bottom: 16px; color: rgba(255,255,255,0.9); line-height: 1.9; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion .point { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.conclusion .point .pt-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #fff; }
+.conclusion .point p { font-size: 13px; margin-bottom: 0; color: rgba(255,255,255,0.85); }
+
+/* ── Footer ── */
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 24px; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  body { padding-top: 48px; }
+  header { padding: 0 0.75rem; height: auto; min-height: 48px; gap: 0.4rem; flex-wrap: nowrap; }
+  .site-title { font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+  .tts-bar { gap: 0.25rem; }
+  .tts-btn { font-size: 0.73rem; padding: 0.2rem 0.6rem; }
+  .tts-stop { font-size: 0.73rem; padding: 0.2rem 0.5rem; }
+  .tts-select { font-size: 0.7rem; max-width: 95px; padding: 0.18rem 0.35rem; }
+  .tts-label { display: none; }
+  nav { top: 48px; padding: 0 12px; }
+  nav ul li a { padding: 12px 10px; font-size: 11px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 20px; }
+  .container { padding: 32px 16px 60px; }
+  section, .overview { padding: 28px 20px; }
+  section p, .overview p, .conclusion p { font-size: 14px; }
+  .stats { gap: 10px; }
+  .stat { min-width: 140px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">18歳の壁</div>
+  <div class="tts-bar">
+    <button class="tts-btn" id="tts-btn">▶ 読み上げ</button>
+    <button class="tts-stop" id="tts-stop">■ 停止</button>
+    <select class="tts-select" id="tts-voice"></select>
+    <select class="tts-select" id="tts-rate" style="max-width:80px">
+      <option value="0.5">0.5×</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1.0×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2.0">2.0×</option>
+    </select>
+    <span class="tts-label" id="tts-label"></span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="label">トピックス</div>
+  <h1>障害者の「18歳の壁」～切れ目のない支援を～</h1>
+  <p class="sub">SOMPOインスティチュート・プラス レポート解説（2025年10月15日公開）をやさしく読み解く</p>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="#overview">全体像</a></li>
+    <li><a href="#intro">はじめに</a></li>
+    <li><a href="#daycare">放課後等デイサービス</a></li>
+    <li><a href="#reform">報酬改定の中身</a></li>
+    <li><a href="#reform-effect">改定後の事業所動向</a></li>
+    <li><a href="#receiver">受け皿としての生活介護</a></li>
+    <li><a href="#policy">国・都・自治体の政策</a></li>
+    <li><a href="#issues">論点整理</a></li>
+    <li><a href="#conclusion">総括</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="overview" id="overview">
+    <h2>全体像</h2>
+    <p>障害のある子どもと家族には、18歳という年齢を境に支援の内容が大きく変わる瞬間がある。SOMPOインスティチュート・プラスの上席研究員・宇田香織氏が2025年10月に発表したレポートは、この「18歳の壁」と呼ばれる現象を、制度の仕組みと最新のデータの両面から丁寧に読み解いている。</p>
+    <p>「18歳の壁」とは、特別支援学校高等部を卒業したあと、日中に通う生活介護事業所などのサービス終了時刻が午後3～4時頃と早く、夕方以降の居場所を失ってしまう状況を指す。在学中は「放課後等デイサービス」を午後6時頃まで利用でき、保護者はその間に就労を続けられていたが、卒業と同時にこの仕組みが使えなくなり、保護者の就労継続が難しくなるケースが生じている。</p>
+    <p>国はこの課題に対応するため、「令和6年度障害福祉サービス等報酬改定」で生活介護のサービス提供時間を延ばす事業所への加算を手厚くした。レポートはこの改定が実際にどこまで効果を上げているかをデータで検証し、なお残る課題を指摘したうえで、国に対して実態把握と財政支援の検討を求めている。</p>
+  </div>
+
+  <section id="intro">
+    <h2><span class="icon">🚪</span>はじめに：「18歳の壁」とは何か</h2>
+    <p>「18歳の壁」という言葉が指すのは、単なる制度の切り替わりではなく、そこで生活のリズムそのものが崩れてしまう現実である。特別支援学校高等部を卒業すると、障害者への支援の根拠法は児童福祉法から障害者総合支援法へと切り替わる。在学中に利用していた放課後等デイサービスは使えなくなり、代わりに生活介護事業所などに通うことになるが、そこでのサービス提供時間は多くの場合、在学中よりも短い。</p>
+    <p>結果として、夕方以降に子どもの居場所がなくなり、保護者が仕事を続けられなくなるという事態が起きている（第1章）。</p>
+  </section>
+
+  <section id="daycare">
+    <h2><span class="icon">🏫</span>放課後等デイサービスという「入り口」の手厚さ</h2>
+    <div class="stats">
+      <div class="stat"><div class="val">20,641<span>人</span></div><div class="lbl">2024年3月 特別支援学校高等部卒業者数</div></div>
+      <div class="stat"><div class="val">62<span>%</span></div><div class="lbl">社会福祉施設等へ入所・通所（12,809人）</div></div>
+      <div class="stat"><div class="val">30<span>%</span></div><div class="lbl">就業者（6,117人、うちフルタイム相当は19%）</div></div>
+    </div>
+    <p>2012年に創設された放課後等デイサービスは、6歳から18歳までの学齢期の障害児を対象とし、特別支援学校などに通う子どもであれば午後6時頃まで利用できる。この時間の長さが、保護者の就労を下支えしてきた。実際、見守りや手助けが必要な子どもを持つ母親の就業率は上昇傾向にある。</p>
+    <p>しかし、この手厚さは18歳で終わる。2024年3月に特別支援学校高等部を卒業した20,641人のうち、62%にあたる12,809人が社会福祉施設等へ入所・通所し、30%にあたる6,117人が就業者となった（うちフルタイム相当勤務者は全体の19%）。裏を返せば、卒業後は7割を超える障害者が、夕方以降の新たな居場所を必要とする可能性があるということだ。放課後等デイサービスという「入り口」が手厚いほど、卒業という「出口」でのギャップは際立つ構造になっている（第2章）。</p>
+  </section>
+
+  <section id="reform">
+    <h2><span class="icon">💴</span>令和6年度報酬改定は何を変えたか</h2>
+    <div class="policy-tag">令和6年度障害福祉サービス等報酬改定</div>
+    <p>国もこの構造的なギャップを認識し、令和6年度の報酬改定で生活介護の基本報酬とサービス提供時間の関係を見直した。改定前は事業所の「営業時間」の区分で報酬が決まっていたが、改定後は実際の「サービス提供時間」の区分にもとづいて、より細かく報酬が設定されるようになった。改定前は「6時間以上8時間未満」の営業時間を設定する事業所が全体の約61%を占めており、長時間の受け入れを行う事業所は少数派だった。</p>
+    <div class="highlight">あわせて、9時間以上サービスを提供する事業所への「延長支援加算」も拡充され、<strong>1時間ごとに100単位</strong>という、従来より手厚い加算が設定された。定員11人以上でサービス提供時間が7時間未満の場合には、全ての障害支援区分で基本報酬が減額される仕組みも組み込まれており、事業所側に時間延長を促す設計になっている。</div>
+    <p>つまりこの改定は、「短時間で運営する方が経営上は不利、長時間受け入れる方が報酬面で報われる」という誘導を狙ったものといえる（第3章）。</p>
+  </section>
+
+  <section id="reform-effect">
+    <h2><span class="icon">📊</span>改定は事業所の動きをどこまで変えたか</h2>
+    <div class="stats">
+      <div class="stat"><div class="val">9,565</div><div class="lbl">2024年4月時点「6時間以上7時間未満」の事業所数（最多）</div></div>
+      <div class="stat"><div class="val">516→2,660</div><div class="lbl">8時間以上提供事業所（2023年→2024年4月）</div></div>
+      <div class="stat"><div class="val">約1<span>割</span></div><div class="lbl">2024年12月時点で9時間以上提供する事業所の割合</div></div>
+    </div>
+    <p>改定の効果は、データにはっきりと表れている。2024年4月時点でもっとも多かった提供時間帯は「6時間以上7時間未満」の9,565事業所で、同年12月にかけては6時間以上の事業所がさらに増え、なかでも「7時間以上8時間未満」の増加幅が最大となった。延長支援加算の対象となる8時間以上のサービス提供事業所も、2023年の516事業所から2024年4月には2,660事業所へと大きく増えている。</p>
+    <p>ただし、ここには一つの重要な限界がある。9時間以上サービスを提供する事業所は、2024年12月時点でも全体の約1割にとどまっているのだ。報酬改定は事業所の行動を確かに動かしたが、それは「7～8時間台への底上げ」が中心であり、「18歳の壁」が意味する夕方以降の長時間の居場所づくりには、まだ届いていない事業所が多い（第3章）。</p>
+  </section>
+
+  <section id="receiver">
+    <h2><span class="icon">🏢</span>「18歳の壁」の受け皿として、生活介護事業所はどう動いているか</h2>
+    <p>2024年の調査によれば、生活介護事業所における利用希望者数は「変わらない」との回答が約46%を占める一方、「かなり増えた」「やや増えた」を合わせると3割超が「利用希望者が増えた」と回答している。増加の理由としては「事業所の個性化や取組の効果」と並んで「特別支援学校の卒業生の増加」が挙げられているが、実際には特別支援学校の卒業生数は減少傾向にある。</p>
+    <p>この一見矛盾した回答は、むしろ別の事実を映し出している。すなわち、放課後等デイサービスを利用してきた経験者が、卒業後も夕方以降の居場所を求めて生活介護事業所を頼るようになっている、という利用者側の希望の変化である。この動きに応えようと、延長受け入れを進める事業所に加え、放課後等デイサービスと生活介護をひとつの空間で一体的に実施する独自の取組を行う事業所も出てきている（第4章）。</p>
+  </section>
+
+  <section id="policy">
+    <h2><span class="icon">🏛️</span>国・都道府県・市区町村の政策動向</h2>
+    <div class="policy-tag">国</div>
+    <p>「18歳の壁」への対応は、厚生労働省による令和6年度障害福祉サービス等報酬改定（生活介護の基本報酬・延長支援加算の見直し）が中心だが、動きはそれだけではない。障害児側の制度を所管するこども家庭庁も「障害児通所支援に関する検討会」などで、児童福祉法から障害者総合支援法へ切り替わる際の支援の連続性を論点としており、令和7年度予算案でも障害児支援関係の施策拡充が計上されている。また令和6年改正の育児・介護休業法では、障害のある子を育てる保護者への配慮が今後の検討課題として位置づけられている。もっとも、これらはいずれも制度の「見直し」や「検討」の段階にとどまり、卒業直後の居場所そのものを国が直接保障する仕組みにはまだなっていない。</p>
+    <div class="policy-tag">都道府県</div>
+    <p>国の制度だけでは埋まらない隙間を、都道府県レベルの独自施策が補おうとする動きも出ている。東京都は、特別支援学校卒業後の「18歳の壁」対策として、区市町村が行う夕方以降の居場所確保の取組を支援する事業を新年度から開始する方針を示した（NHK報道）。区市町村が直面する現場のニーズに、都が財政面で後押しをする形であり、国の報酬改定だけでは動きが鈍い部分を、より地域に近い行政が補完しようとする構図が見える。</p>
+    <div class="policy-tag">市区町村</div>
+    <p>先行して独自の取組を進めているのは、むしろ基礎自治体である。品川区は、生活介護の延長利用を実現した事業所に対し日額2,500円の運営費助成を行い、9事業所がこれを活用している。さいたま市は2022年度から「夕方支援」事業を開始し、午後3時以降に障害者を受け入れる日中一時支援の実施施設へ補助を行うとともに、日中通う施設と夕方の受け入れ先との間の送迎費用も補助対象としており、現在4施設が参加している。愛知県長久手市では、グループホームの整備推進に加え、発達障害などの特性を持つ若者向けの交流拠点「N-ジョイ」の開設、企業と直接つながる就労支援イベントの開催など、「居場所」「住まい」「就労」の選択肢を同時に広げる取組が進められている。</p>
+    <p>こうした先進事例に共通するのは、いずれも自治体が独自財源で、報酬改定という国の仕組みの外側から「壁」を埋めにいっている点である。</p>
+  </section>
+
+  <section id="issues">
+    <h2><span class="icon">🔍</span>論点整理</h2>
+    <p><strong>① 自治体間の格差が広がるリスク</strong>：品川区・さいたま市・長久手市のように独自予算を投じられる自治体がある一方、財政力の乏しい自治体では同様の取組が難しい。東京都のように都道府県が区市町村を後押しする枠組みは有効だが、全国一律の底上げにはなお距離がある。</p>
+    <p><strong>② インセンティブ設計の限界</strong>：国の報酬改定は、延長支援加算や基本報酬の減額を通じて事業所に時間延長を「促す」設計であり、義務化はしていない。実際、9時間以上提供する事業所は約1割にとどまっており、報酬という誘導だけでは経営判断の壁を越えきれていない。</p>
+    <p><strong>③ 制度の縦割りそのものが「壁」を生んでいる</strong>：放課後等デイサービス（児童福祉法）と生活介護（障害者総合支援法）は所管法令も財源も異なり、18歳という年齢で機械的に切り替わる。こども家庭庁と厚生労働省という所管の違いも含め、移行期を横断して支援を設計する視点が制度上は弱い。</p>
+    <p><strong>④ ニーズの実態が国レベルで十分に把握されていない</strong>：現場の自治体や事業所が個別に対応を模索する一方、卒業後にどれだけの障害者が夕方以降の居場所を必要としているのか、全国規模での定量的な把握はまだ確立していない。レポートが「支援機関や当事者団体への丁寧なヒアリング」を国に求めているのは、この空白を埋める狙いがある。</p>
+  </section>
+
+  <div class="conclusion" id="conclusion">
+    <h2>総括</h2>
+
+    <div class="point">
+      <div class="pt-title">評価できる点</div>
+      <p>令和6年度報酬改定によってサービス提供時間を延ばす事業所が増え、「18歳の壁」の受け皿は一定程度拡充された。制度側の誘導は、統計上は明確に機能している。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">残る課題</div>
+      <p>それでも、実際にどこまで延長するかは各事業所の経営判断に委ねられており、9時間以上の長時間提供に踏み切る事業所はなお限定的。「壁」そのものが解消したとまでは言い切れない。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">経営面の実態</div>
+      <p>厚生労働省が2024年11～12月に行った検証調査では、生活介護事業所の60.3%が「2023・2024年とも黒字」、18.5%が「とも赤字」、6.5%が「2024年に赤字転換」と回答している。延長支援には人員配置などのコストが伴うため、報酬体系と現場の経営状況を継続的に注視する必要がある。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">国・自治体の役割分担</div>
+      <p>品川区・さいたま市・長久手市のような基礎自治体の独自助成や、東京都による区市町村支援は、報酬改定だけでは埋まらない隙間を補う重要な先行事例である。一方でこれらは自治体の財政力・裁量に依存しており、国が実態把握を通じて財政的支援のあり方を検討し、地域差を縮める役割を果たす必要がある。</p>
+    </div>
+
+    <div class="point">
+      <div class="pt-title">保護者支援という視点</div>
+      <p>令和6年改正の育児・介護休業法では、障害のある子どもを育てる保護者への個別配慮が課題として残されている。障害児の保護者が就労を継続できる社会を実現するためにも、ライフステージを通じた切れ目のない支援の実現に向けた、不断の取組が求められる。</p>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <p>出典：SOMPOインスティチュート・プラス「障害者の『18歳の壁』～切れ目のない支援を～」（上席研究員 宇田香織、2025年10月15日）https://www.sompo-ri.co.jp/2025/10/15/20290/<br>NHK首都圏ナビ「特別支援学校卒業後の“18歳の壁”問題 東京都が事業支援へ」／公明党「障がい児の『18歳の壁』を乗り越えるために」（さいたま市・長久手市の事例）</p>
+</footer>
+
+<script>
+(function() {
+  const btn      = document.getElementById('tts-btn');
+  const stopBtn  = document.getElementById('tts-stop');
+  const select   = document.getElementById('tts-voice');
+  const label    = document.getElementById('tts-label');
+  const article  = document.querySelector('.container');
+  if (!btn || !article || !window.speechSynthesis) return;
+
+  const overview   = article.querySelector('.overview');
+  const sections   = article.querySelectorAll('section');
+  const conclusion = article.querySelector('.conclusion');
+  const parts = [];
+  if (overview)    parts.push(overview.innerText);
+  sections.forEach(s => parts.push(s.innerText));
+  if (conclusion)  parts.push(conclusion.innerText);
+  const rawText = parts.length ? parts.join('\n\n') : (article.innerText || article.textContent || '');
+
+  let allVoices = [], chunks = [], resumeIdx = 0, currentIdx = 0;
+  let intentionalStop = false, keepAliveTimer = null, watchdogTimer = null;
+  const PREFER_VOICES = ['七海', '圭太', 'Nanami', 'Keita'];
+
+  function populateSelect(voices) {
+    const preferred = voices.filter(v => v.lang.startsWith('ja') && PREFER_VOICES.some(n => v.name.includes(n)));
+    const allJa     = voices.filter(v => v.lang.startsWith('ja'));
+    const list      = preferred.length ? preferred : allJa.length ? allJa : voices;
+    if (!list.length) { select.style.display = 'none'; return; }
+    select.innerHTML = '';
+    const sorted = [...list.filter(v => v.localService), ...list.filter(v => !v.localService)];
+    sorted.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = (v.localService ? '🔒 ' : '☁ ') + v.name.replace('Microsoft ', '').replace(' - Japanese (Japan)', '');
+      select.appendChild(opt);
+    });
+    allVoices = sorted;
+  }
+  function loadVoices() {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { populateSelect(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => populateSelect(speechSynthesis.getVoices()), { once: true });
+  }
+  loadVoices();
+  function getSelectedVoice() { return allVoices[parseInt(select.value)] || null; }
+
+  function cleanText(t) {
+    return t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitChunks(text) {
+    return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function startKeepAlive() {
+    stopKeepAlive();
+    keepAliveTimer = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        setTimeout(() => window.speechSynthesis.resume(), 50);
+      }
+    }, 14000);
+  }
+  function stopKeepAlive() { if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; } }
+
+  function armWatchdog(index) {
+    clearWatchdog();
+    watchdogTimer = setTimeout(() => {
+      if (btn.dataset.state === 'playing' && currentIdx === index) {
+        resumeIdx = index + 1; speakFrom(index + 1);
+      }
+    }, 25000);
+  }
+  function clearWatchdog() { if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; } }
+
+  function setIdle() {
+    stopKeepAlive(); clearWatchdog();
+    if (resumeIdx > 0 && resumeIdx < chunks.length) {
+      btn.textContent = '▶ 途中から再開';
+      label.textContent = Math.round(resumeIdx / chunks.length * 100) + '% 地点〜';
+    } else {
+      btn.textContent = '▶ 読み上げ'; label.textContent = '';
+    }
+    btn.classList.remove('playing'); btn.dataset.state = 'idle'; stopBtn.style.display = 'none';
+  }
+
+  function speakFrom(index) {
+    clearWatchdog();
+    if (intentionalStop || index >= chunks.length) { if (!intentionalStop) resumeIdx = 0; setIdle(); return; }
+    currentIdx = index;
+    const voice  = getSelectedVoice();
+    const rateVal = parseFloat((document.getElementById('tts-rate') || {}).value || '1.0');
+    const text   = cleanText(chunks[index]);
+    if (!text) { resumeIdx = index + 1; speakFrom(index + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ja-JP'; utt.rate = rateVal;
+    if (voice) utt.voice = voice;
+    let done = false;
+    utt.addEventListener('end', () => {
+      if (done || intentionalStop) return;
+      done = true; clearWatchdog(); resumeIdx = index + 1; speakFrom(index + 1);
+    });
+    utt.addEventListener('error', (e) => {
+      if (done) return;
+      if (intentionalStop) { done = true; return; }
+      if (e.error === 'interrupted' || e.error === 'canceled') {
+        setTimeout(() => { if (!done && !intentionalStop && btn.dataset.state === 'playing') speakFrom(index); }, 250);
+        return;
+      }
+      done = true; clearWatchdog(); resumeIdx = index; setIdle();
+    });
+    window.speechSynthesis.speak(utt);
+    armWatchdog(index);
+  }
+
+  function startSpeech(fromIndex) {
+    intentionalStop = false;
+    chunks = splitChunks(rawText);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (intentionalStop) return;
+      const voice = getSelectedVoice();
+      btn.textContent = '⏸ 一時停止'; btn.classList.add('playing');
+      btn.dataset.state = 'playing'; stopBtn.style.display = 'inline-flex';
+      label.textContent = voice && voice.localService ? 'ローカル' : voice ? 'クラウド' : '';
+      startKeepAlive(); speakFrom(fromIndex);
+    }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.state || 'idle';
+    if (state === 'idle') { startSpeech(resumeIdx); }
+    else if (state === 'playing') {
+      window.speechSynthesis.pause(); btn.textContent = '▶ 再開';
+      btn.classList.remove('playing'); btn.dataset.state = 'paused';
+    } else {
+      window.speechSynthesis.resume(); btn.textContent = '⏸ 一時停止';
+      btn.classList.add('playing'); btn.dataset.state = 'playing';
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    intentionalStop = true; resumeIdx = 0;
+    stopKeepAlive(); clearWatchdog(); window.speechSynthesis.cancel(); setIdle();
+  });
+
+  /* ── テキスト選択 → ここから読み上げ ── */
+  let selTip = null;
+  function getOrCreateTip() {
+    if (selTip) return selTip;
+    selTip = document.createElement('button');
+    selTip.textContent = '▶ ここから読み上げ';
+    Object.assign(selTip.style, {
+      position: 'fixed', zIndex: '9999', background: '#1a56a0', color: '#fff',
+      border: 'none', borderRadius: '6px', padding: '6px 14px', fontSize: '13px',
+      cursor: 'pointer', display: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.35)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(selTip);
+    return selTip;
+  }
+  function hideTip() { if (selTip) selTip.style.display = 'none'; }
+  function chunkIndexFromSelection(sel) {
+    if (!chunks.length) chunks = splitChunks(rawText);
+    const range = sel.getRangeAt(0);
+    let node = range.startContainer;
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+    const BLOCK = new Set(['P','H1','H2','H3','H4','H5','H6','LI','BLOCKQUOTE','TD','TH']);
+    while (node && node !== article) {
+      if (node.nodeType === 1 && BLOCK.has(node.tagName)) break;
+      node = node.parentNode;
+    }
+    const blockText = (node && node !== article ? (node.innerText || node.textContent || '') : sel.toString()).trim();
+    const key = blockText.substring(0, 40).replace(/\s+/g, ' ');
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].substring(0, 40).replace(/\s+/g, ' ') === key || chunks[i].includes(key.substring(0, 20))) return i;
+    }
+    return 0;
+  }
+  document.addEventListener('mouseup', (e) => {
+    if (e.target === selTip) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideTip(); return; }
+    try { if (!article.contains(sel.getRangeAt(0).commonAncestorContainer)) { hideTip(); return; } }
+    catch { hideTip(); return; }
+    chunks = splitChunks(rawText);
+    const idx = chunkIndexFromSelection(sel);
+    const tip = getOrCreateTip();
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    tip.style.left = Math.max(4, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+    tip.style.top  = (rect.top - 44) + 'px';
+    tip.style.display = 'block';
+    tip.onclick = () => { hideTip(); window.getSelection().removeAllRanges(); resumeIdx = idx; startSpeech(idx); };
+  });
+  document.addEventListener('mousedown', (e) => { if (selTip && e.target !== selTip) hideTip(); });
+  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+})();
+</script>
+</body>
+</html>
